@@ -1,4 +1,4 @@
-import { MapPin, Mail } from '../Icons'
+import { MapPin, Mail } from '../common/Icons'
 
 const Footer = ({ onNavigate }) => (
   <footer className="bg-slate-900 text-slate-400 pt-12 pb-6">
@@ -11,15 +11,15 @@ const Footer = ({ onNavigate }) => (
         <div>
           <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4">Liên hệ</h4>
           <div className="space-y-2 text-sm">
-            <p className="flex items-center gap-2"><MapPin size={14} className="text-orange-500" /> 123 Đường ABC, Quận 1, TP.HCM</p>
-            <p className="flex items-center gap-2"><Mail size={14} className="text-orange-500" /> hotline@jshop.com</p>
+            <p className="flex items-center gap-2"><MapPin size={14} className="text-orange-500" /> 90 Lưu Quý Kỳ,Hòa Cường Nam,Đà Nẵng</p>
+            <p className="flex items-center gap-2"><Mail size={14} className="text-orange-500" /> vuinguyen16003069@gmail.com</p>
           </div>
         </div>
         <div>
           <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4">Theo dõi JSHOP</h4>
           <div className="flex gap-3">
             {['Facebook', 'Instagram', 'TikTok'].map((s) => (
-              <button key={s} className="text-xs bg-slate-800 hover:bg-orange-600 hover:text-white text-slate-400 px-3 py-2 rounded-lg transition font-medium">{s}</button>
+              <button key={s} className="text-xs bg-slate-800 hover:bg-orange-600 hover:text-white text-slate-400 px-3 py-2 rounded-lg transition font-medium cursor-pointer">{s}</button>
             ))}
           </div>
         </div>

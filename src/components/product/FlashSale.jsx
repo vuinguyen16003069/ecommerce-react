@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Zap } from '../Icons'
+import { Zap } from '../common/Icons'
 import { formatPrice, seededPercent } from '../../utils/helpers'
+import { Link } from 'react-router-dom'
 
 const FlashSale = ({ products, onProductClick }) => {
   const [timeLeft, setTimeLeft] = useState(7200)
@@ -37,9 +38,9 @@ const FlashSale = ({ products, onProductClick }) => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {items.map((p) => {
-          const pct = seededPercent(p.id)
+          const pct = seededPercent(p._id || p.id || 0)
           return (
-            <div key={p.id} className="bg-white border border-orange-100 rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer group" onClick={() => onProductClick(p)}>
+            <Link key={p._id || p.id} to={`/product/${p._id || p.id}`} className="bg-white border border-orange-100 rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer group">
               <div className="relative">
                 <div className="absolute top-0 left-0 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-br-lg z-10">-50%</div>
                 <img src={p.image} className="w-full h-36 object-cover group-hover:scale-105 transition duration-500" alt={p.name} />
@@ -55,7 +56,7 @@ const FlashSale = ({ products, onProductClick }) => {
                 </div>
                 <p className="text-[10px] text-orange-600 font-semibold mt-1">Đã bán {pct}%</p>
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>

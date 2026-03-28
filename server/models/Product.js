@@ -1,0 +1,25 @@
+const mongoose = require('mongoose');
+
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  category: String,
+  image: String,
+  images: [String],
+  rating: { type: Number, default: 0 },
+  sold: { type: Number, default: 0 },
+  stock: { type: Number, default: 0 },
+  desc: String,
+  reviews: [
+    {
+      id: mongoose.Schema.Types.ObjectId,
+      user: String,
+      rating: Number,
+      text: String,
+      date: Date
+    }
+  ],
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('Product', productSchema);

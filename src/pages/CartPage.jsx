@@ -14,7 +14,15 @@ const CartPage = () => {
   const [coupon, setCoupon] = useState('')
   const [discount, setDiscount] = useState(0)
 
-  const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  // Calculate item price with flash sale consideration
+  const getItemPrice = (item) => {
+    if (item.isFlashSale) {
+      return item.price * (1 - (item.flashSaleDiscount || 50) / 100)
+    }
+    return item.price
+  }
+
+  const cartTotal = cart.reduce((sum, item) => sum + getItemPrice(item) * item.quantity, 0)
   const shipping = cartTotal > 299000 ? 0 : 30000
   const finalTotal = cartTotal + shipping - discount
 
@@ -62,7 +70,17 @@ const CartPage = () => {
                 </div>
                 <div className="text-sm font-bold text-orange-600 uppercase tracking-widest mb-3">{item.category}</div>
                 <div className="mt-auto flex items-center justify-between">
-                  <div className="font-black text-gray-900 text-xl tracking-tight">{formatPrice(item.price)}</div>
+                  <div>
+                    {item.isFlashSale ? (
+                      <div className="flex items-center gap-2">
+                        <div className="font-black text-orange-600 text-xl tracking-tight">{formatPrice(getItemPrice(item))}</div>
+                        <div className="text-xs text-gray-400 line-through">{formatPrice(item.price)}</div>
+                        <div className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-md font-bold">-{item.flashSaleDiscount || 50}%</div>
+                      </div>
+                    ) : (
+                      <div className="font-black text-gray-900 text-xl tracking-tight">{formatPrice(item.price)}</div>
+                    )}
+                  </div>
                   <div className="flex bg-gray-50 rounded-lg p-1 border border-gray-100">
                     <button onClick={() => updateQuantity(item._id || item.id, -1)} disabled={item.quantity <= 1} className="w-8 h-8 flex items-center justify-center rounded-md font-bold text-gray-500 hover:bg-white hover:shadow-sm disabled:opacity-30 disabled:hover:bg-transparent transition cursor-pointer">-</button>
                     <div className="w-10 h-8 flex items-center justify-center font-bold text-sm text-gray-900">{item.quantity}</div>

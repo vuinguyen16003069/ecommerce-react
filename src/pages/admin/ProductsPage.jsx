@@ -10,17 +10,22 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([])
   const [modal, setModal] = useState(false)
   const [editing, setEditing] = useState(null)
-  const [form, setForm] = useState({ name: '', price: '', category: 'Thời trang nam', stock: '', image: '', desc: '' })
+  const [form, setForm] = useState({ name: '', price: '', category: 'Thời trang nam', stock: '', image: '', desc: '', isFlashSale: false, flashSaleDiscount: 50 })
 
   const fetchProducts = () => api.get('/products').then(setProducts)
   useEffect(() => { fetchProducts() }, [])
 
-  const openAdd = () => { setEditing(null); setForm({ name: '', price: '', category: 'Thời trang nam', stock: '', image: 'https://via.placeholder.com/400', desc: '' }); setModal(true) }
+  const openAdd = () => { setEditing(null); setForm({ name: '', price: '', category: 'Thời trang nam', stock: '', image: 'https://via.placeholder.com/400', desc: '', isFlashSale: false, flashSaleDiscount: 50 }); setModal(true) }
   const openEdit = (p) => { setEditing(p); setForm({ ...p }); setModal(true) }
 
   const submit = async (e) => {
     e.preventDefault()
-    const data = { ...form, price: +form.price, stock: +form.stock }
+    const data = {
+      ...form,
+      price: +form.price,
+      stock: +form.stock,
+      flashSaleDiscount: form.isFlashSale ? +form.flashSaleDiscount : 0
+    }
     if (editing) {
       await api.put(`/products/${editing._id || editing.id}`, data)
       addToast('Cập nhật thành công!', 'success')
@@ -87,6 +92,20 @@ const ProductsPage = () => {
           </div>
           <div><label className="text-xs font-bold text-gray-600 block mb-1">Link ảnh</label><input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-orange-200 focus:border-orange-400 transition" /></div>
           <div><label className="text-xs font-bold text-gray-600 block mb-1">Mô tả</label><textarea rows="3" value={form.desc} onChange={(e) => setForm({ ...form, desc: e.target.value })} className="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-orange-200 focus:border-orange-400 resize-none transition"></textarea></div>
+
+          <div className="border-t pt-4 mt-4">
+            <h4 className="text-xs font-bold text-gray-700 mb-3 uppercase tracking-wide">Flash Sale</h4>
+            <div className="flex items-center gap-3 mb-3">
+              <input type="checkbox" id="isFlashSale" checked={form.isFlashSale} onChange={(e) => setForm({ ...form, isFlashSale: e.target.checked })} className="w-4 h-4 rounded border-gray-300 cursor-pointer" />
+              <label htmlFor="isFlashSale" className="text-sm text-gray-700 font-medium cursor-pointer">Bật Flash Sale cho sản phẩm này</label>
+            </div>
+            {form.isFlashSale && (
+              <div>
+                <label className="text-xs font-bold text-gray-600 block mb-1">Mức giảm giá (%)</label>
+                <input type="number" min="0" max="100" value={form.flashSaleDiscount} onChange={(e) => setForm({ ...form, flashSaleDiscount: e.target.value })} className="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-orange-200 focus:border-orange-400 transition" />
+              </div>
+            )}
+          </div>
           <button type="submit" className="w-full bg-orange-600 text-white py-3 rounded-xl font-bold hover:bg-orange-700 transition">{editing ? 'Lưu thay đổi' : 'Tạo sản phẩm'}</button>
         </form>
       </Modal>

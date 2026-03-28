@@ -3,7 +3,7 @@ import { Zap } from '../common/Icons'
 import { formatPrice, seededPercent } from '../../utils/helpers'
 import { Link } from 'react-router-dom'
 
-const FlashSale = ({ products, onProductClick }) => {
+const FlashSale = ({ products }) => {
   const [timeLeft, setTimeLeft] = useState(7200)
 
   useEffect(() => {
@@ -18,7 +18,8 @@ const FlashSale = ({ products, onProductClick }) => {
     return [h, m, sec].map((n) => String(n).padStart(2, '0')).join(':')
   }
 
-  const items = products.filter((p) => p.stock > 0).slice(0, 4)
+  // Filter sản phẩm Flash Sale từ database
+  const items = products.filter((p) => p.isFlashSale && p.stock > 0).slice(0, 4)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -38,17 +39,19 @@ const FlashSale = ({ products, onProductClick }) => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {items.map((p) => {
-          const pct = seededPercent(p._id || p.id || 0)
+          const pct = seededPercent(p._id || p.id)
+          const discount = p.flashSaleDiscount || 50
+          const salePrice = p.price * (1 - discount / 100)
           return (
             <Link key={p._id || p.id} to={`/product/${p._id || p.id}`} className="bg-white border border-orange-100 rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer group">
               <div className="relative">
-                <div className="absolute top-0 left-0 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-br-lg z-10">-50%</div>
+                <div className="absolute top-0 left-0 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-br-lg z-10">-{discount}%</div>
                 <img src={p.image} className="w-full h-36 object-cover group-hover:scale-105 transition duration-500" alt={p.name} />
               </div>
               <div className="p-3">
                 <p className="text-xs font-medium truncate text-gray-700 mb-1">{p.name}</p>
                 <div className="flex items-end gap-2 mb-2">
-                  <span className="text-orange-600 font-bold text-sm">{formatPrice(p.price * 0.5)}</span>
+                  <span className="text-orange-600 font-bold text-sm">{formatPrice(salePrice)}</span>
                   <span className="text-gray-400 text-xs line-through">{formatPrice(p.price)}</span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-1.5">

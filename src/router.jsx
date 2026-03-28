@@ -6,27 +6,49 @@ import { Loader } from './components/common/Loader'
 import MainLayout from './layouts/MainLayout'
 import AdminLayout from './layouts/AdminLayout'
 
+ 
 // Lazy-loaded pages
+// eslint-disable-next-line react-refresh/only-export-components
 const HomePage = lazy(() => import('./pages/HomePage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const ShopPage = lazy(() => import('./pages/ShopPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const CartPage = lazy(() => import('./pages/CartPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const LoginPage = lazy(() => import('./pages/LoginPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
+// eslint-disable-next-line react-refresh/only-export-components
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const BlogPage = lazy(() => import('./pages/BlogPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage'))
 
+
 // Admin pages
+// eslint-disable-next-line react-refresh/only-export-components
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const ProductsPage = lazy(() => import('./pages/admin/ProductsPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const OrdersPage = lazy(() => import('./pages/admin/OrdersPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const UsersPage = lazy(() => import('./pages/admin/UsersPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const PostsPage = lazy(() => import('./pages/admin/PostsPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const RolesPage = lazy(() => import('./pages/admin/RolesPage'))
+// eslint-disable-next-line react-refresh/only-export-components
 const PermissionsPage = lazy(() => import('./pages/admin/PermissionsPage'))
 
+// eslint-disable-next-line no-unused-vars
 const wrap = (Component) => (
   <Suspense fallback={<Loader />}>
     <Component />
@@ -55,6 +77,10 @@ export const router = createBrowserRouter([
   {
     path: '/register',
     element: wrap(RegisterPage),
+  },
+  {
+    path: '/forgot-password',
+    element: wrap(ForgotPasswordPage),
   },
   {
     path: '/admin',

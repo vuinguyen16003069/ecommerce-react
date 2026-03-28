@@ -16,7 +16,15 @@ const CheckoutPage = () => {
   const [form, setForm] = useState({ name: '', phone: '', address: '', note: '' })
   const [loading, setLoading] = useState(false)
 
-  const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  // Calculate item price with flash sale consideration
+  const getItemPrice = (item) => {
+    if (item.isFlashSale) {
+      return item.price * (1 - (item.flashSaleDiscount || 50) / 100)
+    }
+    return item.price
+  }
+
+  const cartTotal = cart.reduce((sum, item) => sum + getItemPrice(item) * item.quantity, 0)
   const shipping = cartTotal > 299000 ? 0 : 30000
   const finalTotal = cartTotal + shipping
 
@@ -132,7 +140,17 @@ const CheckoutPage = () => {
                     <img src={item.image} alt={item.name} className="w-14 h-14 bg-white rounded-lg object-contain p-1" />
                     <div className="flex-1 min-w-0">
                       <p className="font-bold text-sm truncate pr-2 text-gray-100">{item.name}</p>
-                      <p className="text-orange-400 text-xs font-bold mt-1">{formatPrice(item.price)} <span className="text-gray-400 font-normal">x {item.quantity}</span></p>
+                      <p className="text-orange-400 text-xs font-bold mt-1">
+                        {item.isFlashSale ? (
+                          <>
+                            <span>{formatPrice(getItemPrice(item))}</span>
+                            <span className="text-gray-400 line-through ml-1">{formatPrice(item.price)}</span>
+                          </>
+                        ) : (
+                          <span>{formatPrice(item.price)}</span>
+                        )}
+                        <span className="text-gray-400 font-normal ml-1">x {item.quantity}</span>
+                      </p>
                     </div>
                   </div>
                 ))}

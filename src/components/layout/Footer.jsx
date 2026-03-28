@@ -1,6 +1,6 @@
 import { MapPin, Mail } from '../common/Icons'
 
-const Footer = ({ onNavigate }) => (
+const Footer = () => (
   <footer className="bg-slate-900 text-slate-400 pt-12 pb-6">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">

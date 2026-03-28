@@ -46,6 +46,9 @@ const ProductCard = ({ product }) => {
       )}
       {/* Image Area */}
       <Link to={`/product/${(product._id || product.id)}`} className="relative h-48 bg-gray-50 flex items-center justify-center overflow-hidden">
+        {product.isFlashSale && (
+          <div className="absolute top-2 left-2 z-10 bg-red-500 text-white px-3 py-1 rounded-lg text-[10px] font-black">-{product.flashSaleDiscount || 50}%</div>
+        )}
         <img src={product.image} alt={product.name} className="max-h-[85%] object-contain group-hover:scale-110 transition-transform duration-500 ease-out" />
         <button
           className={`absolute top-2 right-2 p-2 rounded-full border border-gray-200 transition-colors z-10 cursor-pointer ${isWished ? 'bg-red-50 text-red-500 border-red-100' : 'bg-white text-gray-400 hover:text-red-500 hover:bg-gray-50'}`}
@@ -61,7 +64,14 @@ const ProductCard = ({ product }) => {
         <Link to={`/product/${(product._id || product.id)}`} className="font-bold text-gray-800 mb-1 line-clamp-2 hover:text-orange-600 transition min-h-[40px] leading-tight">{product.name}</Link>
         <div className="flex items-center gap-1.5 mb-3"><div className="flex text-yellow-500"><Star size={12} fill="currentColor" /></div><span className="text-xs font-bold text-gray-700">{product.rating}</span><span className="text-xs text-gray-400">({product.reviews?.length || 0})</span><span className="text-xs text-gray-300 mx-1">•</span><span className="text-xs text-gray-500 font-medium">Đã bán {product.sold}</span></div>
         <div className="mt-auto flex items-end justify-between">
-          <div className="font-black text-lg text-gray-900 tracking-tight">{formatPrice(product.price)}</div>
+          {product.isFlashSale ? (
+            <div className="flex items-end gap-2">
+              <div className="font-black text-lg text-orange-600 tracking-tight">{formatPrice(product.price * (1 - (product.flashSaleDiscount || 50) / 100))}</div>
+              <div className="text-xs text-gray-400 line-through">{formatPrice(product.price)}</div>
+            </div>
+          ) : (
+            <div className="font-black text-lg text-gray-900 tracking-tight">{formatPrice(product.price)}</div>
+          )}
           <button
             onClick={handleAddCart}
             disabled={product.stock <= 0}

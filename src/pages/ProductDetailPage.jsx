@@ -26,6 +26,7 @@ const ProductDetailPage = () => {
   const [reviewForm, setReviewForm] = useState({ rating: 5, text: '' })
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true)
     api.get(`/products/${id}`).then(data => {
       setProduct(data)
@@ -133,7 +134,18 @@ const ProductDetailPage = () => {
           <p className="text-gray-500 text-lg mb-8 leading-relaxed max-w-xl">{product.desc || 'Thiết kế hiện đại, chất liệu cao cấp mang lại vẻ đẹp thanh lịch và cảm giác thoải mái.'}</p>
           
           <div className="flex flex-wrap items-end gap-6 mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-100 w-full max-w-lg">
-            <div><p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">Giá sản phẩm</p><div className="text-4xl font-black text-orange-600 tracking-tight">{formatPrice(product.price)}</div></div>
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">Giá sản phẩm</p>
+              {product.isFlashSale ? (
+                <div className="flex items-center gap-3 items-end">
+                  <div className="text-4xl font-black text-orange-600 tracking-tight">{formatPrice(product.price * (1 - (product.flashSaleDiscount || 50) / 100))}</div>
+                  <div className="text-sm text-gray-400 line-through">{formatPrice(product.price)}</div>
+                  <div className="bg-red-500 text-white px-2.5 py-1 rounded-lg text-xs font-black">-{product.flashSaleDiscount || 50}%</div>
+                </div>
+              ) : (
+                <div className="text-4xl font-black text-orange-600 tracking-tight">{formatPrice(product.price)}</div>
+              )}
+            </div>
             <div className="w-px h-12 bg-gray-200 hidden sm:block"></div>
             <div>
               <p className={`text-xs font-bold uppercase tracking-widest mb-1.5 ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>Trạng thái</p>

@@ -25,4 +25,13 @@ export const safeStorage = {
 }
 
 // ─── STABLE SEEDED RANDOM ───────────────────────────────────────────────────
-export const seededPercent = (id) => ((id * 37 + 13) % 70) + 15
+export const seededPercent = (id) => {
+  if (!id) return 50
+  // Convert id to string and hash it
+  const str = String(id)
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash += str.charCodeAt(i)
+  }
+  return (hash % 70) + 15
+}

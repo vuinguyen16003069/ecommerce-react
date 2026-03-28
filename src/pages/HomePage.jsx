@@ -1,7 +1,7 @@
 import { ArrowRight } from '../components/common/Icons'
 import ProductCard from '../components/product/ProductCard'
 import FlashSale from '../components/product/FlashSale'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { formatDate } from '../utils/helpers'
 import { api } from '../services/api'
 import { useState, useEffect } from 'react'
@@ -9,7 +9,6 @@ import { useState, useEffect } from 'react'
 const HomePage = () => {
   const [products, setProducts] = useState([])
   const [posts, setPosts] = useState([])
-  const navigate = useNavigate()
 
   useEffect(() => {
     api.get('/products').then(setProducts)
@@ -26,7 +25,7 @@ const HomePage = () => {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl">
-            <span className="text-orange-500 font-bold tracking-wider text-sm uppercase mb-4 block">Bộ sưu tập 2024</span>
+            <span className="text-orange-500 font-bold tracking-wider text-sm uppercase mb-4 block">Bộ sưu tập 2026</span>
             <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight tracking-tight">THỜI TRANG<br /><span className="text-orange-600 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-orange-600">MỚI NHẤT</span></h1>
             <p className="text-lg text-gray-300 mb-8 max-w-lg leading-relaxed">Khám phá những xu hướng thời trang được chọn lọc kỹ lưỡng, phù hợp với mọi phong cách của bạn.</p>
             <div className="flex gap-4">

@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { User, Calendar, ArrowLeft } from '../components/common/Icons'
 import { formatDate } from '../utils/helpers'
 import { api } from '../services/api'
 
 const BlogDetailPage = () => {
   const { id } = useParams()
-  const navigate = useNavigate()
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)

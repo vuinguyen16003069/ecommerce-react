@@ -80,13 +80,13 @@ Dự án được phát triển trên kiến trúc **React 19 + Vite** với **T
 ┌─────────────────────────────────────────────────────────────────┐
 │                         TECH STACK                              │
 ├──────────────────────┬──────────────────────────────────────────┤
-│  ⚡ Frontend          │  React 19 + Vite (HMR siêu nhanh)       │
-│  🟢 Backend           │  Node.js + Express                      │
-│  🍃 Database          │  MongoDB + Mongoose                     │
-│  🎨 Styling           │  Tailwind CSS v4 + CSS Variables         │
-│  📊 Charts            │  Chart.js + react-chartjs-2             │
-│  🔷 Icons             │  SVG Components nội bộ (Lucide-based)   │
-│  💾 State / Storage   │  Zustand + LocalStorage                 │
+│  ⚡ Frontend         │  React 19 + Vite (HMR siêu nhanh)        │
+│  🟢 Backend          │  Node.js + Express                       │
+│  🍃 Database         │  MongoDB + Mongoose                      │
+│  🎨 Styling          │  Tailwind CSS v4 + CSS Variables         │
+│  📊 Charts           │  Chart.js + react-chartjs-2              │
+│  🔷 Icons            │  SVG Components nội bộ (Lucide-based)    │
+│  💾 State / Storage  │  Zustand + LocalStorage                  │
 └──────────────────────┴──────────────────────────────────────────┘
 ```
 

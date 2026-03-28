@@ -19,6 +19,10 @@ const productSchema = new mongoose.Schema({
       date: Date
     }
   ],
+  isFlashSale: { type: Boolean, default: false },
+  flashSaleDiscount: { type: Number, default: 0 },
+  flashSaleStartTime: Date,
+  flashSaleEndTime: Date,
   createdAt: { type: Date, default: Date.now }
 });
 

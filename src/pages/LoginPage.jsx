@@ -45,8 +45,8 @@ const LoginPage = () => {
           <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-600 transition-colors" size={20} />
           <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-sm font-medium focus:bg-white focus:ring-4 focus:ring-orange-50 focus:border-orange-400 transition outline-none" placeholder="Mật khẩu" />
         </div>
-        <div className="flex justify-end"><button type="button" className="text-sm font-bold text-orange-600 hover:text-orange-700 transition">Quên mật khẩu?</button></div>
-        <button disabled={loading} type="submit" className="w-full bg-gray-900 text-white font-black py-4.5 rounded-2xl shadow-xl shadow-gray-200 hover:bg-orange-600 hover:shadow-orange-500/30 transition-all uppercase tracking-widest text-sm flex items-center justify-center gap-3 group mt-4">
+        <div className="flex justify-end"><Link to="/forgot-password" className="text-sm font-bold text-orange-600 hover:text-orange-700 transition cursor-pointer">Quên mật khẩu?</Link></div>
+        <button disabled={loading} type="submit" className="w-full bg-gray-900 text-white font-black py-4.5 rounded-2xl shadow-xl shadow-gray-200 hover:bg-orange-600 hover:shadow-orange-500/30 transition-all uppercase tracking-widest text-sm flex items-center justify-center gap-3 group mt-4 cursor-pointer">
           {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <>ĐĂNG NHẬP <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform" /></>}
         </button>
       </form>

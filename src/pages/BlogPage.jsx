@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { User, Calendar, FileText } from '../components/common/Icons'
 import { formatDate } from '../utils/helpers'
 import { api } from '../services/api'
@@ -15,7 +16,7 @@ const BlogPage = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {posts.map((post) => (
-          <article key={post._id || post.id} className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col sm:flex-row group cursor-pointer">
+          <Link key={post._id || post.id} to={`/blog/${post._id || post.id}`} className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col sm:flex-row group cursor-pointer">
             <div className="sm:w-2/5 bg-gray-100 overflow-hidden min-h-[200px] flex-shrink-0">
               {post.image
                 ? <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500 min-h-[200px]" />
@@ -32,7 +33,7 @@ const BlogPage = () => {
                 <span className="flex items-center gap-1"><Calendar size={11} /> {formatDate(post.date)}</span>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </div>

@@ -71,12 +71,12 @@ const HomePage = () => {
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {posts.slice(0, 3).map((p) => (
-            <div key={p._id || p.id} className="group cursor-pointer">
+            <Link key={p._id || p.id} to={`/blog/${p._id || p.id}`} className="group cursor-pointer">
               <div className="relative overflow-hidden rounded-2xl mb-4 h-[240px]"><img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" /></div>
               <div className="flex gap-2 mb-3"><span className="text-xs font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-md">{p.category}</span><span className="text-xs font-medium text-gray-500 flex items-center">{formatDate(p.date)}</span></div>
               <h3 className="font-bold text-lg text-gray-900 mb-2 group-hover:text-orange-600 transition line-clamp-2">{p.title}</h3>
               <p className="text-gray-500 text-sm line-clamp-2">{p.excerpt}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

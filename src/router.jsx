@@ -16,6 +16,7 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
 const BlogPage = lazy(() => import('./pages/BlogPage'))
+const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage'))
 
 // Admin pages
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'))
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
       { path: 'checkout', element: wrap(CheckoutPage) },
       { path: 'profile', element: wrap(ProfilePage) },
       { path: 'blog', element: wrap(BlogPage) },
+      { path: 'blog/:id', element: wrap(BlogDetailPage) },
     ],
   },
   {

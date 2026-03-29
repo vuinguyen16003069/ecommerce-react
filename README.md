@@ -11,7 +11,7 @@
  ╚════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝
 ```
 
-### 🛍️ Hệ thống Thương mại Điện tử Hiện đại
+### 🛍️ Hệ thống Thương mại Điện tử Hiện đại (Fullstack)
 
 <br/>
 
@@ -20,7 +20,7 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
+[![Nodemailer](https://img.shields.io/badge/Nodemailer-8.0-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](https://nodemailer.com/)
 
 <br/>
 
@@ -34,13 +34,13 @@
 
 ## 📖 Giới thiệu
 
-**JSHOP** là một ứng dụng React mô phỏng trọn vẹn một hệ thống thương mại điện tử chuyên nghiệp — bao gồm đầy đủ luồng mua sắm dành cho **khách hàng** lẫn **bảng điều khiển quản trị** dành cho người bán.
+**JSHOP** là một ứng dụng Fullstack thương mại điện tử chuyên nghiệp, tích hợp hoàn chỉnh giữa **React 19 (Frontend)** và **Node.js/Express (Backend)**. 
 
-Dự án được phát triển trên kiến trúc **React 19 + Vite** với **TailwindCSS v4**, tập trung vào việc xây dựng một kiến trúc thư mục sạch sẽ, dễ mở rộng và sẵn sàng tích hợp với bất kỳ backend API nào.
+Dự án không chỉ tập trung vào giao diện hiện đại với **TailwindCSS v4** mà còn chú trọng vào bảo mật (OTP Auth) và quản lý trạng thái hiệu quả với **Zustand**.
 
 <br/>
 
-## ✨ Tính năng
+## ✨ Tính năng nổi bật
 
 <table>
 <tr>
@@ -50,11 +50,11 @@ Dự án được phát triển trên kiến trúc **React 19 + Vite** với **T
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| 🏠 **Trang chủ** | Banner, Flash Sale + đồng hồ bấm giờ, thanh tiến trình lượt bán, sản phẩm nổi bật |
-| 🔍 **Cửa hàng** | Lọc theo danh mục, sắp xếp giá, tìm kiếm debounced, phân trang |
-| 📦 **Chi tiết SP** | Gallery ảnh, đánh giá & xếp hạng sao, bộ đếm số lượng, gợi ý tương tự |
-| 🛒 **Giỏ hàng** | Điều chỉnh số lượng, mã giảm giá, xác nhận hóa đơn |
-| 👤 **Tài khoản** | Đăng nhập / Đăng ký, lịch sử đơn hàng, danh sách yêu thích |
+| 🏠 **Trang chủ** | Banner, Flash Sale, Sản phẩm nổi bật |
+| 🔍 **Cửa hàng** | Lọc theo danh mục, sắp xếp, tìm kiếm debounced |
+| 📦 **Chi tiết SP** | Gallery ảnh, đánh giá, gợi ý tương tự |
+| 🛒 **Giỏ hàng** | Quản lý bằng Zustand, lưu trực tiếp Database |
+| 🔐 **Bảo mật** | Đăng ký/Đăng nhập, **Quên mật khẩu bằng mã OTP** |
 
 </td>
 <td width="50%" valign="top">
@@ -63,10 +63,11 @@ Dự án được phát triển trên kiến trúc **React 19 + Vite** với **T
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| 📊 **Dashboard** | Thống kê tổng quan, biểu đồ Doanh thu (Line) & Đơn hàng (Doughnut) |
-| 📦 **Sản phẩm / Bài viết** | Bảng CRUD đầy đủ, form thao tác trong Modal |
-| 📋 **Đơn hàng** | Xem thông tin khách hàng, cập nhật trạng thái giao hàng |
-| 👥 **Người dùng** | Khóa / Mở khóa tài khoản, phân quyền Roles & Permissions |
+| 📊 **Dashboard** | Thống kê doanh thu & đơn hàng với Chart.js |
+| 📦 **Sản phẩm** | Quản lý CRUD (Thêm, Sửa, Xóa) bài bản |
+| 📋 **Đơn hàng** | Quản lý trạng thái và thông tin khách hàng |
+| 📧 **Email** | Hệ thống tự động gửi OTP xác thực qua Gmail |
+| 👥 **Người dùng** | Quản lý danh sách thành viên và phân quyền |
 
 </td>
 </tr>
@@ -76,21 +77,19 @@ Dự án được phát triển trên kiến trúc **React 19 + Vite** với **T
 
 ## 🚀 Công nghệ sử dụng
 
-```
+```bash
 ┌─────────────────────────────────────────────────────────────────┐
 │                         TECH STACK                              │
 ├──────────────────────┬──────────────────────────────────────────┤
-│  ⚡ Frontend         │  React 19 + Vite (HMR siêu nhanh)        │
+│  ⚡ Frontend         │  React 19 + Vite + React Router 7        │
 │  🟢 Backend          │  Node.js + Express                       │
 │  🍃 Database         │  MongoDB + Mongoose                      │
-│  🎨 Styling          │  Tailwind CSS v4 + CSS Variables         │
+│  🎨 Styling          │  Tailwind CSS v4 + Vanilla CSS           │
 │  📊 Charts           │  Chart.js + react-chartjs-2              │
-│  🔷 Icons            │  SVG Components nội bộ (Lucide-based)    │
-│  💾 State / Storage  │  Zustand + LocalStorage                  │
+│  ✉️ Email            │  Nodemailer (Gmail SMTP / Brevo)         │
+│  💾 State Management │  Zustand (Global Store)                  │
 └──────────────────────┴──────────────────────────────────────────┘
 ```
-
-> **Điểm nổi bật về thiết kế:** Toàn bộ icon được tự xây dựng thành component SVG nội bộ dựa trên Lucide — đồng nhất về style, không phụ thuộc vào thư viện icon nặng nề.
 
 <br/>
 
@@ -99,84 +98,54 @@ Dự án được phát triển trên kiến trúc **React 19 + Vite** với **T
 ### Yêu cầu hệ thống
 
 - **Node.js** ≥ v18
-- **MongoDB** (Local server hoặc MongoDB Atlas)
+- **MongoDB** (Local hoặc Atlas)
 
 ### Các bước thực hiện
 
-**1. Cài đặt Backend & Database**
+**1. Clone dự án và cài đặt Node modules**
 
 ```bash
+# Cài đặt cho Client (thư mục gốc)
+npm install
+
+# Cài đặt cho Server
 cd server
 npm install
 ```
 
 **2. Cấu hình Biến môi trường**
 
-Tạo file `.env` trong thư mục `server/` (nếu chưa có):
+Tạo file `.env` trong thư mục `server/`:
 ```env
-MONGO_URI=mongodb://localhost:27017/ecommerce
+MONGO_URI=mongodb://localhost:27017/jshop
 PORT=5000
+
+# Cấu hình gửi mail (OTP)
+GMAIL_USER=your-email@gmail.com
+GMAIL_PASS=your-app-password
 ```
 
-**3. Khởi tạo dữ liệu mẫu (Seed Data)**
+**3. Khởi động dự án (Cực nhanh)**
 
-Lệnh này sẽ xóa dữ liệu cũ và nạp dữ liệu mặc định vào MongoDB:
+Bạn không cần mở 2 terminal, chỉ cần chạy đúng 1 lệnh tại thư mục gốc:
 ```bash
-# Tại thư mục server/
-npm run seed
+npm start
 ```
-
-**4. Khởi động Backend Server**
-
-```bash
-# Tại thư mục server/
-npm run dev
-```
-
-**5. Cài đặt & Chạy Frontend (Mở terminal mới)**
-
-```bash
-# Quay lại thư mục gốc
-cd .. 
-npm install
-npm run dev
-```
-
-**6. Mở trình duyệt tại:**
-
-```
-http://localhost:5173/
-```
+*Lệnh này sẽ tự động chạy cả Client (5173) và Server (5000) cùng lúc nhờ `concurrently`.*
 
 <br/>
 
-> ### 🔑 Thông tin đăng nhập Admin
->
-> Để truy cập trang quản trị, nhấn **Đăng nhập** ở góc trên bên phải và dùng thông tin sau:
->
-> | Trường | Giá trị |
-> |--------|---------|
-> | Email | `admin@jshop.com` |
-> | Mật khẩu | `123` |
+> ### 🔑 Thông báo quan trọng
+> - **Dữ liệu mẫu:** Chạy `cd server && npm run seed` để khởi tạo sản phẩm mẫu.
+> - **Admin:** Email `admin@jshop.com` / Pass `123`.
 
 <br/>
 
-## 🗂️ Cấu trúc thư mục
+## 🗂️ Cấu trúc thư mục mới
 
-```
+```bash
 ecommerce-react/
 │
-├── 📁 src/
-│   ├── 📁 components/
-│   │   ├── 📁 layout/          # Hệ thống cấu trúc Web (Header, Footer)
-│   │   ├── 📁 product/         # Components riêng của SP (ProductCard, FlashSale)
-│   │   ├── 📁 ui/              # Tiện ích UI tái sử dụng (Toast, Modal, Skeleton)
-│   │   └── 📄 Icons.jsx        # Cụm Icons SVG nội bộ
-│   │
-│   ├── 📁 data/
-│   │   └── 📄 db.js            # Mockup Database — Initial State
-│   │
-│   ├── 📁 hooks/               # Custom Hooks (useStickyState, useDebounce)
 │   ├── 📁 utils/               # Helper functions (text, tiền tệ, ngày tháng)
 │   │
 │   ├── 📁 views/

@@ -61,9 +61,9 @@ const CheckoutPage = () => {
       }
 
       await api.post('/orders', orderData)
-      clearCart()
       addToast('Đặt hàng thành công! Mã đơn đã được tạo.', 'success')
-      navigate('/')
+      navigate('/profile')
+      setTimeout(() => clearCart(), 100)
     } catch (err) {
       addToast('Có lỗi xảy ra: ' + err.message, 'error')
     } finally {

@@ -345,7 +345,7 @@ async function seedDatabase() {
       Product.insertMany(mockProducts),
       Permission.insertMany(mockPermissions),
       Role.insertMany(mockRoles),
-      User.insertMany(mockUsers),
+      User.create(mockUsers),
       Post.insertMany(mockPosts),
       Coupon.insertMany(mockCoupons),
     ]);

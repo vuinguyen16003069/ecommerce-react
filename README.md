@@ -48,26 +48,25 @@ Dự án không chỉ tập trung vào giao diện hiện đại với **Tailwin
 
 ### 🛒 Khu vực Khách hàng
 
-| Tính năng | Mô tả |
-|-----------|-------|
-| 🏠 **Trang chủ** | Banner, Flash Sale, Sản phẩm nổi bật |
-| 🔍 **Cửa hàng** | Lọc theo danh mục, sắp xếp, tìm kiếm debounced |
-| 📦 **Chi tiết SP** | Gallery ảnh, đánh giá, gợi ý tương tự |
-| 🛒 **Giỏ hàng** | Quản lý bằng Zustand, lưu trực tiếp Database |
-| 🔐 **Bảo mật** | Đăng ký/Đăng nhập, **Quên mật khẩu bằng mã OTP** |
+| Tính năng          | Mô tả                                                                             |
+| ------------------ | --------------------------------------------------------------------------------- |
+| 🏠 **Trang chủ**   | Banner, Flash Sale + đồng hồ bấm giờ, thanh tiến trình lượt bán, sản phẩm nổi bật |
+| 🔍 **Cửa hàng**    | Lọc theo danh mục, sắp xếp giá, tìm kiếm debounced, phân trang                    |
+| 📦 **Chi tiết SP** | Gallery ảnh, đánh giá & xếp hạng sao, bộ đếm số lượng, gợi ý tương tự             |
+| 🛒 **Giỏ hàng**    | Điều chỉnh số lượng, mã giảm giá, xác nhận hóa đơn                                |
+| 👤 **Tài khoản**   | Đăng nhập / Đăng ký, lịch sử đơn hàng, danh sách yêu thích                        |
 
 </td>
 <td width="50%" valign="top">
 
 ### ⚙️ Khu vực Quản trị
 
-| Tính năng | Mô tả |
-|-----------|-------|
-| 📊 **Dashboard** | Thống kê doanh thu & đơn hàng với Chart.js |
-| 📦 **Sản phẩm** | Quản lý CRUD (Thêm, Sửa, Xóa) bài bản |
-| 📋 **Đơn hàng** | Quản lý trạng thái và thông tin khách hàng |
-| 📧 **Email** | Hệ thống tự động gửi OTP xác thực qua Gmail |
-| 👥 **Người dùng** | Quản lý danh sách thành viên và phân quyền |
+| Tính năng                  | Mô tả                                                              |
+| -------------------------- | ------------------------------------------------------------------ |
+| 📊 **Dashboard**           | Thống kê tổng quan, biểu đồ Doanh thu (Line) & Đơn hàng (Doughnut) |
+| 📦 **Sản phẩm / Bài viết** | Bảng CRUD đầy đủ, form thao tác trong Modal                        |
+| 📋 **Đơn hàng**            | Xem thông tin khách hàng, cập nhật trạng thái giao hàng            |
+| 👥 **Người dùng**          | Khóa / Mở khóa tài khoản, phân quyền Roles & Permissions           |
 
 </td>
 </tr>
@@ -115,7 +114,7 @@ npm install
 
 **2. Cấu hình Biến môi trường**
 
-Tạo file `.env` trong thư mục `server/`:
+Tạo file `.env` trong thư mục `server/` (nếu chưa có):
 ```env
 MONGO_URI=mongodb://localhost:27017/jshop
 PORT=5000
@@ -125,19 +124,52 @@ GMAIL_USER=your-email@gmail.com
 GMAIL_PASS=your-app-password
 ```
 
-**3. Khởi động dự án (Cực nhanh)**
+**3. Nạp dữ liệu mẫu (tùy chọn)**
 
-Bạn không cần mở 2 terminal, chỉ cần chạy đúng 1 lệnh tại thư mục gốc:
+```bash
+# Trong thư mục server/
+npm run seed
+```
+
+**4. Khởi động Backend Server**
+
+```bash
+# Trong thư mục server/
+npm run dev
+```
+
+**5. Khởi động Frontend (terminal mới)**
+
+```bash
+# Quay lại thư mục gốc
+cd ..
+npm run dev
+```
+
+**6. Hoặc dùng duy nhất 1 lệnh (Client + Server)**
+
 ```bash
 npm start
 ```
-*Lệnh này sẽ tự động chạy cả Client (5173) và Server (5000) cùng lúc nhờ `concurrently`.*
+
+*Script `npm start` sử dụng `concurrently` để chạy cả Client (5173) và Server (5000) cùng lúc.*
+
+**7. Mở trình duyệt tại:**
+
+```
+http://localhost:5173/
+```
 
 <br/>
 
-> ### 🔑 Thông báo quan trọng
-> - **Dữ liệu mẫu:** Chạy `cd server && npm run seed` để khởi tạo sản phẩm mẫu.
-> - **Admin:** Email `admin@jshop.com` / Pass `123`.
+> ### 🔑 Thông tin quan trọng
+> - **Dữ liệu mẫu:** Chạy `cd server && npm run seed` để khởi tạo bộ sản phẩm mặc định (có thể chạy lại bất cứ lúc nào).
+> - **Admin demo:** Sử dụng thông tin dưới đây để đăng nhập khu vực quản trị.
+>
+> | Trường   | Giá trị           |
+> | -------- | ----------------- |
+> | Email    | `admin@jshop.com` |
+> | Mật khẩu | `123`             |
 
 <br/>
 

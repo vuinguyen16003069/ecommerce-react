@@ -51,9 +51,12 @@ exports.remove = async (req, res) => {
 
 exports.addReview = async (req, res) => {
   try {
-    const { user, rating, text } = req.body;
+    let { user, rating, text } = req.body;
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ error: 'Sản phẩm không tìm thấy' });
+
+    // Simple XSS Sanitization
+    text = String(text).replace(/<[^>]*>?/gm, '');
 
     const review = { id: new Date().getTime(), user, rating, text, date: new Date() };
     product.reviews = product.reviews || [];

@@ -15,6 +15,17 @@ const userSchema = new mongoose.Schema({
   registerOtpExpires: { type: Date, default: null },
   isEmailVerified: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
+}, {
+  toJSON: {
+    transform: function(doc, ret) {
+      delete ret.password;
+      delete ret.resetOtp;
+      delete ret.resetOtpExpires;
+      delete ret.registerOtp;
+      delete ret.registerOtpExpires;
+      return ret;
+    }
+  }
 });
 
 // Hash password before saving

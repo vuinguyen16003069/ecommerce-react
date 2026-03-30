@@ -48,25 +48,25 @@ Dự án được phát triển trên kiến trúc **React 19 + Vite** với **T
 
 ### 🛒 Khu vực Khách hàng
 
-| Tính năng | Mô tả |
-|-----------|-------|
-| 🏠 **Trang chủ** | Banner, Flash Sale + đồng hồ bấm giờ, thanh tiến trình lượt bán, sản phẩm nổi bật |
-| 🔍 **Cửa hàng** | Lọc theo danh mục, sắp xếp giá, tìm kiếm debounced, phân trang |
-| 📦 **Chi tiết SP** | Gallery ảnh, đánh giá & xếp hạng sao, bộ đếm số lượng, gợi ý tương tự |
-| 🛒 **Giỏ hàng** | Điều chỉnh số lượng, mã giảm giá, xác nhận hóa đơn |
-| 👤 **Tài khoản** | Đăng nhập / Đăng ký, lịch sử đơn hàng, danh sách yêu thích |
+| Tính năng          | Mô tả                                                                             |
+| ------------------ | --------------------------------------------------------------------------------- |
+| 🏠 **Trang chủ**   | Banner, Flash Sale + đồng hồ bấm giờ, thanh tiến trình lượt bán, sản phẩm nổi bật |
+| 🔍 **Cửa hàng**    | Lọc theo danh mục, sắp xếp giá, tìm kiếm debounced, phân trang                    |
+| 📦 **Chi tiết SP** | Gallery ảnh, đánh giá & xếp hạng sao, bộ đếm số lượng, gợi ý tương tự             |
+| 🛒 **Giỏ hàng**    | Điều chỉnh số lượng, mã giảm giá, xác nhận hóa đơn                                |
+| 👤 **Tài khoản**   | Đăng nhập / Đăng ký, lịch sử đơn hàng, danh sách yêu thích                        |
 
 </td>
 <td width="50%" valign="top">
 
 ### ⚙️ Khu vực Quản trị
 
-| Tính năng | Mô tả |
-|-----------|-------|
-| 📊 **Dashboard** | Thống kê tổng quan, biểu đồ Doanh thu (Line) & Đơn hàng (Doughnut) |
-| 📦 **Sản phẩm / Bài viết** | Bảng CRUD đầy đủ, form thao tác trong Modal |
-| 📋 **Đơn hàng** | Xem thông tin khách hàng, cập nhật trạng thái giao hàng |
-| 👥 **Người dùng** | Khóa / Mở khóa tài khoản, phân quyền Roles & Permissions |
+| Tính năng                  | Mô tả                                                              |
+| -------------------------- | ------------------------------------------------------------------ |
+| 📊 **Dashboard**           | Thống kê tổng quan, biểu đồ Doanh thu (Line) & Đơn hàng (Doughnut) |
+| 📦 **Sản phẩm / Bài viết** | Bảng CRUD đầy đủ, form thao tác trong Modal                        |
+| 📋 **Đơn hàng**            | Xem thông tin khách hàng, cập nhật trạng thái giao hàng            |
+| 👥 **Người dùng**          | Khóa / Mở khóa tài khoản, phân quyền Roles & Permissions           |
 
 </td>
 </tr>
@@ -113,6 +113,7 @@ npm install
 **2. Cấu hình Biến môi trường**
 
 Tạo file `.env` trong thư mục `server/` (nếu chưa có):
+
 ```env
 MONGO_URI=mongodb://localhost:27017/ecommerce
 PORT=5000
@@ -121,6 +122,7 @@ PORT=5000
 **3. Khởi tạo dữ liệu mẫu (Seed Data)**
 
 Lệnh này sẽ xóa dữ liệu cũ và nạp dữ liệu mặc định vào MongoDB:
+
 ```bash
 # Tại thư mục server/
 npm run seed
@@ -137,7 +139,7 @@ npm run dev
 
 ```bash
 # Quay lại thư mục gốc
-cd .. 
+cd ..
 npm install
 npm run dev
 ```
@@ -154,10 +156,10 @@ http://localhost:5173/
 >
 > Để truy cập trang quản trị, nhấn **Đăng nhập** ở góc trên bên phải và dùng thông tin sau:
 >
-> | Trường | Giá trị |
-> |--------|---------|
-> | Email | `admin@jshop.com` |
-> | Mật khẩu | `123` |
+> | Trường   | Giá trị           |
+> | -------- | ----------------- |
+> | Email    | `admin@jshop.com` |
+> | Mật khẩu | `123`             |
 
 <br/>
 

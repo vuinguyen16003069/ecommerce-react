@@ -4,6 +4,8 @@ import { useAuthStore } from '../../store/authStore'
 import { useCartStore } from '../../store/cartStore'
 import { useToastStore } from '../../store/toastStore'
 import { ShoppingCart, Search, User, LayoutDashboard, LogOut, Menu } from '../common/Icons'
+import { formatPrice } from '../../utils/helpers'
+import { api } from '../../services/api'
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false)
@@ -22,20 +24,47 @@ const Header = () => {
 
   const initialSearch = searchParams.get('q') || ''
   const [searchValue, setSearchValue] = useState(initialSearch)
+  const [products, setProducts] = useState([])
+  const [suggestions, setSuggestions] = useState([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', h, { passive: true })
+    api.get('/products').then(setProducts)
     return () => window.removeEventListener('scroll', h)
   }, [])
+  
+  // Sync search value with URL
+  useEffect(() => {
+    setSearchValue(searchParams.get('q') || '')
+  }, [searchParams])
 
   const handleSearch = (e) => {
     const val = e.target.value
     setSearchValue(val)
+    
+    if (val.trim().length >= 2) {
+      const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(val.toLowerCase()) || 
+        p.category.toLowerCase().includes(val.toLowerCase())
+      ).slice(0, 5)
+      setSuggestions(filtered)
+      setShowSuggestions(true)
+    } else {
+      setSuggestions([])
+      setShowSuggestions(false)
+    }
+
+    if (val.trim()) {
+      // Logic for actual navigation can stay or be debounced, usually it's better to wait for Enter or click suggestion
+    }
+  }
+
+  const submitSearch = (val) => {
     if (val.trim()) {
       navigate(`/shop?q=${encodeURIComponent(val)}`)
-    } else if (currentView === '/shop') {
-      navigate('/shop')
+      setShowSuggestions(false)
     }
   }
 
@@ -74,7 +103,7 @@ const Header = () => {
 
           {/* Desktop Search */}
           <div className="flex-1 max-w-md hidden md:block">
-            <div className="relative">
+            <form onSubmit={(e) => { e.preventDefault(); submitSearch(searchValue) }} className="relative group">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input
                 type="text"
@@ -82,8 +111,41 @@ const Header = () => {
                 placeholder="Tìm kiếm sản phẩm..."
                 className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-full focus:ring-2 focus:ring-orange-200 focus:border-orange-400 focus:bg-white transition"
                 onChange={handleSearch}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true) }}
               />
-            </div>
+              
+              {/* Autocomplete Dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-2xl overflow-hidden animate-fade-in z-50 ring-1 ring-black/5">
+                  <div className="p-2">
+                    {suggestions.map((p) => (
+                      <button
+                        key={p._id || p.id}
+                        type="button"
+                        onClick={() => { setSearchValue(p.name); submitSearch(p.name) }}
+                        className="w-full flex items-center gap-3 p-2.5 hover:bg-orange-50 rounded-xl transition text-left cursor-pointer group/item"
+                      >
+                        <div className="w-10 h-10 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center p-1 border border-gray-100/50">
+                          <img src={p.image} alt="" className="max-h-full object-contain group-hover/item:scale-110 transition" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-gray-900 truncate">{p.name}</p>
+                          <p className="text-[10px] text-orange-600 font-bold uppercase tracking-wider">{p.category}</p>
+                        </div>
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => submitSearch(searchValue)}
+                      className="w-full mt-1 p-2.5 text-center text-xs font-bold text-gray-500 hover:text-orange-600 transition border-t border-gray-50"
+                    >
+                      Xem tất cả kết quả cho "{searchValue}"
+                    </button>
+                  </div>
+                </div>
+              )}
+            </form>
           </div>
 
           {/* Right Actions */}
@@ -93,15 +155,70 @@ const Header = () => {
               <Search size={20} />
             </button>
 
-            {/* Cart */}
-            <Link to="/cart" className="relative p-2 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition">
-              <ShoppingCart size={20} />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full px-1 border-2 border-white">
-                  {cartCount > 99 ? '99+' : cartCount}
-                </span>
-              )}
-            </Link>
+            {/* Cart with Mini-cart Dropdown */}
+            <div className="relative group/cart">
+              <Link to="/cart" className="relative p-2 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition block">
+                <ShoppingCart size={20} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full px-1 border-2 border-white">
+                    {cartCount > 99 ? '99+' : cartCount}
+                  </span>
+                )}
+              </Link>
+              
+              {/* Dropdown menu */}
+              <div className="absolute right-0 top-full pt-2 w-80 hidden group-hover/cart:block z-50">
+                <div className="bg-white border border-gray-100 rounded-2xl shadow-2xl overflow-hidden animate-fade-in ring-1 ring-black/5">
+                  <div className="p-4 border-b bg-gray-50/50">
+                    <h3 className="text-sm font-bold text-gray-900">Giỏ hàng của tôi ({cartCount})</h3>
+                  </div>
+                  
+                  <div className="max-h-80 overflow-y-auto">
+                    {cart.length > 0 ? (
+                      <div className="divide-y divide-gray-50">
+                        {cart.slice(0, 3).map((item) => (
+                          <div key={item._id || item.id} className="p-4 flex gap-3 hover:bg-gray-50 transition">
+                            <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+                              <img src={item.image} alt={item.name} className="max-h-[80%] object-contain" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-bold text-gray-900 truncate">{item.name}</p>
+                              <div className="flex items-center justify-between mt-1">
+                                <p className="text-[10px] text-gray-500 font-medium">SL: {item.quantity}</p>
+                                <p className="text-xs font-bold text-orange-600">{formatPrice(item.price)}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        {cart.length > 3 && (
+                          <div className="p-2 text-center text-[10px] text-gray-400 font-medium bg-gray-50/30">
+                            Và {cart.length - 3} sản phẩm khác...
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="p-8 text-center">
+                        <div className="text-3xl mb-2">🛒</div>
+                        <p className="text-xs text-gray-500">Giỏ hàng đang trống</p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {cart.length > 0 && (
+                    <div className="p-4 border-t bg-gray-50/50">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Tổng cộng</span>
+                        <span className="text-sm font-black text-gray-900">{formatPrice(cart.reduce((s, i) => s + i.price * i.quantity, 0))}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <Link to="/cart" className="w-full text-center py-2.5 bg-gray-100 text-gray-900 text-xs font-bold rounded-xl hover:bg-gray-200 transition">GIỎ HÀNG</Link>
+                        <Link to="/checkout" className="w-full text-center py-2.5 bg-gray-900 text-white text-xs font-bold rounded-xl hover:bg-orange-600 transition shadow-lg shadow-gray-200">THANH TOÁN</Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
             {/* User */}
             {currentUser ? (

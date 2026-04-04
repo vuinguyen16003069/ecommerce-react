@@ -46,6 +46,8 @@ const PostsPage = lazy(() => import("./pages/admin/PostsPage"));
 const RolesPage = lazy(() => import("./pages/admin/RolesPage"));
 // eslint-disable-next-line react-refresh/only-export-components
 const PermissionsPage = lazy(() => import("./pages/admin/PermissionsPage"));
+// eslint-disable-next-line react-refresh/only-export-components
+const CouponsPage = lazy(() => import("./pages/admin/CouponsPage"));
 
 // eslint-disable-next-line no-unused-vars
 const wrap = (Component, { protectedRoute = false } = {}) => (
@@ -99,6 +101,7 @@ export const router = createBrowserRouter([
       { path: "orders", element: wrap(OrdersPage) },
       { path: "users", element: wrap(UsersPage) },
       { path: "posts", element: wrap(PostsPage) },
+      { path: "coupons", element: wrap(CouponsPage) },
       { path: "roles", element: wrap(RolesPage) },
       { path: "permissions", element: wrap(PermissionsPage) },
     ],

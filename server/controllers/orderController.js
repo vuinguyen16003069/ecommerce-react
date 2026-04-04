@@ -3,10 +3,6 @@ const Product = require('../models/Product');
 const mongoose = require('mongoose');
 
 exports.create = async (req, res) => {
-  console.log('📦 Create Order Request:', req.body);
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
     const { items, userId, ...orderData } = req.body;
 
@@ -17,66 +13,43 @@ exports.create = async (req, res) => {
     let calculatedTotal = 0;
     const finalItems = [];
 
-    // 1. Validate & Secure Pricing & Deduct Stock Atomically
     for (const item of items) {
       const productId = item._id || item.id;
-      
-      // Atomic stock check and update
+
       const product = await Product.findOneAndUpdate(
-        { 
-          _id: productId, 
-          stock: { $gte: item.quantity } 
-        },
-        { 
-          $inc: { stock: -item.quantity, sold: item.quantity } 
-        },
-        { new: true, session }
+        { _id: productId, stock: { $gte: item.quantity } },
+        { $inc: { stock: -item.quantity, sold: item.quantity } },
+        { returnDocument: 'after' }
       );
 
       if (!product) {
-        throw new Error(`Sản phẩm ${item.name} không đủ số lượng hoặc không tồn tại.`);
+        return res.status(400).json({ error: `Sản phẩm "${item.name}" không đủ số lượng hoặc không tồn tại.` });
       }
 
-      // Calculate price based on SERVER price (flash sale protection)
-      const unitPrice = product.isFlashSale 
+      const unitPrice = product.isFlashSale
         ? product.price * (1 - (product.flashSaleDiscount || 50) / 100)
         : product.price;
-      
-      calculatedTotal += unitPrice * item.quantity;
 
-      finalItems.push({
-        id: product._id,
-        name: product.name,
-        quantity: item.quantity,
-        price: unitPrice,
-        image: product.image
-      });
+      calculatedTotal += unitPrice * item.quantity;
+      finalItems.push({ id: product._id, name: product.name, quantity: item.quantity, price: unitPrice, image: product.image });
     }
 
-    // Add shipping cost if needed
     const shipping = calculatedTotal > 299000 ? 0 : 30000;
-    const finalTotal = calculatedTotal + shipping;
-
     const orderId = `DH${Date.now().toString().slice(-6)}`;
     const order = new Order({
       orderId,
       userId,
       ...orderData,
       items: finalItems,
-      total: finalTotal,
+      total: calculatedTotal + shipping,
       status: 'Chờ xác nhận',
       date: new Date()
     });
 
-    await order.save({ session });
-    await session.commitTransaction();
-    
+    await order.save();
     res.status(201).json(order);
   } catch (error) {
-    await session.abortTransaction();
     res.status(400).json({ error: error.message });
-  } finally {
-    session.endSession();
   }
 };
 
@@ -97,7 +70,7 @@ exports.getById = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const order = await Order.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
   res.json(order);
 };
 

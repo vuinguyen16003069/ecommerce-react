@@ -71,6 +71,7 @@ const Header = () => {
   const navItems = [
     { label: 'Trang chủ', view: '/' },
     { label: 'Cửa hàng', view: '/shop' },
+    { label: 'Blog', view: '/blog' },
   ]
 
   const handleLogout = () => {

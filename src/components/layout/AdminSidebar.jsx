@@ -1,4 +1,4 @@
-import { LayoutDashboard, Package, Settings, Users, FileText, Key, Lock, LogOut } from '../common/Icons'
+import { LayoutDashboard, Package, Settings, Users, FileText, Key, Lock, LogOut, Ticket } from '../common/Icons'
 import { Link, useLocation } from 'react-router-dom'
 
 const AdminSidebar = ({ onNavigate }) => {
@@ -10,6 +10,7 @@ const AdminSidebar = ({ onNavigate }) => {
     { id: 'products', label: 'Sản phẩm', icon: <Settings size={18} />, path: '/admin/products' },
     { id: 'users', label: 'Người dùng', icon: <Users size={18} />, path: '/admin/users' },
     { id: 'posts', label: 'Bài viết', icon: <FileText size={18} />, path: '/admin/posts' },
+    { id: 'coupons', label: 'Mã giảm giá', icon: <Ticket size={18} />, path: '/admin/coupons' },
     { id: 'roles', label: 'Vai trò', icon: <Key size={18} />, path: '/admin/roles' },
     { id: 'permissions', label: 'Quyền hạn', icon: <Lock size={18} />, path: '/admin/permissions' },
   ]

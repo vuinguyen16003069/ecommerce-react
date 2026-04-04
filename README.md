@@ -34,7 +34,7 @@
 
 ## 📖 Giới thiệu
 
-**JSHOP** là một ứng dụng Fullstack thương mại điện tử chuyên nghiệp, tích hợp hoàn chỉnh giữa **React 19 (Frontend)** và **Node.js/Express (Backend)**. 
+**JSHOP** là một ứng dụng Fullstack thương mại điện tử chuyên nghiệp, tích hợp hoàn chỉnh giữa **React 19 (Frontend)** và **Node.js/Express (Backend)**.
 
 Dự án không chỉ tập trung vào giao diện hiện đại với **TailwindCSS v4** mà còn chú trọng vào bảo mật (OTP Auth) và quản lý trạng thái hiệu quả với **Zustand**.
 
@@ -115,6 +115,7 @@ npm install
 **2. Cấu hình Biến môi trường**
 
 Tạo file `.env` trong thư mục `server/` (nếu chưa có):
+
 ```env
 MONGO_URI=mongodb://localhost:27017/jshop
 PORT=5000
@@ -152,7 +153,7 @@ npm run dev
 npm start
 ```
 
-*Script `npm start` sử dụng `concurrently` để chạy cả Client (5173) và Server (5000) cùng lúc.*
+_Script `npm start` sử dụng `concurrently` để chạy cả Client (5173) và Server (5000) cùng lúc._
 
 **7. Mở trình duyệt tại:**
 
@@ -163,6 +164,7 @@ http://localhost:5173/
 <br/>
 
 > ### 🔑 Thông tin quan trọng
+>
 > - **Dữ liệu mẫu:** Chạy `cd server && npm run seed` để khởi tạo bộ sản phẩm mặc định (có thể chạy lại bất cứ lúc nào).
 > - **Admin demo:** Sử dụng thông tin dưới đây để đăng nhập khu vực quản trị.
 >

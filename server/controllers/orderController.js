@@ -3,37 +3,80 @@ const Product = require('../models/Product');
 const mongoose = require('mongoose');
 
 exports.create = async (req, res) => {
+  console.log('📦 Create Order Request:', req.body);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const { items, userId, ...orderData } = req.body;
 
-    // Validate userId
     if (!userId || userId === 'guest' || !mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ error: 'Vui lòng đăng nhập để tạo đơn hàng' });
     }
 
-    const orderId = `DH${Date.now().toString().slice(-6)}`;
+    let calculatedTotal = 0;
+    const finalItems = [];
 
-    for (let item of items) {
-      const product = await Product.findById(item.id);
-      if (product) {
-        product.stock = (product.stock || 0) - item.quantity;
-        product.sold = (product.sold || 0) + item.quantity;
-        await product.save();
+    // 1. Validate & Secure Pricing & Deduct Stock Atomically
+    for (const item of items) {
+      const productId = item._id || item.id;
+      
+      // Atomic stock check and update
+      const product = await Product.findOneAndUpdate(
+        { 
+          _id: productId, 
+          stock: { $gte: item.quantity } 
+        },
+        { 
+          $inc: { stock: -item.quantity, sold: item.quantity } 
+        },
+        { new: true, session }
+      );
+
+      if (!product) {
+        throw new Error(`Sản phẩm ${item.name} không đủ số lượng hoặc không tồn tại.`);
       }
+
+      // Calculate price based on SERVER price (flash sale protection)
+      const unitPrice = product.isFlashSale 
+        ? product.price * (1 - (product.flashSaleDiscount || 50) / 100)
+        : product.price;
+      
+      calculatedTotal += unitPrice * item.quantity;
+
+      finalItems.push({
+        id: product._id,
+        name: product.name,
+        quantity: item.quantity,
+        price: unitPrice,
+        image: product.image
+      });
     }
 
+    // Add shipping cost if needed
+    const shipping = calculatedTotal > 299000 ? 0 : 30000;
+    const finalTotal = calculatedTotal + shipping;
+
+    const orderId = `DH${Date.now().toString().slice(-6)}`;
     const order = new Order({
       orderId,
       userId,
       ...orderData,
-      items,
+      items: finalItems,
+      total: finalTotal,
       status: 'Chờ xác nhận',
       date: new Date()
     });
-    await order.save();
+
+    await order.save({ session });
+    await session.commitTransaction();
+    
     res.status(201).json(order);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    await session.abortTransaction();
+    res.status(400).json({ error: error.message });
+  } finally {
+    session.endSession();
   }
 };
 

@@ -33,6 +33,7 @@ const ProductCard = ({ product }) => {
       addToast(isWished ? 'Đã gỡ khỏi yêu thích' : 'Đã thêm vào yêu thích', 'info')
     } else {
       addToast('Vui lòng đăng nhập để lưu yêu thích', 'error')
+      navigate('/login')
     }
   }
 

@@ -18,33 +18,7 @@ const img = (id) =>
 
 const mockProducts = [
   {
-    name: 'Áo Thun Basic Cotton 100%',
-    price: 150000, category: 'Thời trang nam',
-    image: img('1521572163474-6864f9cf17ab'),
-    images: [img('1521572163474-6864f9cf17ab'), img('1581655353564-df123a1eb820')],
-    rating: 4.5, sold: 120, stock: 50,
-    desc: 'Chất liệu thoáng mát, thấm hút mồ hôi tốt. Phù hợp mặc hàng ngày.',
-    reviews: [], isFlashSale: true, flashSaleDiscount: 50, createdAt: '2023-01-01',
-  },
-  {
-    name: 'Áo Sơ Mi Oxford Nam',
-    price: 280000, category: 'Thời trang nam',
-    image: img('1594938298603-c8148c4dae35'),
-    images: [img('1594938298603-c8148c4dae35')],
-    rating: 4.7, sold: 87, stock: 30,
-    desc: 'Vải Oxford cao cấp, phù hợp công sở lẫn dạo phố.',
-    reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-01-02',
-  },
-  {
-    name: 'Quần Jeans Skinny Xanh',
-    price: 320000, category: 'Thời trang nam',
-    image: img('1542272604-787c3835535d'),
-    images: [img('1542272604-787c3835535d')],
-    rating: 4.6, sold: 156, stock: 40,
-    desc: 'Vải denim bền, form ôm vừa vặn.',
-    reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-01-03',
-  },
-  {
+    _id: '69c9eb9760f11a220a75975b',
     name: 'Áo Khoác Bomber',
     price: 650000, category: 'Thời trang nam',
     image: img('1591047139829-d91aecb6caea'),
@@ -54,6 +28,37 @@ const mockProducts = [
     reviews: [], isFlashSale: true, flashSaleDiscount: 35, createdAt: '2023-01-04',
   },
   {
+    _id: '69c9eb9760f11a220a759751',
+    name: 'Áo Thun Basic Cotton 100%',
+    price: 150000, category: 'Thời trang nam',
+    image: img('1521572163474-6864f9cf17ab'),
+    images: [img('1521572163474-6864f9cf17ab'), img('1581655353564-df123a1eb820')],
+    rating: 4.5, sold: 120, stock: 50,
+    desc: 'Chất liệu thoáng mát, thấm hút mồ hôi tốt. Phù hợp mặc hàng ngày.',
+    reviews: [], isFlashSale: true, flashSaleDiscount: 50, createdAt: '2023-01-01',
+  },
+  {
+    _id: '69c9eb9760f11a220a759752',
+    name: 'Áo Sơ Mi Oxford Nam',
+    price: 280000, category: 'Thời trang nam',
+    image: img('1594938298603-c8148c4dae35'),
+    images: [img('1594938298603-c8148c4dae35')],
+    rating: 4.7, sold: 87, stock: 30,
+    desc: 'Vải Oxford cao cấp, phù hợp công sở lẫn dạo phố.',
+    reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-01-02',
+  },
+  {
+    _id: '69c9eb9760f11a220a759753',
+    name: 'Quần Jeans Skinny Xanh',
+    price: 320000, category: 'Thời trang nam',
+    image: img('1542272604-787c3835535d'),
+    images: [img('1542272604-787c3835535d')],
+    rating: 4.6, sold: 156, stock: 40,
+    desc: 'Vải denim bền, form ôm vừa vặn.',
+    reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-01-03',
+  },
+  {
+    _id: '69c9eb9760f11a220a759754',
     name: 'Quần Chinos Beige',
     price: 380000, category: 'Thời trang nam',
     image: img('1667844485987-80c84a3c3210'),
@@ -64,6 +69,7 @@ const mockProducts = [
   },
 
   {
+    _id: '69c9eb9760f11a220a759755',
     name: 'Váy Hoa Nhí Vintage',
     price: 350000, category: 'Thời trang nữ',
     image: img('1515372039744-b8f02a3ae446'),
@@ -73,6 +79,7 @@ const mockProducts = [
     reviews: [], isFlashSale: true, flashSaleDiscount: 40, createdAt: '2023-02-01',
   },
   {
+    _id: '69c9eb9760f11a220a759756',
     name: 'Áo Crop Top Đen',
     price: 180000, category: 'Thời trang nữ',
     image: img('1618354691373-d851c5c3a990'),
@@ -82,6 +89,7 @@ const mockProducts = [
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-02-02',
   },
   {
+    _id: '69c9eb9760f11a220a759757',
     name: 'Quần Jogger Nữ',
     price: 220000, category: 'Thời trang nữ',
     image: img('1571019614242-c5c5dee9f50b'),
@@ -91,6 +99,7 @@ const mockProducts = [
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-02-03',
   },
   {
+    _id: '69c9eb9760f11a220a759758',
     name: 'Áo Khoác Cardigan',
     price: 420000, category: 'Thời trang nữ',
     image: img('1434389677669-e08b4cac3105'),
@@ -101,6 +110,7 @@ const mockProducts = [
   },
 
   {
+    _id: '69c9eb9760f11a220a759759',
     name: 'Giày Sneaker Sport Pro',
     price: 850000, category: 'Giày dép',
     image: img('1542291026-7eec264c27ff'),
@@ -110,24 +120,27 @@ const mockProducts = [
     reviews: [], isFlashSale: true, flashSaleDiscount: 50, createdAt: '2023-03-01',
   },
   {
+    _id: '69c9eb9760f11a220a75975a',
     name: 'Giày Slip-on Vải',
     price: 280000, category: 'Giày dép',
-    image: img('1552821081-6490dbba4687'),
-    images: [img('1552821081-6490dbba4687')],
+    image: img('1649920566440-eb5678255340'),
+    images: [img('1649920566440-eb5678255340')],
     rating: 4.4, sold: 121, stock: 42,
     desc: 'Dễ mang, thoải mái cho ngày thường.',
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-03-02',
   },
   {
+    _id: '69c9eb9760f11a220a75975c',
     name: 'Dép Xỏ Ngón Cao Cấp',
     price: 120000, category: 'Giày dép',
-    image: img('1572099160505-a2d469dccb0f'),
-    images: [img('1572099160505-a2d469dccb0f')],
+    image: img('1659963970293-b12cfeb286c5'),
+    images: [img('1659963970293-b12cfeb286c5')],
     rating: 4.3, sold: 267, stock: 100,
     desc: 'Nhẹ, thoáng mát, lý tưởng cho mùa hè.',
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-03-03',
   },
   {
+    _id: '69c9eb9760f11a220a75975d',
     name: 'Giày Boot Cao Cổ',
     price: 720000, category: 'Giày dép',
     image: img('1735653104441-68983326a042'),
@@ -138,6 +151,7 @@ const mockProducts = [
   },
 
   {
+    _id: '69c9eb9760f11a220a75975e',
     name: 'Đồng Hồ Classic Leather',
     price: 1200000, category: 'Phụ kiện',
     image: img('1524592094714-0f0654e20314'),
@@ -147,6 +161,7 @@ const mockProducts = [
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-04-01',
   },
   {
+    _id: '69c9eb9760f11a220a75975f',
     name: 'Ba Lô Laptop Chống Nước',
     price: 450000, category: 'Phụ kiện',
     image: img('1553062407-98eeb64c6a62'),
@@ -156,6 +171,7 @@ const mockProducts = [
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-04-02',
   },
   {
+    _id: '69c9eb9760f11a220a759760',
     name: 'Túi Xách Da Công Sở',
     price: 950000, category: 'Phụ kiện',
     image: img('1584917865442-de89df76afd3'),
@@ -165,6 +181,7 @@ const mockProducts = [
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-04-03',
   },
   {
+    _id: '69c9eb9760f11a220a759761',
     name: 'Dây Chuyền Mạ Vàng',
     price: 320000, category: 'Phụ kiện',
     image: img('1599643478518-a784e5dc4c8f'),
@@ -174,6 +191,7 @@ const mockProducts = [
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-04-04',
   },
   {
+    _id: '69c9eb9760f11a220a759762',
     name: 'Nón Lưỡi Trai',
     price: 140000, category: 'Phụ kiện',
     image: img('1644028297513-06dbfbde5b2a'),
@@ -184,6 +202,7 @@ const mockProducts = [
   },
 
   {
+    _id: '69c9eb9760f11a220a759763',
     name: 'Tai Nghe Bluetooth Bass',
     price: 590000, category: 'Công nghệ',
     image: img('1505740420928-5e560c06d30e'),
@@ -193,15 +212,17 @@ const mockProducts = [
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-05-01',
   },
   {
+    _id: '69c9eb9760f11a220a759764',
     name: 'Sạc Nhanh 65W',
     price: 180000, category: 'Công nghệ',
     image: img('1558618666-fcd25c85cd64'),
     images: [img('1558618666-fcd25c85cd64')],
     rating: 4.6, sold: 245, stock: 120,
-    desc: 'Tương thích nhiều thiết bị, sạc nhanh và an toàn.',
+    desc: 'Tương thích nhiều thiết thiết bị, sạc nhanh và an toàn.',
     reviews: [], isFlashSale: false, flashSaleDiscount: 0, createdAt: '2023-05-02',
   },
   {
+    _id: '69c9eb9760f11a220a759765',
     name: 'Pin Dự Phòng 20000mAh',
     price: 320000, category: 'Công nghệ',
     image: img('1585771724684-38269d6639fd'),
@@ -324,7 +345,7 @@ async function seedDatabase() {
       Product.insertMany(mockProducts),
       Permission.insertMany(mockPermissions),
       Role.insertMany(mockRoles),
-      User.insertMany(mockUsers),
+      User.create(mockUsers),
       Post.insertMany(mockPosts),
       Coupon.insertMany(mockCoupons),
     ]);

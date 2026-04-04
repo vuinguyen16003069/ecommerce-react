@@ -1,81 +1,48 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
-const updateUserCart = (state, updatedCart) => {
-  if (!state.activeUserId) return state.cartsByUser;
-  return {
-    ...state.cartsByUser,
-    [state.activeUserId]: updatedCart,
-  };
-};
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export const useCartStore = create(
   persist(
     (set) => ({
       cart: [],
-      cartsByUser: {},
-      activeUserId: null,
-      hydrateCartForUser: (userId) =>
-        set((state) => {
-          if (!userId) {
-            return { activeUserId: null, cart: [] };
-          }
-          return {
-            activeUserId: userId,
-            cart: state.cartsByUser[userId] || [],
-          };
-        }),
-      addToCart: (product, qty = 1) =>
-        set((state) => {
-          if (!state.activeUserId) return state;
-          const targetCart = state.cart;
-          const existing = targetCart.find(
-            (i) => (i._id || i.id) === (product._id || product.id),
-          );
-          const updated = existing
-            ? targetCart.map((i) =>
-                (i._id || i.id) === (product._id || product.id)
-                  ? { ...i, quantity: i.quantity + qty }
-                  : i,
-              )
-            : [...targetCart, { ...product, quantity: qty }];
-          return {
-            cart: updated,
-            cartsByUser: updateUserCart(state, updated),
-          };
-        }),
-      updateQuantity: (id, amount) =>
-        set((state) => {
-          if (!state.activeUserId) return state;
-          const updated = state.cart.map((item) =>
-            (item._id || item.id) === id
-              ? { ...item, quantity: Math.max(1, item.quantity + amount) }
-              : item,
-          );
-          return {
-            cart: updated,
-            cartsByUser: updateUserCart(state, updated),
-          };
-        }),
-      removeFromCart: (id) =>
-        set((state) => {
-          if (!state.activeUserId) return state;
-          const updated = state.cart.filter(
-            (item) => (item._id || item.id) !== id,
-          );
-          return {
-            cart: updated,
-            cartsByUser: updateUserCart(state, updated),
-          };
-        }),
-      clearCart: () =>
-        set((state) => ({
-          cart: [],
-          cartsByUser: updateUserCart(state, []),
-        })),
+      addToCart: (product, qty = 1) => set((state) => {
+        const ex = state.cart.find((i) => (i._id || i.id) === (product._id || product.id))
+        const currentQty = ex ? ex.quantity : 0
+        const newQty = currentQty + qty
+        
+        // Stock check
+        if (product.stock !== undefined && newQty > product.stock) {
+          return { cart: state.cart } // Or cap it at product.stock
+        }
+
+        const updated = ex 
+          ? state.cart.map((i) => (i._id || i.id) === (product._id || product.id) ? { ...i, quantity: newQty } : i) 
+          : [...state.cart, { ...product, quantity: qty }]
+        return { cart: updated }
+      }),
+      updateQuantity: (id, amount) => set((state) => {
+        const item = state.cart.find(i => (i._id || i.id) === id)
+        if (!item) return { cart: state.cart }
+        
+        const newQty = Math.max(1, item.quantity + amount)
+        if (item.stock !== undefined && newQty > item.stock) {
+          return { cart: state.cart }
+        }
+
+        return {
+          cart: state.cart.map(i => (i._id || i.id) === id ? { ...i, quantity: newQty } : i)
+        }
+      }),
+      removeFromCart: (id) => set((state) => ({
+        cart: state.cart.filter(i => (i._id || i.id) !== id)
+      })),
+      clearCart: () => set({ cart: [] }),
+      getCartCount: () => {
+        // We'll compute this in components, store shouldn't really have getter functions like this unless it's a computed signal.
+      }
     }),
     {
-      name: "jshop_cart_v3",
-    },
-  ),
-);
+      name: 'jshop_cart_v3',
+    }
+  )
+)

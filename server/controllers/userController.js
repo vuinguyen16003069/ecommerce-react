@@ -3,11 +3,20 @@ const mongoose = require('mongoose');
 const { sendResetOtpEmail, sendRegisterOtpEmail } = require('../services/emailService');
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email, password });
-  if (!user) return res.status(401).json({ error: 'Sai email hoặc mật khẩu!' });
-  if (user.status === 'locked') return res.status(403).json({ error: 'Tài khoản đã bị khóa!' });
-  res.json(user);
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    
+    if (!user) return res.status(401).json({ error: 'Email hoặc mật khẩu không chính xác!' });
+    if (user.status === 'locked') return res.status(403).json({ error: 'Tài khoản đã bị khóa!' });
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) return res.status(401).json({ error: 'Email hoặc mật khẩu không chính xác!' });
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.register = async (req, res) => {

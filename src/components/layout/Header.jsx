@@ -22,8 +22,8 @@ const Header = () => {
   const [searchParams] = useSearchParams()
   const currentView = location.pathname
 
-  const initialSearch = searchParams.get('q') || ''
-  const [searchValue, setSearchValue] = useState(initialSearch)
+  const searchValue = searchParams.get('q') || ''
+  const [inputValue, setInputValue] = useState(searchValue)
   const [products, setProducts] = useState([])
   const [suggestions, setSuggestions] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -34,15 +34,16 @@ const Header = () => {
     api.get('/products').then(setProducts)
     return () => window.removeEventListener('scroll', h)
   }, [])
-  
-  // Sync search value with URL
+
+  // Sync input khi URL thay đổi (ví dụ click nav Adidas)
   useEffect(() => {
-    setSearchValue(searchParams.get('q') || '')
+    const syncInput = () => setInputValue(searchParams.get('q') || '')
+    syncInput()
   }, [searchParams])
 
   const handleSearch = (e) => {
     const val = e.target.value
-    setSearchValue(val)
+    setInputValue(val)
     
     if (val.trim().length >= 2) {
       const filtered = products.filter(p => 
@@ -54,10 +55,6 @@ const Header = () => {
     } else {
       setSuggestions([])
       setShowSuggestions(false)
-    }
-
-    if (val.trim()) {
-      // Logic for actual navigation can stay or be debounced, usually it's better to wait for Enter or click suggestion
     }
   }
 
@@ -72,6 +69,7 @@ const Header = () => {
     { label: 'Trang chủ', view: '/' },
     { label: 'Cửa hàng', view: '/shop' },
     { label: 'Blog', view: '/blog' },
+    { label: 'Adidas', view: '/shop?q=adidas' },
   ]
 
   const handleLogout = () => {
@@ -104,11 +102,11 @@ const Header = () => {
 
           {/* Desktop Search */}
           <div className="flex-1 max-w-md hidden md:block">
-            <form onSubmit={(e) => { e.preventDefault(); submitSearch(searchValue) }} className="relative group">
+            <form onSubmit={(e) => { e.preventDefault(); submitSearch(inputValue) }} className="relative group">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input
                 type="text"
-                value={searchValue}
+                value={inputValue}
                 placeholder="Tìm kiếm sản phẩm..."
                 className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-full focus:ring-2 focus:ring-orange-200 focus:border-orange-400 focus:bg-white transition"
                 onChange={handleSearch}
@@ -124,7 +122,7 @@ const Header = () => {
                       <button
                         key={p._id || p.id}
                         type="button"
-                        onClick={() => { setSearchValue(p.name); submitSearch(p.name) }}
+                        onClick={() => { setInputValue(p.name); submitSearch(p.name) }}
                         className="w-full flex items-center gap-3 p-2.5 hover:bg-orange-50 rounded-xl transition text-left cursor-pointer group/item"
                       >
                         <div className="w-10 h-10 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center p-1 border border-gray-100/50">
@@ -138,10 +136,10 @@ const Header = () => {
                     ))}
                     <button
                       type="button"
-                      onClick={() => submitSearch(searchValue)}
+                      onClick={() => submitSearch(inputValue)}
                       className="w-full mt-1 p-2.5 text-center text-xs font-bold text-gray-500 hover:text-orange-600 transition border-t border-gray-50"
                     >
-                      Xem tất cả kết quả cho "{searchValue}"
+                      Xem tất cả kết quả cho "{inputValue}"
                     </button>
                   </div>
                 </div>
@@ -273,7 +271,7 @@ const Header = () => {
               <input
                 autoFocus
                 type="text"
-                value={searchValue}
+                value={inputValue}
                 placeholder="Tìm kiếm..."
                 className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-400 transition"
                 onChange={handleSearch}

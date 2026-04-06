@@ -74,7 +74,9 @@ const BlogDetailPage = () => {
           <div className="p-8 md:p-12">
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-4 mb-6 pb-6 border-b border-gray-100">
-              <span className="text-xs font-black text-orange-600 uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full">{post.category}</span>
+              {post.category && (
+                <span className="text-xs font-black text-orange-600 uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full">{post.category}</span>
+              )}
               <span className="flex items-center gap-2 text-sm text-gray-500">
                 <User size={14} /> {post.author || 'Admin'}
               </span>

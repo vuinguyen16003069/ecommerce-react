@@ -27,14 +27,6 @@ const ShopPage = () => {
     })
   }, [])
 
-  // When filter changes, show skeleton briefly
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLoading(true)
-    const t = setTimeout(() => setLoading(false), 500)
-    return () => clearTimeout(t)
-  }, [debouncedSearch, debouncedFilter, sortField])
-
   const categories = ['Tất cả', ...Array.from(new Set(products.map((p) => p.category)))]
 
   const filteredProducts = useMemo(() => {

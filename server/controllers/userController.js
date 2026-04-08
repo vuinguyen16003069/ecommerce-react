@@ -92,11 +92,38 @@ exports.update = async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ error: 'Người dùng không tìm thấy' });
 
-    const allowedFields = ['name', 'email', 'phone', 'address', 'bio', 'avatar', 'status', 'role'];
+    const currentUserId = req.headers['x-user-id'];
+    const currentUserRole = req.headers['x-user-role'];
+
+    // Kiểm tra quyền: user thường chỉ update chính mình, admin update ai cũng được
+    if (currentUserRole === 'user' && currentUserId !== user._id.toString()) {
+      return res.status(403).json({ error: 'Bạn chỉ có thể cập nhật thông tin của chính mình' });
+    }
+
+    // Protected fields: user thường không được update role, status
+    const allowedFields = currentUserRole === 'user' 
+      ? ['name', 'email', 'phone', 'address', 'bio', 'avatar']
+      : ['name', 'email', 'phone', 'address', 'bio', 'avatar', 'status', 'role'];
+
+    // ✅ NEW: Admin có thể thay đổi role/status nhưng không thể sửa super admin
+    if ((req.body.role !== undefined || req.body.status !== undefined) && currentUserRole === 'admin') {
+      const firstAdmin = await User.findOne({ role: 'admin' }).sort({ createdAt: 1 });
+      
+      // Không cho phép thay đổi role/status của super admin
+      if (firstAdmin && user._id.toString() === firstAdmin._id.toString()) {
+        return res.status(403).json({ error: 'Không thể chỉnh sửa Super Admin' });
+      }
+    }
+
     for (const field of allowedFields) {
       if (req.body[field] !== undefined) {
         user[field] = req.body[field];
       }
+    }
+
+    // Loại bỏ internal flags trước khi save
+    if (req.body._currentUserId) {
+      delete user._currentUserId;
     }
 
     if (req.body.email && req.body.email !== user.email) {

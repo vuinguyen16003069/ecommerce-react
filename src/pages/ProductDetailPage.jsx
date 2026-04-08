@@ -27,11 +27,12 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     let active = true
+    setProduct(null)
     setLoading(true)
     api.get(`/products/${id}`).then(data => {
       if (!active) return
-      setProduct(data)
       setLoading(false)
+      setProduct(data)
       // Fetch related
       if (data?.category) {
         api.get('/products').then(all => {

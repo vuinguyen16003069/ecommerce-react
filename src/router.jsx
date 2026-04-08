@@ -50,7 +50,7 @@ const PermissionsPage = lazy(() => import("./pages/admin/PermissionsPage"));
 // eslint-disable-next-line react-refresh/only-export-components
 const CouponsPage = lazy(() => import("./pages/admin/CouponsPage"));
 
-// eslint-disable-next-line no-unused-vars
+ 
 const wrap = (Component, { protectedRoute = false } = {}) => (
   <Suspense fallback={<Loader />}>
     {protectedRoute ? (

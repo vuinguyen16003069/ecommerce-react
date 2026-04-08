@@ -1,13 +1,25 @@
 // ─── API Client ── Base HTTP wrapper ─────────────────────────────────────────
+import { useAuthStore } from '../store/authStore'
+
 const BASE_URL = import.meta.env.PROD ? 'http://localhost:5000/api' : '/api'
 
 async function request(endpoint, options = {}) {
   const { method = 'GET', body } = options
   const isFormData = body instanceof FormData
   
+  // Lấy user từ store để gửi kèm headers
+  const currentUser = useAuthStore.getState().currentUser
+  
   const config = {
     method,
     headers: isFormData ? {} : { 'Content-Type': 'application/json' },
+  }
+
+  // Gửi user info trong headers để server verify
+  if (currentUser) {
+    config.headers['x-user-id'] = currentUser._id || currentUser.id
+    config.headers['x-user-role'] = currentUser.role
+    config.headers['x-user-status'] = currentUser.status || 'active'
   }
   
   if (body) {

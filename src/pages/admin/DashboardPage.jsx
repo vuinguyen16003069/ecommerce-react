@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Chart, registerables } from 'chart.js'
 import { TrendingUp, Package, Settings, Users } from '../../components/common/Icons'
-import { formatPrice, formatDate } from '../../utils/helpers'
+import { formatPrice } from '../../utils/helpers'
 import { api } from '../../services/api'
 
 Chart.register(...registerables)

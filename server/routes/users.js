@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/userController');
 const upload = require('../middleware/upload');
+const { authRequired, adminOnly, superAdminOnly } = require('../middleware/authMiddleware');
 
 // Routes cụ thể (phải ở trước routes generic)
 router.post('/login', ctrl.login);
@@ -12,11 +13,11 @@ router.post('/forgot-password', ctrl.forgotPassword);
 router.post('/reset-password', ctrl.resetPassword);
 
 // Routes generic
-router.get('/', ctrl.getAll);
-router.get('/:id', ctrl.getById);
-router.post('/:id/avatar', upload.single('avatar'), ctrl.uploadAvatar);
-router.put('/:id', ctrl.update);
-router.delete('/:id', ctrl.remove);
-router.post('/:userId/wishlist/:productId', ctrl.toggleWishlist);
+router.get('/', authRequired, adminOnly, ctrl.getAll);
+router.get('/:id', authRequired, ctrl.getById);
+router.post('/:id/avatar', authRequired, upload.single('avatar'), ctrl.uploadAvatar);
+router.put('/:id', authRequired, ctrl.update);
+router.delete('/:id', authRequired, superAdminOnly, ctrl.remove);
+router.post('/:userId/wishlist/:productId', authRequired, ctrl.toggleWishlist);
 
 module.exports = router;

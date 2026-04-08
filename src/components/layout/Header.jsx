@@ -20,7 +20,14 @@ const Header = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const currentView = location.pathname
+
+  const isNavActive = (view) => {
+    if (view.includes('?')) {
+      const [path, query] = view.split('?')
+      return location.pathname === path && location.search === `?${query}`
+    }
+    return location.pathname === view
+  }
 
   const searchValue = searchParams.get('q') || ''
   const [inputValue, setInputValue] = useState(searchValue)
@@ -94,7 +101,7 @@ const Header = () => {
               <Link
                 key={item.view}
                 to={item.view}
-                className={`nav-link text-sm font-semibold transition-colors ${currentView === item.view ? 'text-orange-600' : 'text-gray-600 hover:text-gray-900'}`}
+                className={`nav-link text-sm font-semibold transition-colors ${isNavActive(item.view) ? 'text-orange-600' : 'text-gray-600 hover:text-gray-900'}`}
               >
                 {item.label}
               </Link>
@@ -244,7 +251,7 @@ const Header = () => {
                       <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
                       <span className="inline-block mt-1 text-[10px] px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full font-bold uppercase">{currentUser.role}</span>
                     </div>
-                    {currentUser.role === 'admin' && (
+                    {currentUser.role !== 'user' && (
                       <Link to="/admin" className="w-full text-left px-4 py-2.5 hover:bg-orange-50 flex items-center gap-2.5 text-sm text-gray-700 hover:text-orange-700 transition font-medium">
                         <LayoutDashboard size={15} /> Quản trị hệ thống
                       </Link>
@@ -284,6 +291,7 @@ const Header = () => {
                 placeholder="Tìm kiếm..."
                 className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-400 transition"
                 onChange={handleSearch}
+                onKeyDown={(e) => { if (e.key === 'Enter') { submitSearch(inputValue); setMobileSearch(false) } }}
               />
             </div>
           </div>
@@ -297,7 +305,7 @@ const Header = () => {
                 key={item.view}
                 to={item.view}
                 onClick={() => setMobileMenu(false)}
-                className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition ${currentView === item.view ? 'bg-orange-50 text-orange-600' : 'text-gray-700 hover:bg-gray-50'}`}
+                className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition ${isNavActive(item.view) ? 'bg-orange-50 text-orange-600' : 'text-gray-700 hover:bg-gray-50'}`}
               >
                 {item.label}
               </Link>

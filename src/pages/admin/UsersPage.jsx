@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react'
-import { Lock, Unlock, Search } from '../../components/common/Icons'
+import { useState, useEffect, useMemo } from 'react'
+import { Lock, Unlock, Search, ShieldAlert } from '../../components/common/Icons'
 import { formatDate } from '../../utils/helpers'
 import { useToastStore } from '../../store/toastStore'
+import { useAuthStore } from '../../store/authStore'
 import { api } from '../../services/api'
 
 const UsersPage = () => {
   const addToast = useToastStore(state => state.addToast)
+  const { currentUser } = useAuthStore()
   const [users, setUsers] = useState([])
   const [roles, setRoles] = useState([])
   const [search, setSearch] = useState('')
@@ -21,6 +23,13 @@ const UsersPage = () => {
   )
 
   const toggleStatus = async (id, currentStatus) => {
+    // Không thể khóa super admin
+    const targetUser = users.find(u => (u._id || u.id) === id)
+    if (targetUser && firstAdmin && (targetUser._id === firstAdmin._id || targetUser.id === firstAdmin._id)) {
+      addToast('Không thể chỉnh sửa Super Admin', 'error')
+      return
+    }
+
     const newStatus = currentStatus === 'active' ? 'locked' : 'active'
     try {
       await api.put(`/users/${id}`, { status: newStatus })
@@ -32,6 +41,13 @@ const UsersPage = () => {
   }
 
   const changeRole = async (id, newRole) => {
+    // Admin có thể thay đổi role bất kỳ ai ngoài super admin
+    const targetUser = users.find(u => (u._id || u.id) === id)
+    if (targetUser && firstAdmin && (targetUser._id === firstAdmin._id || targetUser.id === firstAdmin._id)) {
+      addToast('Không thể chỉnh sửa Super Admin', 'error')
+      return
+    }
+
     try {
       await api.put(`/users/${id}`, { role: newRole })
       setUsers(prev => prev.map(u => (u._id || u.id) === id ? { ...u, role: newRole } : u))
@@ -42,6 +58,15 @@ const UsersPage = () => {
   }
 
   const availableRoles = ['user', 'admin', ...roles.map(r => r.name).filter(n => n !== 'user' && n !== 'admin')]
+
+  // Super Admin = admin được tạo sớm nhất, không ai được thay đổi quyền của họ
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
+  const firstAdmin = useMemo(() => {
+    const admins = users.filter(u => u.role === 'admin')
+    return admins.length === 0 ? null : admins.reduce((oldest, u) =>
+      new Date(u.createdAt) < new Date(oldest.createdAt) ? u : oldest
+    )
+  }, [users])
 
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
@@ -75,7 +100,8 @@ const UsersPage = () => {
         <tbody className="divide-y divide-gray-50">
           {displayed.map((u) => {
             const id = u._id || u.id
-            const isAdmin = u.role === 'admin'
+            // Đây có phải Super Admin (admin đầu tiên) không?
+            const isFirstAdminUser = firstAdmin != null && u._id === firstAdmin._id
             return (
               <tr key={id} className="hover:bg-gray-50 transition">
                 <td className="p-4">
@@ -91,9 +117,13 @@ const UsersPage = () => {
                 </td>
                 <td className="p-4 text-gray-500 text-sm">{u.email}</td>
                 <td className="p-4">
-                  {isAdmin ? (
-                    <span className="text-xs px-2 py-1 bg-red-50 text-red-700 rounded-lg font-semibold">admin</span>
-                  ) : (
+                  {isFirstAdminUser ? (
+                    // Super Admin: badge bất khả xâm phạm
+                    <span className="inline-flex items-center gap-1 text-xs px-2 py-1 bg-red-50 text-red-700 rounded-lg font-semibold">
+                      <ShieldAlert size={11} /> super admin
+                    </span>
+                  ) : currentUser?.role === 'admin' ? (
+                    // Admin (bao gồm super admin) có thể thay đổi role của bất kỳ ai ngoài super admin
                     <select
                       value={u.role}
                       onChange={e => changeRole(id, e.target.value)}
@@ -101,6 +131,9 @@ const UsersPage = () => {
                     >
                       {availableRoles.map(r => <option key={r} value={r}>{r}</option>)}
                     </select>
+                  ) : (
+                    // User thường: chỉ xem, không thay đổi
+                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded-lg font-semibold">{u.role}</span>
                   )}
                 </td>
                 <td className="p-4">
@@ -110,7 +143,7 @@ const UsersPage = () => {
                 </td>
                 <td className="p-4 text-gray-400 text-xs">{u.createdAt ? formatDate(u.createdAt) : '—'}</td>
                 <td className="p-4">
-                  {!isAdmin && (
+                  {currentUser?.role === 'admin' && !isFirstAdminUser && (
                     <button
                       onClick={() => toggleStatus(id, u.status)}
                       className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${u.status === 'active' ? 'text-red-600 hover:bg-red-50' : 'text-green-600 hover:bg-green-50'}`}

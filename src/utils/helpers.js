@@ -2,8 +2,12 @@
 export const formatPrice = (p) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(p)
 
-export const formatDate = (d) =>
-  new Date(d).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+export const formatDate = (d) => {
+  if (!d) return 'Mới đây'
+  const date = new Date(d)
+  if (isNaN(date.getTime())) return 'Mới đây'
+  return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+}
 
 export const resolveImageUrl = (imagePath) => {
   if (!imagePath) return ''

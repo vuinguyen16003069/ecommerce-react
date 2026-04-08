@@ -6,7 +6,9 @@ const AdminLayout = () => {
   const { currentUser } = useAuthStore()
   const navigate = useNavigate()
 
-  if (!currentUser || currentUser.role !== 'admin') {
+  // Chỉ user thường (role === 'user') mới không được vào admin
+  // admin, manager, staff và mọi custom role đều được phép
+  if (!currentUser || currentUser.role === 'user') {
     return <Navigate to="/" replace />
   }
 

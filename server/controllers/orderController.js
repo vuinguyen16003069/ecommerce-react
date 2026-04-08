@@ -102,6 +102,43 @@ exports.update = async (req, res) => {
   }
 };
 
+exports.cancel = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body || {};
+    const order = await Order.findById(id);
+
+    if (!order) return res.status(404).json({ error: 'Đơn hàng không tìm thấy' });
+
+    if (userId && String(order.userId) !== String(userId)) {
+      return res.status(403).json({ error: 'Bạn không có quyền hủy đơn hàng này' });
+    }
+
+    if (order.status === 'Đã hủy') {
+      return res.status(400).json({ error: 'Đơn hàng đã được hủy trước đó' });
+    }
+
+    if (order.status !== 'Chờ xác nhận') {
+      return res.status(400).json({ error: 'Chỉ có thể hủy đơn ở trạng thái chờ xác nhận' });
+    }
+
+    for (const item of order.items || []) {
+      await Product.findByIdAndUpdate(item.productId, {
+        $inc: {
+          stock: item.quantity,
+          sold: -item.quantity,
+        },
+      });
+    }
+
+    order.status = 'Đã hủy';
+    await order.save();
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.remove = async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);

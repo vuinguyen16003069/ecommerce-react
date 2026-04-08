@@ -5,6 +5,12 @@ export const formatPrice = (p) =>
 export const formatDate = (d) =>
   new Date(d).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
+export const resolveImageUrl = (imagePath) => {
+  if (!imagePath) return ''
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath
+  return imagePath
+}
+
 // ─── SAFE LOCALSTORAGE ──────────────────────────────────────────────────────
 export const safeStorage = {
   get: (key, fallback) => {

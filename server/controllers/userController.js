@@ -88,9 +88,46 @@ exports.update = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ error: 'ID người dùng không hợp lệ' });
     }
-    // Remove password field to prevent bypassing bcrypt pre-save hook
-    const { password: _password, ...safeBody } = req.body;
-    const user = await User.findByIdAndUpdate(req.params.id, safeBody, { new: true });
+
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ error: 'Người dùng không tìm thấy' });
+
+    const allowedFields = ['name', 'email', 'phone', 'address', 'bio', 'avatar', 'status', 'role'];
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        user[field] = req.body[field];
+      }
+    }
+
+    if (req.body.email && req.body.email !== user.email) {
+      const existing = await User.findOne({ email: req.body.email, _id: { $ne: user._id } });
+      if (existing) return res.status(400).json({ error: 'Email đã tồn tại!' });
+    }
+
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.uploadAvatar = async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: 'ID người dùng không hợp lệ' });
+    }
+
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ error: 'Người dùng không tìm thấy' });
+    if (!req.file) return res.status(400).json({ error: 'Vui lòng chọn file ảnh' });
+
+    user.avatar = `/uploads/avatars/${req.file.filename}`;
+    await user.save();
+
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });

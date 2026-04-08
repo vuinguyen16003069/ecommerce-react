@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { CheckCircle, AlertCircle, Info, X } from './Icons'
 
 export const Toast = memo(({ toasts, removeToast }) => (
-  <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
+  <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
     {toasts.map((t) => (
       <div
         key={t.id}

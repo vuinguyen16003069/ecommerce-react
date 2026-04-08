@@ -6,6 +6,7 @@ router.post('/', ctrl.create);
 router.get('/', ctrl.getAll);
 router.get('/user/:userId', ctrl.getByUser);
 router.get('/:id', ctrl.getById);
+router.put('/:id/cancel', ctrl.cancel);
 router.put('/:id', ctrl.update);
 router.delete('/:id', ctrl.remove);
 

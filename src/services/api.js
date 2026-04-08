@@ -3,14 +3,15 @@ const BASE_URL = import.meta.env.PROD ? 'http://localhost:5000/api' : '/api'
 
 async function request(endpoint, options = {}) {
   const { method = 'GET', body } = options
+  const isFormData = body instanceof FormData
   
   const config = {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers: isFormData ? {} : { 'Content-Type': 'application/json' },
   }
   
   if (body) {
-    config.body = JSON.stringify(body)
+    config.body = isFormData ? body : JSON.stringify(body)
   }
 
   const res = await fetch(`${BASE_URL}${endpoint}`, config)

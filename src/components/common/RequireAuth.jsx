@@ -5,12 +5,14 @@ import { useToastStore } from "../../store/toastStore";
 
 const RequireAuth = ({ children }) => {
   const currentUser = useAuthStore((state) => state.currentUser);
+  const justLoggedOut = useAuthStore((state) => state.justLoggedOut);
+  const clearJustLoggedOut = useAuthStore((state) => state.clearJustLoggedOut);
   const addToast = useToastStore((state) => state.addToast);
   const location = useLocation();
   const notifiedRef = useRef(false);
 
   useEffect(() => {
-    if (!currentUser && !notifiedRef.current) {
+    if (!currentUser && !justLoggedOut && !notifiedRef.current) {
       addToast("Vui lòng đăng nhập để tiếp tục", "error");
       notifiedRef.current = true;
     }
@@ -18,9 +20,18 @@ const RequireAuth = ({ children }) => {
     if (currentUser) {
       notifiedRef.current = false;
     }
-  }, [currentUser, addToast]);
+  }, [currentUser, justLoggedOut, addToast]);
+
+  useEffect(() => {
+    if (justLoggedOut) {
+      clearJustLoggedOut();
+    }
+  }, [justLoggedOut, clearJustLoggedOut]);
 
   if (!currentUser) {
+    if (justLoggedOut) {
+      return <Navigate to="/" replace />;
+    }
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 

@@ -4,7 +4,7 @@ import { useAuthStore } from '../../store/authStore'
 import { useCartStore } from '../../store/cartStore'
 import { useToastStore } from '../../store/toastStore'
 import { ShoppingCart, Search, User, LayoutDashboard, LogOut, Menu } from '../common/Icons'
-import { formatPrice } from '../../utils/helpers'
+import { formatPrice, resolveImageUrl } from '../../utils/helpers'
 import { api } from '../../services/api'
 
 const Header = () => {
@@ -224,9 +224,17 @@ const Header = () => {
             {currentUser ? (
               <div className="relative group">
                 <button className="flex items-center gap-2 p-1.5 rounded-full border border-transparent hover:border-gray-200 hover:bg-gray-50 transition cursor-pointer">
-                  <div className="w-7 h-7 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                    {currentUser.name[0].toUpperCase()}
-                  </div>
+                  {currentUser.avatar ? (
+                    <img
+                      src={resolveImageUrl(currentUser.avatar)}
+                      alt={currentUser.name}
+                      className="w-7 h-7 rounded-full object-cover border border-gray-200"
+                    />
+                  ) : (
+                    <div className="w-7 h-7 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      {currentUser.name[0].toUpperCase()}
+                    </div>
+                  )}
                   <span className="text-sm font-medium hidden lg:block max-w-[90px] truncate text-gray-700">{currentUser.name}</span>
                 </button>
                 <div className="absolute right-0 top-full pt-2 w-56 hidden group-hover:block">

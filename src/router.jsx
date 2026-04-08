@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Loader } from "./components/common/Loader";
 import RequireAuth from "./components/common/RequireAuth";
+import App from "./App";
 
 // Layouts
 import MainLayout from "./layouts/MainLayout";
@@ -64,46 +65,51 @@ const wrap = (Component, { protectedRoute = false } = {}) => (
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <MainLayout />,
+    element: <App />,
     children: [
-      { index: true, element: wrap(HomePage) },
-      { path: "shop", element: wrap(ShopPage) },
-      { path: "product/:id", element: wrap(ProductDetailPage) },
-      { path: "cart", element: wrap(CartPage) },
       {
-        path: "checkout",
-        element: wrap(CheckoutPage, { protectedRoute: true }),
+        path: "/",
+        element: <MainLayout />,
+        children: [
+          { index: true, element: wrap(HomePage) },
+          { path: "shop", element: wrap(ShopPage) },
+          { path: "product/:id", element: wrap(ProductDetailPage) },
+          { path: "cart", element: wrap(CartPage) },
+          {
+            path: "checkout",
+            element: wrap(CheckoutPage, { protectedRoute: true }),
+          },
+          { path: "profile", element: wrap(ProfilePage, { protectedRoute: true }) },
+          { path: "blog", element: wrap(BlogPage) },
+          { path: "blog/:id", element: wrap(BlogDetailPage) },
+        ],
       },
-      { path: "profile", element: wrap(ProfilePage, { protectedRoute: true }) },
-      { path: "blog", element: wrap(BlogPage) },
-      { path: "blog/:id", element: wrap(BlogDetailPage) },
-    ],
-  },
-  {
-    path: "/login",
-    element: wrap(LoginPage),
-  },
-  {
-    path: "/register",
-    element: wrap(RegisterPage),
-  },
-  {
-    path: "/forgot-password",
-    element: wrap(ForgotPasswordPage),
-  },
-  {
-    path: "/admin",
-    element: <AdminLayout />,
-    children: [
-      { index: true, element: wrap(DashboardPage) },
-      { path: "products", element: wrap(ProductsPage) },
-      { path: "orders", element: wrap(OrdersPage) },
-      { path: "users", element: wrap(UsersPage) },
-      { path: "posts", element: wrap(PostsPage) },
-      { path: "coupons", element: wrap(CouponsPage) },
-      { path: "roles", element: wrap(RolesPage) },
-      { path: "permissions", element: wrap(PermissionsPage) },
+      {
+        path: "/login",
+        element: wrap(LoginPage),
+      },
+      {
+        path: "/register",
+        element: wrap(RegisterPage),
+      },
+      {
+        path: "/forgot-password",
+        element: wrap(ForgotPasswordPage),
+      },
+      {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: wrap(DashboardPage) },
+          { path: "products", element: wrap(ProductsPage) },
+          { path: "orders", element: wrap(OrdersPage) },
+          { path: "users", element: wrap(UsersPage) },
+          { path: "posts", element: wrap(PostsPage) },
+          { path: "coupons", element: wrap(CouponsPage) },
+          { path: "roles", element: wrap(RolesPage) },
+          { path: "permissions", element: wrap(PermissionsPage) },
+        ],
+      },
     ],
   },
 ]);

@@ -231,7 +231,7 @@ const ProductDetailPage = () => {
                     <h4 className="font-bold text-gray-900 mb-5">Viết đánh giá của bạn</h4>
                     <div className="mb-4"><StarRating rating={reviewForm.rating} setRating={(r) => setReviewForm((f) => ({ ...f, rating: r }))} interactive /></div>
                     <textarea rows="3" required value={reviewForm.text} onChange={(e) => setReviewForm((f) => ({ ...f, text: e.target.value }))} className="w-full bg-gray-50 border-gray-200 rounded-xl p-4 text-sm focus:ring-2 focus:ring-orange-200 focus:bg-white resize-none transition-all placeholder:text-gray-400 font-medium" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."></textarea>
-                    <button type="submit" className="mt-4 bg-gray-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-orange-600 transition tracking-wide text-sm ms-auto border-0">Gửi đánh giá</button>
+                    <button type="submit" className="mt-4 bg-gray-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-orange-600 transition tracking-wide text-sm ms-auto border-0 cursor-pointer">Gửi đánh giá</button>
                   </form>
                   <div className="space-y-6">
                     {(product.reviews || []).length > 0 ? product.reviews.map((r, i) => (

@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { useCartStore } from './cartStore'
 
 export const useAuthStore = create(
   persist(
@@ -9,7 +8,6 @@ export const useAuthStore = create(
       setCurrentUser: (user) => set({ currentUser: user }),
       logout: () => {
         set({ currentUser: null })
-        useCartStore.getState().clearCart()
       },
       toggleWishlist: (productId) => set((state) => {
         if (!state.currentUser) return state

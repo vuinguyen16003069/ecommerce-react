@@ -17,13 +17,12 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (currentUser) {
-      api.get('/orders').then(orders => {
-        setMyOrders(orders.filter(o => o.userId === (currentUser._id || currentUser.id)))
-      })
+      const uid = currentUser._id || currentUser.id
+      api.get(`/orders/user/${uid}`).then(setMyOrders).catch(() => {})
       if (currentUser.wishlist?.length > 0) {
         api.get('/products').then(products => {
           setWishlistProducts(products.filter(p => currentUser.wishlist?.includes(p._id || p.id)))
-        })
+        }).catch(() => {})
       }
     }
   }, [currentUser])
@@ -33,6 +32,7 @@ const ProfilePage = () => {
   const handleLogout = () => {
     logout()
     addToast('Đã đăng xuất tài khoản', 'success')
+    // Navigate handled by the redirect below after currentUser becomes null
   }
 
   const tabs = [
@@ -111,7 +111,7 @@ const ProfilePage = () => {
                             <div key={idx} className="flex gap-4 items-center bg-gray-50 p-4 rounded-2xl border border-gray-100">
                               <img src={i.image} alt={i.name} className="w-16 h-16 bg-white object-contain rounded-xl p-1 shadow-sm" />
                               <div className="flex-1 min-w-0">
-                                <Link to={`/product/${i._id || i.id}`} className="font-bold text-gray-900 text-sm hover:text-orange-600 transition line-clamp-1">{i.name}</Link>
+                                <Link to={`/product/${i.productId}`} className="font-bold text-gray-900 text-sm hover:text-orange-600 transition line-clamp-1">{i.name}</Link>
                                 <p className="text-xs font-semibold text-orange-600 uppercase tracking-widest mt-1 mb-2">SL: {i.quantity}</p>
                               </div>
                               <div className="font-black text-gray-800">{formatPrice(i.price)}</div>

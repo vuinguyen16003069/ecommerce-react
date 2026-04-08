@@ -31,15 +31,19 @@ const RolesPage = () => {
 
   const submit = async (e) => {
     e.preventDefault()
-    if (editing) {
-      await api.put(`/roles/${editing._id}`, form)
-      addToast('Cập nhật vai trò thành công!', 'success')
-    } else {
-      await api.post('/roles', form)
-      addToast('Tạo vai trò thành công!', 'success')
+    try {
+      if (editing) {
+        await api.put(`/roles/${editing._id}`, form)
+        addToast('Cập nhật vai trò thành công!', 'success')
+      } else {
+        await api.post('/roles', form)
+        addToast('Tạo vai trò thành công!', 'success')
+      }
+      setModal(false)
+      api.get('/roles').then(setRoles).catch(() => {})
+    } catch (err) {
+      addToast(err.message || 'Có lỗi xảy ra', 'error')
     }
-    setModal(false)
-    api.get('/roles').then(setRoles)
   }
 
   const handleDelete = async (id, name) => {

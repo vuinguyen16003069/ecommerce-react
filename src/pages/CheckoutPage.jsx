@@ -57,7 +57,7 @@ const CheckoutPage = () => {
         address: form.address,
         note: form.note,
         items: cart.map(item => ({
-          id: item._id || item.id,
+          productId: item._id || item.id,
           name: item.name,
           quantity: item.quantity,
           price: getItemPrice(item),

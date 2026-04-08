@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
   status: { type: String, default: "Chờ xác nhận" },
   items: [
     {
-      id: mongoose.Schema.Types.ObjectId,
+      productId: mongoose.Schema.Types.ObjectId,
       name: String,
       quantity: Number,
       price: Number,

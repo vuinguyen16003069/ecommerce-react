@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
     const finalItems = [];
 
     for (const item of items) {
-      const productId = item._id || item.id;
+      const productId = item.productId || item._id || item.id;
 
       const product = await Product.findOneAndUpdate(
         { _id: productId, stock: { $gte: item.quantity } },
@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
         : product.price;
 
       calculatedTotal += unitPrice * item.quantity;
-      finalItems.push({ id: product._id, name: product.name, quantity: item.quantity, price: unitPrice, image: product.image });
+      finalItems.push({ productId: product._id, name: product.name, quantity: item.quantity, price: unitPrice, image: product.image });
     }
 
     const shipping = calculatedTotal > 299000 ? 0 : 30000;
@@ -54,13 +54,21 @@ exports.create = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-  const orders = await Order.find().sort({ date: -1 });
-  res.json(orders);
+  try {
+    const orders = await Order.find().sort({ date: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.getByUser = async (req, res) => {
-  const orders = await Order.find({ userId: req.params.userId }).sort({ date: -1 });
-  res.json(orders);
+  try {
+    const orders = await Order.find({ userId: req.params.userId }).sort({ date: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.getById = async (req, res) => {

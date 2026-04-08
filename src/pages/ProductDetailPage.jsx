@@ -37,8 +37,11 @@ const ProductDetailPage = () => {
         api.get('/products').then(all => {
           if (!active) return
           setRelated(all.filter(p => p.category === data.category && (p._id || p.id) !== (data._id || data.id)).slice(0, 4))
-        })
+        }).catch(() => {})
       }
+    }).catch(() => {
+      if (!active) return
+      setLoading(false)
     })
     return () => { active = false }
   }, [id])
@@ -90,7 +93,8 @@ const ProductDetailPage = () => {
   const submitReview = async (e) => {
     e.preventDefault()
     if (!currentUser) return addToast('Vui lòng đăng nhập để đánh giá!', 'error')
-    if (reviewForm.text.trim()) {
+    if (!reviewForm.text.trim()) return
+    try {
       await api.post(`/products/${product._id || product.id}/reviews`, { 
         user: currentUser.name, rating: reviewForm.rating, text: reviewForm.text 
       })
@@ -99,6 +103,8 @@ const ProductDetailPage = () => {
       // Refresh product data
       const updated = await api.get(`/products/${id}`)
       setProduct(updated)
+    } catch (err) {
+      addToast(err.message || 'Gửi đánh giá thất bại', 'error')
     }
   }
 
@@ -228,7 +234,7 @@ const ProductDetailPage = () => {
                   </form>
                   <div className="space-y-6">
                     {(product.reviews || []).length > 0 ? product.reviews.map((r, i) => (
-                      <div key={i} className="pb-6 border-b border-gray-100 last:border-0 group hover:bg-gray-50 p-4 -mx-4 rounded-xl transition">
+                      <div key={r._id || i} className="pb-6 border-b border-gray-100 last:border-0 group hover:bg-gray-50 p-4 -mx-4 rounded-xl transition">
                         <div className="flex items-center gap-4 mb-3">
                           <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">{r.user[0]}</div>
                           <div><div className="font-bold text-gray-900">{r.user}</div><div className="flex text-yellow-400 mt-0.5">{Array(5).fill(0).map((_, idx) => <Star key={idx} size={10} fill={idx < r.rating ? 'currentColor' : 'none'} className={idx >= r.rating ? 'text-gray-300' : ''} />)}</div></div>

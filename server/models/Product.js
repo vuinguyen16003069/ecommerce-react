@@ -12,10 +12,6 @@ const productSchema = new mongoose.Schema({
   desc: String,
   reviews: [
     {
-      id: {
-        type: mongoose.Schema.Types.ObjectId,
-        default: () => new mongoose.Types.ObjectId(),
-      },
       user: String,
       rating: Number,
       text: String,

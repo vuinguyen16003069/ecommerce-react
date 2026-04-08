@@ -75,6 +75,7 @@ const Header = () => {
   const handleLogout = () => {
     logout()
     addToast('Đã đăng xuất', 'info')
+    navigate('/')
   }
 
   return (

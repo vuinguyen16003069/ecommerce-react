@@ -22,15 +22,23 @@ const UsersPage = () => {
 
   const toggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === 'active' ? 'locked' : 'active'
-    await api.put(`/users/${id}`, { status: newStatus })
-    setUsers(prev => prev.map(u => (u._id || u.id) === id ? { ...u, status: newStatus } : u))
-    addToast(newStatus === 'locked' ? 'Đã khóa tài khoản' : 'Đã mở khóa tài khoản', 'info')
+    try {
+      await api.put(`/users/${id}`, { status: newStatus })
+      setUsers(prev => prev.map(u => (u._id || u.id) === id ? { ...u, status: newStatus } : u))
+      addToast(newStatus === 'locked' ? 'Đã khóa tài khoản' : 'Đã mở khóa tài khoản', 'info')
+    } catch (err) {
+      addToast(err.message || 'Không thể cập nhật trạng thái', 'error')
+    }
   }
 
   const changeRole = async (id, newRole) => {
-    await api.put(`/users/${id}`, { role: newRole })
-    setUsers(prev => prev.map(u => (u._id || u.id) === id ? { ...u, role: newRole } : u))
-    addToast('Đã cập nhật vai trò', 'success')
+    try {
+      await api.put(`/users/${id}`, { role: newRole })
+      setUsers(prev => prev.map(u => (u._id || u.id) === id ? { ...u, role: newRole } : u))
+      addToast('Đã cập nhật vai trò', 'success')
+    } catch (err) {
+      addToast(err.message || 'Không thể cập nhật vai trò', 'error')
+    }
   }
 
   const availableRoles = ['user', 'admin', ...roles.map(r => r.name).filter(n => n !== 'user' && n !== 'admin')]

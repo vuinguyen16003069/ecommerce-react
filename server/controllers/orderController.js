@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const Coupon = require('../models/Coupon');
 const mongoose = require('mongoose');
 
 exports.create = async (req, res) => {
@@ -35,13 +36,23 @@ exports.create = async (req, res) => {
     }
 
     const shipping = calculatedTotal > 299000 ? 0 : 30000;
+
+    // Apply coupon discount if provided
+    let discountAmount = 0;
+    if (req.body.couponCode) {
+      const coupon = await Coupon.findOne({ code: req.body.couponCode.toUpperCase() });
+      if (coupon) {
+        discountAmount = Math.round(calculatedTotal * (coupon.discount / 100));
+      }
+    }
+
     const orderId = `DH${Date.now().toString().slice(-6)}`;
     const order = new Order({
       orderId,
       userId,
       ...orderData,
       items: finalItems,
-      total: calculatedTotal + shipping,
+      total: Math.max(0, calculatedTotal + shipping - discountAmount),
       status: 'Chờ xác nhận',
       date: new Date()
     });
@@ -72,17 +83,30 @@ exports.getByUser = async (req, res) => {
 };
 
 exports.getById = async (req, res) => {
-  const order = await Order.findById(req.params.id);
-  if (!order) return res.status(404).json({ error: 'Đơn hàng không tìm thấy' });
-  res.json(order);
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ error: 'Đơn hàng không tìm thấy' });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.update = async (req, res) => {
-  const order = await Order.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
-  res.json(order);
+  try {
+    const order = await Order.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
+    if (!order) return res.status(404).json({ error: 'Đơn hàng không tìm thấy' });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.remove = async (req, res) => {
-  await Order.findByIdAndDelete(req.params.id);
-  res.json({ message: 'Đơn hàng đã xóa' });
+  try {
+    await Order.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Đơn hàng đã xóa' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };

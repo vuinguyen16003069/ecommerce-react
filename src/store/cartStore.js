@@ -5,6 +5,8 @@ export const useCartStore = create(
   persist(
     (set) => ({
       cart: [],
+      couponDiscount: 0,
+      couponCode: '',
       addToCart: (product, qty = 1) => set((state) => {
         const ex = state.cart.find((i) => (i._id || i.id) === (product._id || product.id))
         const currentQty = ex ? ex.quantity : 0
@@ -36,7 +38,9 @@ export const useCartStore = create(
       removeFromCart: (id) => set((state) => ({
         cart: state.cart.filter(i => (i._id || i.id) !== id)
       })),
-      clearCart: () => set({ cart: [] }),
+      clearCart: () => set({ cart: [], couponDiscount: 0, couponCode: '' }),
+      applyCoupon: (code, amount) => set({ couponCode: code, couponDiscount: amount }),
+      clearCoupon: () => set({ couponCode: '', couponDiscount: 0 }),
       getCartCount: () => {
         // We'll compute this in components, store shouldn't really have getter functions like this unless it's a computed signal.
       }

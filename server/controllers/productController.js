@@ -121,7 +121,7 @@ exports.removeReview = async (req, res) => {
       const totalRating = product.reviews.reduce((sum, r) => sum + (r.rating || 0), 0);
       product.rating = Math.round((totalRating / product.reviews.length) * 10) / 10;
     } else {
-      product.rating = 5;
+      product.rating = 0;
     }
 
     await product.save();
@@ -131,35 +131,4 @@ exports.removeReview = async (req, res) => {
   }
 };
 
-exports.updateReview = async (req, res) => {
-  try {
-    const { rating, text } = req.body;
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ error: 'Sản phẩm không tìm thấy' });
 
-    const reviewIndex = product.reviews.findIndex(r => (r.id?.toString() === req.params.reviewId) || (r._id?.toString() === req.params.reviewId));
-    if (reviewIndex === -1) return res.status(404).json({ error: 'Đánh giá không tồn tại' });
-
-    if (rating) product.reviews[reviewIndex].rating = rating;
-    if (text) product.reviews[reviewIndex].text = text;
-    product.reviews[reviewIndex].date = new Date();
-
-    await product.save();
-    res.json(product);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-};
-
-exports.removeReview = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ error: 'Sản phẩm không tìm thấy' });
-
-    product.reviews = product.reviews.filter(r => (r.id?.toString() !== req.params.reviewId) && (r._id?.toString() !== req.params.reviewId));
-    await product.save();
-    res.json({ message: 'Đã xóa đánh giá' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { ChevronDown, ChevronRight } from '../../components/common/Icons'
 import { formatPrice, formatDate } from '../../utils/helpers'
 import { api } from '../../services/api'
@@ -20,8 +20,12 @@ const OrdersPage = () => {
   useEffect(() => { api.get('/orders').then(setOrders) }, [])
 
   const updateStatus = async (id, status) => {
-    await api.put(`/orders/${id}`, { status })
-    setOrders(prev => prev.map(o => (o._id || o.id) === id ? { ...o, status } : o))
+    try {
+      await api.put(`/orders/${id}`, { status })
+      setOrders(prev => prev.map(o => (o._id || o.id) === id ? { ...o, status } : o))
+    } catch (err) {
+      console.error('Không thể cập nhật trạng thái đơn:', err)
+    }
   }
 
   const filtered = filter === 'Tất cả' ? orders : orders.filter(o => o.status === filter)
@@ -70,7 +74,7 @@ const OrdersPage = () => {
             const id = o._id || o.id
             const isExpanded = expandedId === id
             return (
-              <>
+              <Fragment key={id}>
                 <tr
                   key={id}
                   className="border-t border-gray-50 hover:bg-gray-50 transition cursor-pointer"
@@ -120,7 +124,7 @@ const OrdersPage = () => {
                     </td>
                   </tr>
                 )}
-              </>
+              </Fragment>
             )
           })}
         </tbody>

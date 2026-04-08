@@ -17,17 +17,25 @@ const PermissionsPage = () => {
 
   const submit = async (e) => {
     e.preventDefault()
-    await api.post('/permissions', form)
-    addToast('Thêm quyền hạn thành công!', 'success')
-    setModal(false)
-    fetchPerms()
+    try {
+      await api.post('/permissions', form)
+      addToast('Thêm quyền hạn thành công!', 'success')
+      setModal(false)
+      fetchPerms()
+    } catch (err) {
+      addToast(err.message || 'Đã xảy ra lỗi', 'error')
+    }
   }
 
   const handleDelete = async (id, name) => {
     if (confirm(`Bạn có chắc muốn xóa quyền "${name}"?`)) {
-      await api.delete(`/permissions/${id}`)
-      addToast('Đã xóa quyền hệ thống', 'success')
-      fetchPerms()
+      try {
+        await api.delete(`/permissions/${id}`)
+        addToast('Đã xóa quyền hệ thống', 'success')
+        fetchPerms()
+      } catch (err) {
+        addToast(err.message || 'Không thể xóa quyền', 'error')
+      }
     }
   }
 

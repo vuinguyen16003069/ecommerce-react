@@ -59,22 +59,30 @@ const ProductsPage = () => {
       flashSaleStartTime: form.isFlashSale && form.flashSaleStartTime ? new Date(form.flashSaleStartTime).toISOString() : null,
       flashSaleEndTime: form.isFlashSale && form.flashSaleEndTime ? new Date(form.flashSaleEndTime).toISOString() : null,
     }
-    if (editing) {
-      await api.put(`/products/${editing._id || editing.id}`, data)
-      addToast('Cập nhật thành công!', 'success')
-    } else {
-      await api.post('/products', { ...data, sold: 0, rating: 0, reviews: [] })
-      addToast('Thêm sản phẩm thành công!', 'success')
+    try {
+      if (editing) {
+        await api.put(`/products/${editing._id || editing.id}`, data)
+        addToast('Cập nhật thành công!', 'success')
+      } else {
+        await api.post('/products', { ...data, sold: 0, rating: 0, reviews: [] })
+        addToast('Thêm sản phẩm thành công!', 'success')
+      }
+      setModal(false)
+      fetchProducts()
+    } catch (err) {
+      addToast(err.message || 'Đã xảy ra lỗi', 'error')
     }
-    setModal(false)
-    fetchProducts()
   }
 
   const handleDelete = async (id, name) => {
     if (confirm(`Xóa "${name}"?`)) {
-      await api.delete(`/products/${id}`)
-      addToast('Đã xóa sản phẩm!', 'success')
-      fetchProducts()
+      try {
+        await api.delete(`/products/${id}`)
+        addToast('Đã xóa sản phẩm!', 'success')
+        fetchProducts()
+      } catch (err) {
+        addToast(err.message || 'Không thể xóa sản phẩm', 'error')
+      }
     }
   }
 

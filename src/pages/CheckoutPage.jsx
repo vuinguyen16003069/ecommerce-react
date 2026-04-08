@@ -8,7 +8,7 @@ import { useToastStore } from '../store/toastStore'
 import { api } from '../services/api'
 
 const CheckoutPage = () => {
-  const { cart, clearCart } = useCartStore()
+  const { cart, clearCart, couponDiscount, couponCode } = useCartStore()
   const { currentUser } = useAuthStore()
   const addToast = useToastStore(state => state.addToast)
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ const CheckoutPage = () => {
 
   const cartTotal = cart.reduce((sum, item) => sum + getItemPrice(item) * item.quantity, 0)
   const shipping = cartTotal > 299000 ? 0 : 30000
-  const finalTotal = cartTotal + shipping
+  const finalTotal = Math.max(0, cartTotal + shipping - couponDiscount)
 
   useEffect(() => {
     if (currentUser) {
@@ -63,6 +63,7 @@ const CheckoutPage = () => {
           price: getItemPrice(item),
           image: item.image
         })),
+        couponCode: couponCode || '',
         total: finalTotal
       }
 

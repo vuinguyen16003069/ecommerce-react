@@ -20,22 +20,30 @@ const CouponsPage = () => {
   const submit = async (e) => {
     e.preventDefault()
     const data = { ...form, discount: +form.discount }
-    if (editing) {
-      await api.put(`/coupons/${editing._id}`, data)
-      addToast('Cập nhật mã giảm giá thành công!', 'success')
-    } else {
-      await api.post('/coupons', data)
-      addToast('Thêm mã giảm giá thành công!', 'success')
+    try {
+      if (editing) {
+        await api.put(`/coupons/${editing._id}`, data)
+        addToast('Cập nhật mã giảm giá thành công!', 'success')
+      } else {
+        await api.post('/coupons', data)
+        addToast('Thêm mã giảm giá thành công!', 'success')
+      }
+      setModal(false)
+      fetchCoupons()
+    } catch (err) {
+      addToast(err.message || 'Đã xảy ra lỗi', 'error')
     }
-    setModal(false)
-    fetchCoupons()
   }
 
   const handleDelete = async (id, code) => {
     if (confirm(`Xóa mã "${code}"?`)) {
-      await api.delete(`/coupons/${id}`)
-      addToast('Đã xóa mã giảm giá!', 'success')
-      fetchCoupons()
+      try {
+        await api.delete(`/coupons/${id}`)
+        addToast('Đã xóa mã giảm giá!', 'success')
+        fetchCoupons()
+      } catch (err) {
+        addToast(err.message || 'Không thể xóa mã giảm giá', 'error')
+      }
     }
   }
 

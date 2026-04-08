@@ -9,6 +9,7 @@ exports.login = async (req, res) => {
     
     if (!user) return res.status(401).json({ error: 'Email hoặc mật khẩu không chính xác!' });
     if (user.status === 'locked') return res.status(403).json({ error: 'Tài khoản đã bị khóa!' });
+    if (user.status === 'pending_verification') return res.status(403).json({ error: 'Vui lòng xác nhận email trước khi đăng nhập!' });
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ error: 'Email hoặc mật khẩu không chính xác!' });
@@ -61,8 +62,12 @@ exports.register = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.getById = async (req, res) => {
@@ -83,7 +88,9 @@ exports.update = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ error: 'ID người dùng không hợp lệ' });
     }
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // Remove password field to prevent bypassing bcrypt pre-save hook
+    const { password: _password, ...safeBody } = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, safeBody, { new: true });
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });

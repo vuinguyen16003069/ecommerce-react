@@ -7,12 +7,11 @@ import { useToastStore } from '../store/toastStore'
 import { api } from '../services/api'
 
 const CartPage = () => {
-  const { cart, updateQuantity, removeFromCart, clearCart } = useCartStore()
+  const { cart, updateQuantity, removeFromCart, clearCart, couponDiscount, couponCode, applyCoupon, clearCoupon } = useCartStore()
   const addToast = useToastStore(state => state.addToast)
   const navigate = useNavigate()
 
-  const [coupon, setCoupon] = useState('')
-  const [discount, setDiscount] = useState(0)
+  const [coupon, setCoupon] = useState(couponCode || '')
 
   // Calculate item price with flash sale consideration
   const getItemPrice = (item) => {
@@ -24,17 +23,22 @@ const CartPage = () => {
 
   const cartTotal = cart.reduce((sum, item) => sum + getItemPrice(item) * item.quantity, 0)
   const shipping = cartTotal > 299000 ? 0 : 30000
-  const finalTotal = cartTotal + shipping - discount
+  const finalTotal = Math.max(0, cartTotal + shipping - couponDiscount)
 
   const handleApplyCoupon = async () => {
-    const coupons = await api.get('/coupons')
-    const valid = coupons?.find((c) => c.code === coupon.toUpperCase())
-    if (valid) {
-      setDiscount(valid.value || Math.round(cartTotal * (valid.discount || 0)))
-      addToast(`Áp dụng mã ${valid.code} thành công!`, 'success')
-    } else {
-      setDiscount(0)
-      addToast('Mã giảm giá không hợp lệ!', 'error')
+    if (!coupon.trim()) return
+    try {
+      const coupons = await api.get('/coupons')
+      const valid = coupons?.find((c) => c.code === coupon.trim().toUpperCase())
+      if (valid) {
+        applyCoupon(valid.code, Math.round(cartTotal * (valid.discount / 100)))
+        addToast(`Áp dụng mã ${valid.code} thành công!`, 'success')
+      } else {
+        clearCoupon()
+        addToast('Mã giảm giá không hợp lệ!', 'error')
+      }
+    } catch {
+      addToast('Không thể kiểm tra mã giảm giá', 'error')
     }
   }
 
@@ -113,7 +117,7 @@ const CartPage = () => {
             <div className="space-y-4 text-sm border-t border-gray-100 py-6 mb-2">
               <div className="flex justify-between text-gray-600 font-medium"><span>Tạm tính</span><span className="text-gray-900 font-bold">{formatPrice(cartTotal)}</span></div>
               <div className="flex justify-between text-gray-600 font-medium"><span>Phí giao hàng</span><span className={shipping === 0 ? 'text-green-600 font-bold uppercase text-[10px] tracking-widest bg-green-50 px-2 py-0.5 rounded-md' : 'text-gray-900 font-bold'}>{shipping === 0 ? 'Miễn phí' : formatPrice(shipping)}</span></div>
-              {discount > 0 && <div className="flex justify-between text-green-600 font-bold animate-fade-in"><span className="flex items-center gap-1">↳ Mã giảm giá</span><span>-{formatPrice(discount)}</span></div>}
+              {couponDiscount > 0 && <div className="flex justify-between text-green-600 font-bold animate-fade-in"><span className="flex items-center gap-1">↳ {couponCode}</span><span>-{formatPrice(couponDiscount)}</span></div>}
             </div>
             <div className="border-t-2 border-dashed border-gray-200 pt-6 mb-8 flex justify-between items-end">
               <span className="text-base font-bold text-gray-600 uppercase tracking-wide">Tổng cộng</span>

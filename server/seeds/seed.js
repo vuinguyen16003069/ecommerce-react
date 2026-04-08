@@ -500,12 +500,12 @@ const mockPosts = [
 ];
 
 const mockCoupons = [
-  { code: 'JSHOP10',  discount: 0.10, desc: 'Giảm 10% cho mọi đơn hàng' },
-  { code: 'WELCOME',  discount: 0.15, desc: 'Giảm 15% cho thành viên mới' },
-  { code: 'SUMMER20', discount: 0.20, desc: 'Giảm 20% mùa hè' },
-  { code: 'FLASH50K', discount: 0.10, desc: 'Giảm 10% cho đơn từ 500K' },
-  { code: 'FREESHIP', discount: 0.05, desc: 'Giảm 5% + miễn phí ship' },
-  { code: 'MEMBER30', discount: 0.30, desc: 'Giảm 30% cho thành viên VIP' },
+  { code: 'JSHOP10',  discount: 10,  desc: 'Giảm 10% cho mọi đơn hàng' },
+  { code: 'WELCOME',  discount: 15,  desc: 'Giảm 15% cho thành viên mới' },
+  { code: 'SUMMER20', discount: 20,  desc: 'Giảm 20% mùa hè' },
+  { code: 'FLASH50K', discount: 10,  desc: 'Giảm 10% cho đơn từ 500K' },
+  { code: 'FREESHIP', discount: 5,   desc: 'Giảm 5% + miễn phí ship' },
+  { code: 'MEMBER30', discount: 30,  desc: 'Giảm 30% cho thành viên VIP' },
 ];
 
 async function seedDatabase() {

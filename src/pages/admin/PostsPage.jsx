@@ -20,22 +20,30 @@ const PostsPage = () => {
 
   const submit = async (e) => {
     e.preventDefault()
-    if (editing) {
-      await api.put(`/posts/${editing._id || editing.id}`, form)
-      addToast('Cập nhật thành công!', 'success')
-    } else {
-      await api.post('/posts', { ...form, date: new Date().toISOString() })
-      addToast('Thêm bài viết thành công!', 'success')
+    try {
+      if (editing) {
+        await api.put(`/posts/${editing._id || editing.id}`, form)
+        addToast('Cập nhật thành công!', 'success')
+      } else {
+        await api.post('/posts', { ...form, date: new Date().toISOString() })
+        addToast('Thêm bài viết thành công!', 'success')
+      }
+      setModal(false)
+      fetchPosts()
+    } catch (err) {
+      addToast(err.message || 'Đã xảy ra lỗi', 'error')
     }
-    setModal(false)
-    fetchPosts()
   }
   
   const handleDelete = async (id, title) => {
     if (confirm(`Xóa bài viết "${title}"?`)) {
-      await api.delete(`/posts/${id}`)
-      addToast('Đã xóa bài viết!', 'success')
-      fetchPosts()
+      try {
+        await api.delete(`/posts/${id}`)
+        addToast('Đã xóa bài viết!', 'success')
+        fetchPosts()
+      } catch (err) {
+        addToast(err.message || 'Không thể xóa bài viết', 'error')
+      }
     }
   }
 

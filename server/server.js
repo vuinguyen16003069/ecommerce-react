@@ -4,7 +4,22 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+// ✅ Tự động tạo thư mục uploads nếu chưa tồn tại
+const uploadsDir = path.join(__dirname, 'uploads');
+const avatarsDir = path.join(uploadsDir, 'avatars');
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log(`📁 Created directory: ${uploadsDir}`);
+}
+
+if (!fs.existsSync(avatarsDir)) {
+  fs.mkdirSync(avatarsDir, { recursive: true });
+  console.log(`📁 Created directory: ${avatarsDir}`);
+}
 
 const app = express();
 

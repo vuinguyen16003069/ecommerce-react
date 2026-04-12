@@ -7,19 +7,17 @@ async function request(endpoint, options = {}) {
   const { method = 'GET', body } = options;
   const isFormData = body instanceof FormData;
 
-  // Lấy user từ store để gửi kèm headers
-  const currentUser = useAuthStore.getState().currentUser;
+  // ✅ SECURITY FIX: Lấy JWT token từ store thay vì gửi user info
+  const token = useAuthStore.getState().token;
 
   const config = {
     method,
     headers: isFormData ? {} : { 'Content-Type': 'application/json' },
   };
 
-  // Gửi user info trong headers để server verify
-  if (currentUser) {
-    config.headers['x-user-id'] = currentUser._id || currentUser.id;
-    config.headers['x-user-role'] = currentUser.role;
-    config.headers['x-user-status'] = currentUser.status || 'active';
+  // ✅ NEW: Gửi JWT token trong Authorization header (Bearer scheme)
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
 
   if (body) {

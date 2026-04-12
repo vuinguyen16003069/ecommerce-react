@@ -6,7 +6,9 @@ export const useAuthStore = create(
   persist(
     (set, get) => ({
       currentUser: null,
+      token: null, // ✅ NEW: Lưu JWT token
       justLoggedOut: false,
+      setToken: (token) => set({ token }), // ✅ NEW: Set JWT token từ login
       setCurrentUser: (user) => {
         const prevUser = get().currentUser;
         const prevId = prevUser?._id || prevUser?.id || null;
@@ -21,7 +23,8 @@ export const useAuthStore = create(
       logout: () => {
         useCartStore.getState().saveCurrentCartForOwner();
         useCartStore.getState().resetCartSession();
-        set({ currentUser: null, justLoggedOut: true });
+        // ✅ NEW: Xóa token khi logout
+        set({ currentUser: null, token: null, justLoggedOut: true });
       },
       clearJustLoggedOut: () => set({ justLoggedOut: false }),
       toggleWishlist: (productId) =>

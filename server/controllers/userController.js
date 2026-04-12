@@ -1,7 +1,9 @@
 const User = require('../models/User');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const { sendResetOtpEmail, sendRegisterOtpEmail } = require('../services/emailService');
 
+// ⚠️ CRITICAL SECURITY FIX: Tạo JWT Token thay vì trả về headers không bảo mật
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -15,7 +17,24 @@ exports.login = async (req, res) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ error: 'Email hoặc mật khẩu không chính xác!' });
 
-    res.json(user);
+    // ✅ TẠO JWT TOKEN THAY VÌ TRẢ VỀ HEADERS NGUY HIỂM
+    const token = jwt.sign(
+      { id: user._id.toString(), email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'default-secret',
+      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+        role: user.role,
+        status: user.status,
+      },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -93,8 +112,9 @@ exports.update = async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ error: 'Người dùng không tìm thấy' });
 
-    const currentUserId = req.headers['x-user-id'];
-    const currentUserRole = req.headers['x-user-role'];
+    // ✅ SECURITY FIX: Lấy từ req.currentUser (JWT verified) thay vì headers
+    const currentUserId = req.currentUser.id;
+    const currentUserRole = req.currentUser.role;
 
     // Kiểm tra quyền: user thường chỉ update chính mình, admin update ai cũng được
     if (currentUserRole === 'user' && currentUserId !== user._id.toString()) {
@@ -282,9 +302,24 @@ exports.verifyRegisterOtp = async (req, res) => {
     user.registerOtpExpires = null;
     await user.save();
 
+    // ✅ NEW: Tạo JWT token cho auto-login
+    const token = jwt.sign(
+      { id: user._id.toString(), email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'default-secret',
+      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    );
+
     res.json({
       message: 'Xác nhận email thành công!',
-      user, // Return user để auto login
+      token, // ✅ NEW: Trả về JWT token
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+        role: user.role,
+        status: user.status,
+      },
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -91,8 +91,9 @@ const superAdminRoutes = [
  *    - Cannot change roles (except super admin)
  *    - Cannot create/delete permissions (super admin only)
  *
- * 4. Backend Validation
- *    - Verify auth headers: x-user-id, x-user-role, x-user-status
+ * 4. Backend Validation (JWT-Based Security)
+ *    - ✅ NEW: Verify JWT token from Authorization header (Bearer token)
+ *    - ✅ FIXED: No longer trusting x-user-id / x-user-role headers
  *    - Check user status is 'active'
  *    - Verify role authorization for protected routes
  *    - Prevent role modification by non-super admins

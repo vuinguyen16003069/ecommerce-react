@@ -87,6 +87,8 @@ Dự án không chỉ tập trung vào giao diện hiện đại với **Tailwin
 │  📊 Charts           │  Chart.js + react-chartjs-2              │
 │  ✉️ Email            │  Nodemailer (Gmail SMTP / Brevo)         │
 │  💾 State Management │  Zustand (Global Store)                  │
+│  🔒 Authentication   │  JWT Token (RFC 6750 Bearer Token)       │
+│  ⚙️ Security         │  bcryptjs + jsonwebtoken                 │
 └──────────────────────┴──────────────────────────────────────────┘
 ```
 
@@ -114,16 +116,27 @@ npm install
 
 **2. Cấu hình Biến môi trường**
 
-Tạo file `.env` trong thư mục `server/` (nếu chưa có):
+Tạo file `.env` **tại thư mục gốc** của dự án (⚠️ KHÔNG phải trong folder `server/`):
 
 ```env
+# Database Configuration
 MONGO_URI=mongodb://localhost:27017/jshop
 PORT=5000
+NODE_ENV=development
 
-# Cấu hình gửi mail (OTP)
+# Email Configuration (Gmail SMTP)
 GMAIL_USER=your-email@gmail.com
 GMAIL_PASS=your-app-password
+
+# JWT Authentication (Security - v1.0.2+)
+JWT_SECRET=your_jwt_secret_key_change_this_in_production_12345
+JWT_EXPIRES_IN=7d
 ```
+
+> **⚠️ IMPORTANT - Production Security:**
+> - Thay đổi `JWT_SECRET` thành một giá trị phức tạp trong production
+> - Đừng commit file `.env` lên Git (thêm vào `.gitignore`)
+> - Sử dụng các biến môi trường từ hệ thống thay vì hardcode
 
 **3. Nạp dữ liệu mẫu (tùy chọn)**
 
@@ -343,7 +356,48 @@ ecommerce-react/
 
 <br/>
 
-## 🔭 Lộ trình mở rộng
+## � Bảo Mật & Xác Thực (v1.0.2+)
+
+### JWT Token Authentication
+
+Ứng dụng sử dụng **JWT (JSON Web Token)** để xác thực người dùng một cách an toàn:
+
+- ✅ **Bearer Token Schema** — Tuân theo RFC 6750 standard
+- ✅ **Server-side Verification** — Token được xác thực trên server với secret key
+- ✅ **Token Expiration** — Token hết hạn sau 7 ngày (tùy chỉnh qua `JWT_EXPIRES_IN`)
+- ✅ **Secure Headers** — Không sử dụng custom headers dễ bị giả mạo
+- ✅ **Database Verification** — Kiểm tra user từ database trước khi chấp nhận
+
+### Flow Xác Thực
+
+```
+1. User đăng nhập (email + password)
+   ↓
+2. Server xác thực → Tạo JWT token
+   ↓
+3. Frontend lưu token vào localStorage
+   ↓
+4. Mỗi request sau đó gửi: Authorization: Bearer <token>
+   ↓
+5. Server xác thực token + kiểm tra user từ DB
+   ↓
+6. Nếu hợp lệ → Cho phép request, ngược lại → 401 Unauthorized
+```
+
+### Cấu Hình
+
+```env
+JWT_SECRET=your_secure_random_string_here
+JWT_EXPIRES_IN=7d
+```
+
+⚠️ **Production**: Thay đổi `JWT_SECRET` thành một giá trị phức tạp ngẫu nhiên!
+
+Xem thêm: [SECURITY_FIXES.md](./SECURITY_FIXES.md) để hiểu chi tiết về sửa lỗi bảo mật.
+
+<br/>
+
+## �🔭 Lộ trình mở rộng
 
 Dự án được thiết kế để dễ dàng nâng cấp thành nền tảng thương mại thực thụ. Một số hướng phát triển gợi ý:
 

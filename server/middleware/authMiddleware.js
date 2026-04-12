@@ -1,26 +1,34 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
+// ⚠️ CRITICAL SECURITY FIX: Xác thực JWT Token thay vì tin tưởng headers
 // Middleware kiểm tra user đã đăng nhập & hoạt động
 exports.authRequired = async (req, res, next) => {
   try {
-    const userId = req.headers['x-user-id'];
-    const userRole = req.headers['x-user-role'];
-
-    if (!userId || !userRole) {
-      return res.status(401).json({ error: 'Vui lòng đăng nhập' });
+    // 1. Lấy token từ Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Vui lòng cung cấp token hợp lệ' });
     }
 
+    const token = authHeader.slice(7); // Loại bỏ 'Bearer '
+
+    // 2. Giải mã JWT token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret');
+    const userId = decoded.id;
+
+    // 3. Xác thực user từ DB (KHÔNG tin tưởng token)
     const userFromDB = await User.findById(userId);
     if (!userFromDB) {
       return res.status(401).json({ error: 'User không tồn tại' });
     }
 
-    // Kiểm tra user bị khóa
+    // 4. Kiểm tra user bị khóa
     if (userFromDB.status === 'locked') {
       return res.status(403).json({ error: 'Tài khoản của bạn đã bị khóa' });
     }
 
-    // Lưu user đã xác thực từ DB vào req
+    // 5. Lưu user đã xác thực từ DB vào req
     req.currentUser = {
       id: userFromDB._id.toString(),
       role: userFromDB.role,
@@ -30,7 +38,10 @@ exports.authRequired = async (req, res, next) => {
 
     req.verifiedUser = userFromDB;
     next();
-  } catch {
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Token không hợp lệ hoặc đã hết hạn' });
+    }
     res.status(401).json({ error: 'Không xác thực được' });
   }
 };

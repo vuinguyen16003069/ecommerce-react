@@ -13,6 +13,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
 
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const setToken = useAuthStore((state) => state.setToken); // ✅ NEW: Lấy setToken method
   const addToast = useToastStore((state) => state.addToast);
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,10 +24,15 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const user = await api.post('/users/login', { email, password });
-      setCurrentUser(user);
-      addToast(`Xin chào, ${user.name}!`, 'success');
-      const fallback = user.role === 'admin' ? '/admin' : '/';
+      // ✅ SECURITY FIX: Server trả về { token, user }
+      const response = await api.post('/users/login', { email, password });
+      
+      // ✅ NEW: Lưu JWT token vào store
+      setToken(response.token);
+      setCurrentUser(response.user);
+      
+      addToast(`Xin chào, ${response.user.name}!`, 'success');
+      const fallback = response.user.role === 'admin' ? '/admin' : '/';
       const redirectTo = location.state?.from?.pathname ?? fallback;
       navigate(redirectTo, { replace: true });
     } catch (err) {

@@ -1,6 +1,6 @@
 const User = require('../models/User');
 
-// 🔐 Middleware kiểm tra user đã đăng nhập & hoạt động
+// Middleware kiểm tra user đã đăng nhập & hoạt động
 exports.authRequired = async (req, res, next) => {
   try {
     const userId = req.headers['x-user-id'];
@@ -10,7 +10,6 @@ exports.authRequired = async (req, res, next) => {
       return res.status(401).json({ error: 'Vui lòng đăng nhập' });
     }
 
-    // ⚠️ CRITICAL FIX: Xác thực từ DB thay vì tin header (header dễ giả mạo)
     const userFromDB = await User.findById(userId);
     if (!userFromDB) {
       return res.status(401).json({ error: 'User không tồn tại' });
@@ -36,14 +35,14 @@ exports.authRequired = async (req, res, next) => {
   }
 };
 
-// 🔐 Middleware kiểm tra role admin/manager/staff
+// Middleware kiểm tra role admin/manager/staff
 exports.adminOnly = async (req, res, next) => {
   try {
     if (!req.currentUser) {
       return res.status(401).json({ error: 'Vui lòng đăng nhập' });
     }
 
-    // ⚠️ CRITICAL FIX: Xác thực từ DB thay vì tin header
+    // CRITICAL FIX: Xác thực từ DB thay vì tin header
     const userFromDB = await User.findById(req.currentUser.id);
     if (!userFromDB) {
       return res.status(401).json({ error: 'Không tìm thấy user' });
@@ -62,14 +61,14 @@ exports.adminOnly = async (req, res, next) => {
   }
 };
 
-// 🔐 Middleware kiểm tra super admin
+// Middleware kiểm tra super admin
 exports.superAdminOnly = async (req, res, next) => {
   try {
     if (!req.currentUser) {
       return res.status(401).json({ error: 'Vui lòng đăng nhập' });
     }
 
-    // ⚠️ CRITICAL FIX: Xác thực từ DB thay vì tin header (header dễ giả mạo)
+    // CRITICAL FIX: Xác thực từ DB thay vì tin header (header dễ giả mạo)
     const currentUserFromDB = await User.findById(req.currentUser.id);
     if (!currentUserFromDB || currentUserFromDB.role !== 'admin') {
       return res.status(403).json({ error: 'Chỉ Admin được phép tác vụ này' });
@@ -89,7 +88,7 @@ exports.superAdminOnly = async (req, res, next) => {
   }
 };
 
-// 🔐 Kiểm tra user active
+// Kiểm tra user active
 exports.requireActiveStatus = (req, res, next) => {
   if (req.currentUser && req.currentUser.status !== 'active') {
     return res.status(403).json({ error: 'Tài khoản không hoạt động' });
@@ -97,8 +96,8 @@ exports.requireActiveStatus = (req, res, next) => {
   next();
 };
 
-// 🔐 Middleware: Admin có thể quản lý nhưng không thể sửa super admin
-// ➕ Admin thường có thể: tạo/sửa/xóa roles, thay đổi role user (nhưng không phải super admin)
+// Middleware: Admin có thể quản lý nhưng không thể sửa super admin
+// Admin thường có thể: tạo/sửa/xóa roles, thay đổi role user (nhưng không phải super admin)
 exports.adminCanManageButNotSuperAdmin = async (req, res, next) => {
   try {
     if (!req.currentUser) {

@@ -187,25 +187,142 @@ http://localhost:5173/
 
 <br/>
 
-## 🗂️ Cấu trúc thư mục mới
+## 🗂️ Cấu trúc thư mục dự án
 
 ```bash
 ecommerce-react/
-│
-│   ├── 📁 utils/               # Helper functions (text, tiền tệ, ngày tháng)
-│   │
-│   ├── 📁 views/
-│   │   ├── 📁 admin/           # Toàn bộ Views khu vực Quản trị
-│   │   └── 📄 *.jsx            # Các Views mặt tiền dành cho User
-│   │
-│   ├── 📄 App.jsx              # Root Component — Route Logic & Global State
-│   ├── 📄 index.css            # Base CSS + Tailwind Variables
-│   └── 📄 main.jsx             # Vite Entry Point
-│
-├── 📄 index.html
-├── 📄 package.json
-└── 📄 vite.config.js
+├── 📁 public/
+├── 📁 server/
+│   ├── 📁 config/
+│   │   ├── db.js
+│   │   └── permissions.js
+│   ├── 📁 controllers/
+│   │   ├── couponController.js
+│   │   ├── orderController.js
+│   │   ├── permissionController.js
+│   │   ├── postController.js
+│   │   ├── productController.js
+│   │   ├── roleController.js
+│   │   └── userController.js
+│   ├── 📁 middleware/
+│   │   ├── authMiddleware.js
+│   │   ├── errorHandler.js
+│   │   └── upload.js
+│   ├── 📁 models/
+│   │   ├── Coupon.js
+│   │   ├── Order.js
+│   │   ├── Permission.js
+│   │   ├── Post.js
+│   │   ├── Product.js
+│   │   ├── Role.js
+│   │   └── User.js
+│   ├── 📁 routes/
+│   │   ├── coupons.js
+│   │   ├── orders.js
+│   │   ├── permissions.js
+│   │   ├── posts.js
+│   │   ├── products.js
+│   │   ├── roles.js
+│   │   └── users.js
+│   ├── 📁 seeds/
+│   │   └── seed.js
+│   ├── 📁 services/
+│   │   └── emailService.js
+│   ├── 📁 uploads/
+│   │   └── avatars/
+│   ├── nodemon.json
+│   ├── package.json
+│   └── server.js
+├── 📁 src/
+│   ├── 📁 assets/
+│   │   ├── icons/
+│   │   └── images/
+│   ├── 📁 components/
+│   │   ├── 📁 common/
+│   │   │   ├── Icons.jsx
+│   │   │   ├── Loader.jsx
+│   │   │   ├── Modal.jsx
+│   │   │   ├── RequireAuth.jsx
+│   │   │   ├── ScrollToTop.jsx
+│   │   │   ├── SkeletonCard.jsx
+│   │   │   ├── StarRating.jsx
+│   │   │   └── Toast.jsx
+│   │   ├── 📁 layout/
+│   │   │   ├── AdminSidebar.jsx
+│   │   │   ├── AuthLayout.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── Header.jsx
+│   │   ├── 📁 product/
+│   │   │   ├── FlashSale.jsx
+│   │   │   └── ProductCard.jsx
+│   │   └── Icons.jsx
+│   ├── 📁 constants/
+│   │   └── index.js
+│   ├── 📁 hooks/
+│   │   ├── index.js
+│   │   ├── useDebounce.js
+│   │   └── useStickyState.js
+│   ├── 📁 layouts/
+│   │   ├── AdminLayout.jsx
+│   │   └── MainLayout.jsx
+│   ├── 📁 pages/
+│   │   ├── 📁 admin/
+│   │   │   ├── CouponsPage.jsx
+│   │   │   ├── DashboardPage.jsx
+│   │   │   ├── OrdersPage.jsx
+│   │   │   ├── PermissionsPage.jsx
+│   │   │   ├── PostsPage.jsx
+│   │   │   ├── ProductsPage.jsx
+│   │   │   ├── RolesPage.jsx
+│   │   │   └── UsersPage.jsx
+│   │   ├── BlogDetailPage.jsx
+│   │   ├── BlogPage.jsx
+│   │   ├── CartPage.jsx
+│   │   ├── CheckoutPage.jsx
+│   │   ├── ForgotPasswordPage.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── ProductDetailPage.jsx
+│   │   ├── ProfilePage.jsx
+│   │   ├── RegisterPage.jsx
+│   │   └── ShopPage.jsx
+│   ├── 📁 services/
+│   │   └── api.js
+│   ├── 📁 store/
+│   │   ├── authStore.js
+│   │   ├── cartStore.js
+│   │   ├── index.js
+│   │   └── toastStore.js
+│   ├── 📁 utils/
+│   │   └── helpers.js
+│   ├── App.jsx
+│   ├── index.css
+│   ├── main.jsx
+│   └── router.jsx
+├── .gitattributes
+├── .prettierignore
+├── .prettierrc
+├── eslint.config.js
+├── CHANGELOG.md
+├── index.html
+├── LICENSE
+├── package.json
+├── README.md
+└── vite.config.js
 ```
+
+### 📋 Giải thích cấu trúc
+
+| Thư mục | Mô tả |
+|---------|-------|
+| **server/** | Backend Express.js - API routes, controllers, models, middleware, config |
+| **src/components/** | React components tái sử dụng (common, layout, product) |
+| **src/pages/** | Page components - User pages + admin pages |
+| **src/store/** | Zustand stores - Global state (auth, cart, toast) |
+| **src/hooks/** | Custom React hooks (useDebounce, useStickyState) |
+| **src/services/** | API client services |
+| **src/utils/** | Helper functions |
+| **src/layouts/** | Layout wrappers (MainLayout, AdminLayout) |
 
 <br/>
 

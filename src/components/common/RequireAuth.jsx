@@ -6,7 +6,6 @@ import { useToastStore } from "../../store/toastStore";
 const RequireAuth = ({ children }) => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const justLoggedOut = useAuthStore((state) => state.justLoggedOut);
-  const clearJustLoggedOut = useAuthStore((state) => state.clearJustLoggedOut);
   const addToast = useToastStore((state) => state.addToast);
   const location = useLocation();
   const notifiedRef = useRef(false);
@@ -21,12 +20,6 @@ const RequireAuth = ({ children }) => {
       notifiedRef.current = false;
     }
   }, [currentUser, justLoggedOut, addToast]);
-
-  useEffect(() => {
-    if (justLoggedOut) {
-      clearJustLoggedOut();
-    }
-  }, [justLoggedOut, clearJustLoggedOut]);
 
   if (!currentUser) {
     if (justLoggedOut) {

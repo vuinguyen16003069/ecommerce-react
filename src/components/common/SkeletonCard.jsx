@@ -8,4 +8,4 @@ export const SkeletonCard = () => (
       <div className="h-5 shimmer-bg rounded w-1/2 mt-3"></div>
     </div>
   </div>
-)
+);

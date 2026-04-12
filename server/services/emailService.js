@@ -5,8 +5,8 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.GMAIL_USER || '',
-    pass: process.env.GMAIL_PASS || ''
-  }
+    pass: process.env.GMAIL_PASS || '',
+  },
 });
 
 // Hàm gửi email reset mật khẩu (OTP)
@@ -64,7 +64,7 @@ const sendResetOtpEmail = async (to, otp) => {
             </p>
           </div>
         </div>
-      `
+      `,
     };
 
     const info = await transporter.sendMail(mailOptions);
@@ -113,7 +113,7 @@ const sendRegisterOtpEmail = async (to, otp) => {
             </p>
           </div>
         </div>
-      `
+      `,
     };
 
     const info = await transporter.sendMail(mailOptions);

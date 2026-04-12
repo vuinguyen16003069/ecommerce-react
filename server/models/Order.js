@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   orderId: { type: String, unique: true },
@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
   address: String,
   date: { type: Date, default: Date.now },
   total: Number,
-  status: { type: String, default: "Chờ xác nhận" },
+  status: { type: String, default: 'Chờ xác nhận' },
   items: [
     {
       productId: mongoose.Schema.Types.ObjectId,
@@ -21,4 +21,4 @@ const orderSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = mongoose.model('Order', orderSchema);

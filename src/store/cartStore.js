@@ -1,12 +1,12 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export const useCartStore = create(
   persist(
     (set) => ({
       cart: [],
       couponDiscount: 0,
-      couponCode: "",
+      couponCode: '',
       cartOwnerId: null,
       cartByUser: {},
       hydrateCartForUser: (userId) =>
@@ -16,18 +16,18 @@ export const useCartStore = create(
               cartOwnerId: null,
               cart: [],
               couponDiscount: 0,
-              couponCode: "",
+              couponCode: '',
             };
           const saved = state.cartByUser[userId] || {
             cart: [],
             couponDiscount: 0,
-            couponCode: "",
+            couponCode: '',
           };
           return {
             cartOwnerId: userId,
             cart: saved.cart || [],
             couponDiscount: saved.couponDiscount || 0,
-            couponCode: saved.couponCode || "",
+            couponCode: saved.couponCode || '',
           };
         }),
       saveCurrentCartForOwner: () =>
@@ -45,12 +45,10 @@ export const useCartStore = create(
           };
         }),
       resetCartSession: () =>
-        set({ cartOwnerId: null, cart: [], couponDiscount: 0, couponCode: "" }),
+        set({ cartOwnerId: null, cart: [], couponDiscount: 0, couponCode: '' }),
       addToCart: (product, qty = 1) =>
         set((state) => {
-          const ex = state.cart.find(
-            (i) => (i._id || i.id) === (product._id || product.id),
-          );
+          const ex = state.cart.find((i) => (i._id || i.id) === (product._id || product.id));
           const currentQty = ex ? ex.quantity : 0;
           const newQty = currentQty + qty;
 
@@ -61,9 +59,7 @@ export const useCartStore = create(
 
           const updated = ex
             ? state.cart.map((i) =>
-                (i._id || i.id) === (product._id || product.id)
-                  ? { ...i, quantity: newQty }
-                  : i,
+                (i._id || i.id) === (product._id || product.id) ? { ...i, quantity: newQty } : i
               )
             : [...state.cart, { ...product, quantity: qty }];
           const next = { cart: updated };
@@ -90,7 +86,7 @@ export const useCartStore = create(
           }
 
           const updated = state.cart.map((i) =>
-            (i._id || i.id) === id ? { ...i, quantity: newQty } : i,
+            (i._id || i.id) === id ? { ...i, quantity: newQty } : i
           );
           const next = { cart: updated };
           if (state.cartOwnerId) {
@@ -125,7 +121,7 @@ export const useCartStore = create(
         set((state) => ({
           cart: [],
           couponDiscount: 0,
-          couponCode: "",
+          couponCode: '',
           ...(state.cartOwnerId
             ? {
                 cartByUser: {
@@ -133,7 +129,7 @@ export const useCartStore = create(
                   [state.cartOwnerId]: {
                     cart: [],
                     couponDiscount: 0,
-                    couponCode: "",
+                    couponCode: '',
                   },
                 },
               }
@@ -158,7 +154,7 @@ export const useCartStore = create(
         })),
       clearCoupon: () =>
         set((state) => ({
-          couponCode: "",
+          couponCode: '',
           couponDiscount: 0,
           ...(state.cartOwnerId
             ? {
@@ -167,7 +163,7 @@ export const useCartStore = create(
                   [state.cartOwnerId]: {
                     cart: state.cart,
                     couponDiscount: 0,
-                    couponCode: "",
+                    couponCode: '',
                   },
                 },
               }
@@ -178,7 +174,7 @@ export const useCartStore = create(
       },
     }),
     {
-      name: "jshop_cart_v3",
-    },
-  ),
+      name: 'jshop_cart_v3',
+    }
+  )
 );

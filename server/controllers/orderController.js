@@ -24,7 +24,9 @@ exports.create = async (req, res) => {
       );
 
       if (!product) {
-        return res.status(400).json({ error: `Sản phẩm "${item.name}" không đủ số lượng hoặc không tồn tại.` });
+        return res
+          .status(400)
+          .json({ error: `Sản phẩm "${item.name}" không đủ số lượng hoặc không tồn tại.` });
       }
 
       const unitPrice = product.isFlashSale
@@ -32,7 +34,13 @@ exports.create = async (req, res) => {
         : product.price;
 
       calculatedTotal += unitPrice * item.quantity;
-      finalItems.push({ productId: product._id, name: product.name, quantity: item.quantity, price: unitPrice, image: product.image });
+      finalItems.push({
+        productId: product._id,
+        name: product.name,
+        quantity: item.quantity,
+        price: unitPrice,
+        image: product.image,
+      });
     }
 
     const shipping = calculatedTotal > 299000 ? 0 : 30000;
@@ -54,7 +62,7 @@ exports.create = async (req, res) => {
       items: finalItems,
       total: Math.max(0, calculatedTotal + shipping - discountAmount),
       status: 'Chờ xác nhận',
-      date: new Date()
+      date: new Date(),
     });
 
     await order.save();
@@ -94,7 +102,9 @@ exports.getById = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const order = await Order.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
+    const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
+      returnDocument: 'after',
+    });
     if (!order) return res.status(404).json({ error: 'Đơn hàng không tìm thấy' });
     res.json(order);
   } catch (err) {

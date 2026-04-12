@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuthStore } from "../../store/authStore";
-import { useToastStore } from "../../store/toastStore";
+import { useEffect, useRef } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
+import { useToastStore } from '../../store/toastStore';
 
 const RequireAuth = ({ children }) => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -12,7 +12,7 @@ const RequireAuth = ({ children }) => {
 
   useEffect(() => {
     if (!currentUser && !justLoggedOut && !notifiedRef.current) {
-      addToast("Vui lòng đăng nhập để tiếp tục", "error");
+      addToast('Vui lòng đăng nhập để tiếp tục', 'error');
       notifiedRef.current = true;
     }
 

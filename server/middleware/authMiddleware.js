@@ -26,9 +26,9 @@ exports.authRequired = async (req, res, next) => {
       id: userFromDB._id.toString(),
       role: userFromDB.role,
       status: userFromDB.status,
-      email: userFromDB.email
+      email: userFromDB.email,
     };
-    
+
     req.verifiedUser = userFromDB;
     next();
   } catch {
@@ -115,7 +115,7 @@ exports.adminCanManageButNotSuperAdmin = async (req, res, next) => {
     if (req.params.id || req.body?.userId) {
       const targetId = req.params.id || req.body?.userId;
       const targetUser = await User.findById(targetId);
-      
+
       if (targetUser && targetUser.role === 'admin') {
         // Check nếu target là super admin (admin đầu tiên)
         const firstAdmin = await User.findOne({ role: 'admin' }).sort({ createdAt: 1 });

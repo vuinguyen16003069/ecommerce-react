@@ -1,15 +1,15 @@
-import { Outlet, Navigate, useNavigate } from 'react-router-dom'
-import { useAuthStore } from '../store/authStore'
-import AdminSidebar from '../components/layout/AdminSidebar'
+import { Outlet, Navigate, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
+import AdminSidebar from '../components/layout/AdminSidebar';
 
 const AdminLayout = () => {
-  const { currentUser } = useAuthStore()
-  const navigate = useNavigate()
+  const { currentUser } = useAuthStore();
+  const navigate = useNavigate();
 
   // Chỉ user thường (role === 'user') mới không được vào admin
   // admin, manager, staff và mọi custom role đều được phép
   if (!currentUser || currentUser.role === 'user') {
-    return <Navigate to="/" replace />
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -19,7 +19,7 @@ const AdminLayout = () => {
         <Outlet />
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default AdminLayout
+export default AdminLayout;

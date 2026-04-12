@@ -1,19 +1,13 @@
-import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import {
-  ShoppingCart,
-  Star,
-  Heart,
-  CheckCircle,
-  ChevronUp,
-} from "../components/common/Icons";
-import { StarRating } from "../components/common/StarRating";
-import ProductCard from "../components/product/ProductCard";
-import { formatPrice, formatDate } from "../utils/helpers";
-import { useCartStore } from "../store/cartStore";
-import { useAuthStore } from "../store/authStore";
-import { useToastStore } from "../store/toastStore";
-import { api } from "../services/api";
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ShoppingCart, Star, Heart, CheckCircle, ChevronUp } from '../components/common/Icons';
+import { StarRating } from '../components/common/StarRating';
+import ProductCard from '../components/product/ProductCard';
+import { formatPrice, formatDate } from '../utils/helpers';
+import { useCartStore } from '../store/cartStore';
+import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
+import { api } from '../services/api';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -28,11 +22,11 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
-  const [activeTab, setActiveTab] = useState("desc");
+  const [activeTab, setActiveTab] = useState('desc');
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editingReviewForm, setEditingReviewForm] = useState({
     rating: 5,
-    text: "",
+    text: '',
   });
   const [savingReview, setSavingReview] = useState(false);
   const [deletingReviewId, setDeletingReviewId] = useState(null);
@@ -50,17 +44,15 @@ const ProductDetailPage = () => {
         // Fetch related
         if (data?.category) {
           api
-            .get("/products")
+            .get('/products')
             .then((all) => {
               if (!active) return;
               setRelated(
                 all
                   .filter(
-                    (p) =>
-                      p.category === data.category &&
-                      (p._id || p.id) !== (data._id || data.id),
+                    (p) => p.category === data.category && (p._id || p.id) !== (data._id || data.id)
                   )
-                  .slice(0, 4),
+                  .slice(0, 4)
               );
             })
             .catch(() => {});
@@ -86,12 +78,9 @@ const ProductDetailPage = () => {
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-32 text-center animate-fade-in">
-        <h2 className="text-4xl font-black text-gray-900 mb-4">
-          Sản Phẩm Không Tồn Tại
-        </h2>
+        <h2 className="text-4xl font-black text-gray-900 mb-4">Sản Phẩm Không Tồn Tại</h2>
         <p className="text-gray-500 mb-8 max-w-md mx-auto">
-          Có vẻ như sản phẩm bạn tìm kiếm đang gặp lỗi hoặc đã bị gỡ khỏi hệ
-          thống.
+          Có vẻ như sản phẩm bạn tìm kiếm đang gặp lỗi hoặc đã bị gỡ khỏi hệ thống.
         </p>
         <Link
           to="/shop"
@@ -107,13 +96,13 @@ const ProductDetailPage = () => {
 
   const handleAddCart = () => {
     if (!currentUser) {
-      addToast("Vui lòng đăng nhập để mua sản phẩm", "error");
-      navigate("/login");
+      addToast('Vui lòng đăng nhập để mua sản phẩm', 'error');
+      navigate('/login');
       return false;
     }
     if (product.stock >= qty) {
       addToCart(product, qty);
-      addToast(`Đã thêm ${qty} ${product.name} vào giỏ`, "success");
+      addToast(`Đã thêm ${qty} ${product.name} vào giỏ`, 'success');
       return true;
     }
     return false;
@@ -122,13 +111,10 @@ const ProductDetailPage = () => {
   const handleWish = () => {
     if (currentUser) {
       toggleWishlist(product._id || product.id);
-      addToast(
-        isWished ? "Đã gỡ khỏi yêu thích" : "Đã thêm vào yêu thích",
-        "info",
-      );
+      addToast(isWished ? 'Đã gỡ khỏi yêu thích' : 'Đã thêm vào yêu thích', 'info');
     } else {
-      addToast("Vui lòng đăng nhập để dùng tính năng này", "error");
-      navigate("/login");
+      addToast('Vui lòng đăng nhập để dùng tính năng này', 'error');
+      navigate('/login');
     }
   };
 
@@ -141,53 +127,48 @@ const ProductDetailPage = () => {
     setEditingReviewId(review._id);
     setEditingReviewForm({
       rating: review.rating || 5,
-      text: review.text || "",
+      text: review.text || '',
     });
   };
 
   const cancelEditReview = () => {
     setEditingReviewId(null);
-    setEditingReviewForm({ rating: 5, text: "" });
+    setEditingReviewForm({ rating: 5, text: '' });
   };
 
   const saveEditReview = async (reviewId) => {
     if (!editingReviewForm.text.trim()) {
-      addToast("Vui lòng nhập nội dung đánh giá", "error");
+      addToast('Vui lòng nhập nội dung đánh giá', 'error');
       return;
     }
     try {
       setSavingReview(true);
-      await api.put(
-        `/products/${product._id || product.id}/reviews/${reviewId}`,
-        {
-          rating: editingReviewForm.rating,
-          text: editingReviewForm.text.trim(),
-        },
-      );
-      addToast("Cập nhật đánh giá thành công", "success");
+      await api.put(`/products/${product._id || product.id}/reviews/${reviewId}`, {
+        rating: editingReviewForm.rating,
+        text: editingReviewForm.text.trim(),
+      });
+      addToast('Cập nhật đánh giá thành công', 'success');
       cancelEditReview();
       await reloadProduct();
     } catch (err) {
-      addToast(err.message || "Không thể cập nhật đánh giá", "error");
+      addToast(err.message || 'Không thể cập nhật đánh giá', 'error');
     } finally {
       setSavingReview(false);
     }
   };
 
   const deleteReview = async (reviewId) => {
-    if (!window.confirm("Bạn có chắc muốn xóa đánh giá này không?")) return;
+    if (!window.confirm('Bạn có chắc muốn xóa đánh giá này không?')) return;
     try {
       setDeletingReviewId(reviewId);
-      await api.delete(
-        `/products/${product._id || product.id}/reviews/${reviewId}`,
-      );
-      addToast("Đã xóa đánh giá", "success");
+      await api.delete(`/products/${product._id || product.id}/reviews/${reviewId}`);
+      addToast('Đã xóa đánh giá', 'success');
       if (editingReviewId === reviewId) {
         cancelEditReview();
       }
       await reloadProduct();
     } catch (err) {
-      addToast(err.message || "Không thể xóa đánh giá", "error");
+      addToast(err.message || 'Không thể xóa đánh giá', 'error');
     } finally {
       setDeletingReviewId(null);
     }
@@ -204,14 +185,14 @@ const ProductDetailPage = () => {
           className="hover:text-orange-600 border border-gray-100 rounded-lg px-3 py-1 bg-gray-50 hover:bg-orange-50 transition"
         >
           Trang chủ
-        </Link>{" "}
+        </Link>{' '}
         <ChevronUp size={14} className="rotate-90 flex-shrink-0" />
         <Link
           to={`/shop?category=${product.category}`}
           className="hover:text-orange-600 border border-gray-100 rounded-lg px-3 py-1 bg-gray-50 hover:bg-orange-50 transition"
         >
           {product.category}
-        </Link>{" "}
+        </Link>{' '}
         <ChevronUp size={14} className="rotate-90 flex-shrink-0" />
         <span className="font-semibold text-gray-800 bg-white border border-gray-100 rounded-lg px-3 py-1 shadow-sm truncate max-w-[200px] md:max-w-none">
           {product.name}
@@ -237,7 +218,7 @@ const ProductDetailPage = () => {
               <button
                 key={idx}
                 onClick={() => setActiveImg(idx)}
-                className={`aspect-square bg-white rounded-xl border flex justify-center items-center overflow-hidden transition-all duration-300 cursor-pointer ${activeImg === idx ? "ring-2 ring-orange-500 border-transparent bg-orange-50/50 shadow-md" : "hover:border-orange-300 hover:shadow-sm"}`}
+                className={`aspect-square bg-white rounded-xl border flex justify-center items-center overflow-hidden transition-all duration-300 cursor-pointer ${activeImg === idx ? 'ring-2 ring-orange-500 border-transparent bg-orange-50/50 shadow-md' : 'hover:border-orange-300 hover:shadow-sm'}`}
               >
                 <img src={img} alt="" className="w-4/5 h-4/5 object-contain" />
               </button>
@@ -251,7 +232,7 @@ const ProductDetailPage = () => {
             <div className="flex items-center gap-1.5 bg-yellow-50 px-3 py-1.5 rounded-lg border border-yellow-100">
               <Star size={14} className="text-yellow-500" fill="currentColor" />
               <span className="font-bold text-yellow-700 text-sm">
-                {product.rating}{" "}
+                {product.rating}{' '}
                 <span className="text-yellow-600/60 font-medium">
                   ({product.reviews?.length || 0})
                 </span>
@@ -259,9 +240,7 @@ const ProductDetailPage = () => {
             </div>
             <div className="flex items-center gap-1.5 bg-green-50 px-3 py-1.5 rounded-lg border border-green-100">
               <CheckCircle size={14} className="text-green-600" />
-              <span className="font-bold text-green-700 text-sm">
-                Đã bán {product.sold}
-              </span>
+              <span className="font-bold text-green-700 text-sm">Đã bán {product.sold}</span>
             </div>
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-[1.15] tracking-tight">
@@ -269,7 +248,7 @@ const ProductDetailPage = () => {
           </h1>
           <p className="text-gray-500 text-lg mb-8 leading-relaxed max-w-xl">
             {product.desc ||
-              "Thiết kế hiện đại, chất liệu cao cấp mang lại vẻ đẹp thanh lịch và cảm giác thoải mái."}
+              'Thiết kế hiện đại, chất liệu cao cấp mang lại vẻ đẹp thanh lịch và cảm giác thoải mái.'}
           </p>
 
           <div className="flex flex-wrap items-end gap-6 mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-100 w-full max-w-lg">
@@ -280,10 +259,7 @@ const ProductDetailPage = () => {
               {product.isFlashSale ? (
                 <div className="flex items-center gap-3 items-end">
                   <div className="text-4xl font-black text-orange-600 tracking-tight">
-                    {formatPrice(
-                      product.price *
-                        (1 - (product.flashSaleDiscount || 50) / 100),
-                    )}
+                    {formatPrice(product.price * (1 - (product.flashSaleDiscount || 50) / 100))}
                   </div>
                   <div className="text-sm text-gray-400 line-through">
                     {formatPrice(product.price)}
@@ -301,20 +277,20 @@ const ProductDetailPage = () => {
             <div className="w-px h-12 bg-gray-200 hidden sm:block"></div>
             <div>
               <p
-                className={`text-xs font-bold uppercase tracking-widest mb-1.5 ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}
+                className={`text-xs font-bold uppercase tracking-widest mb-1.5 ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}
               >
                 Trạng thái
               </p>
               <div
-                className={`text-lg font-bold flex items-center gap-2 ${product.stock > 0 ? "text-gray-900" : "text-red-500"}`}
+                className={`text-lg font-bold flex items-center gap-2 ${product.stock > 0 ? 'text-gray-900' : 'text-red-500'}`}
               >
                 {product.stock > 0 ? (
                   <>
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div>{" "}
-                    Còn {product.stock} sản phẩm
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div> Còn{' '}
+                    {product.stock} sản phẩm
                   </>
                 ) : (
-                  "Hết hàng"
+                  'Hết hàng'
                 )}
               </div>
             </div>
@@ -342,11 +318,11 @@ const ProductDetailPage = () => {
             </div>
             <button
               onClick={handleWish}
-              className={`flex-shrink-0 h-14 w-14 rounded-xl flex items-center justify-center border-2 transition cursor-pointer ${isWished ? "bg-red-50 border-red-200 text-red-500" : "border-gray-100 text-gray-400 hover:border-gray-300 hover:text-red-500 hover:bg-gray-50"}`}
+              className={`flex-shrink-0 h-14 w-14 rounded-xl flex items-center justify-center border-2 transition cursor-pointer ${isWished ? 'bg-red-50 border-red-200 text-red-500' : 'border-gray-100 text-gray-400 hover:border-gray-300 hover:text-red-500 hover:bg-gray-50'}`}
             >
               <Heart
                 size={24}
-                fill={isWished ? "currentColor" : "none"}
+                fill={isWished ? 'currentColor' : 'none'}
                 className="transition-transform active:scale-75"
               />
             </button>
@@ -358,16 +334,13 @@ const ProductDetailPage = () => {
               disabled={product.stock === 0}
               className="flex-1 bg-gray-900 hover:bg-black text-white px-8 py-4.5 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group shadow-lg hover:shadow-xl"
             >
-              <ShoppingCart
-                size={20}
-                className="group-hover:scale-110 transition-transform"
-              />{" "}
-              THÊM VÀO GIỎ
+              <ShoppingCart size={20} className="group-hover:scale-110 transition-transform" /> THÊM
+              VÀO GIỎ
             </button>
             <button
               disabled={product.stock === 0}
               onClick={() => {
-                if (handleAddCart()) navigate("/checkout");
+                if (handleAddCart()) navigate('/checkout');
               }}
               className="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4.5 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all hover:from-orange-600 hover:to-orange-700 disabled:opacity-50 shadow-lg shadow-orange-500/30 hover:shadow-xl disabled:cursor-not-allowed cursor-pointer text-lg tracking-wide uppercase"
             >
@@ -380,49 +353,43 @@ const ProductDetailPage = () => {
       {/* Tabs */}
       <div className="mb-16 bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm">
         <div className="flex border-b border-gray-100 bg-gray-50/50 p-2 overflow-x-auto">
-          {["desc", "reviews"].map((t) => (
+          {['desc', 'reviews'].map((t) => (
             <button
               key={t}
               onClick={() => setActiveTab(t)}
-              className={`flex-1 py-4 px-8 text-center font-bold text-sm tracking-wide rounded-2xl transition capitalize whitespace-nowrap cursor-pointer ${activeTab === t ? "bg-white text-orange-600 shadow-sm border border-gray-100/50" : "text-gray-500 hover:text-gray-800"}`}
+              className={`flex-1 py-4 px-8 text-center font-bold text-sm tracking-wide rounded-2xl transition capitalize whitespace-nowrap cursor-pointer ${activeTab === t ? 'bg-white text-orange-600 shadow-sm border border-gray-100/50' : 'text-gray-500 hover:text-gray-800'}`}
             >
-              {t === "desc"
-                ? "Thông tin chi tiết"
-                : `Đánh giá (${product.reviews?.length || 0})`}
+              {t === 'desc' ? 'Thông tin chi tiết' : `Đánh giá (${product.reviews?.length || 0})`}
             </button>
           ))}
         </div>
         <div className="p-8 md:p-12">
-          {activeTab === "desc" ? (
+          {activeTab === 'desc' ? (
             <div className="prose max-w-none text-gray-600 leading-loose">
               <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <div className="w-1 h-6 bg-orange-600 rounded"></div> Đặc điểm
-                nổi bật
+                <div className="w-1 h-6 bg-orange-600 rounded"></div> Đặc điểm nổi bật
               </h3>
               <p className="mb-6">
                 {product.desc ||
-                  "Thiết kế sang trọng, gia công tỉ mỉ. Chất liệu thân thiện mang lại trải nghiệm tối ưu cho người mặc. Phù hợp mọi hoàn cảnh sử dụng."}
+                  'Thiết kế sang trọng, gia công tỉ mỉ. Chất liệu thân thiện mang lại trải nghiệm tối ưu cho người mặc. Phù hợp mọi hoàn cảnh sử dụng.'}
               </p>
               <ul className="space-y-4 font-medium grid sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-gray-50 p-8 rounded-2xl border border-gray-100 mb-8 list-none">
                 <li className="flex items-center gap-3">
-                  <CheckCircle size={18} className="text-orange-500" /> Chất
-                  liệu tiêu chuẩn 100%
+                  <CheckCircle size={18} className="text-orange-500" /> Chất liệu tiêu chuẩn 100%
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle size={18} className="text-orange-500" /> Được sản
-                  xuất và kiểm nghiệm khắt khe
+                  <CheckCircle size={18} className="text-orange-500" /> Được sản xuất và kiểm nghiệm
+                  khắt khe
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle size={18} className="text-orange-500" /> Form
-                  dáng hiện đại, ôm sát
+                  <CheckCircle size={18} className="text-orange-500" /> Form dáng hiện đại, ôm sát
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle size={18} className="text-orange-500" /> Bảo hành
-                  chính hãng trọn đời
+                  <CheckCircle size={18} className="text-orange-500" /> Bảo hành chính hãng trọn đời
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle size={18} className="text-orange-500" /> Cam kết
-                  đổi trả trong vòng 30 ngày
+                  <CheckCircle size={18} className="text-orange-500" /> Cam kết đổi trả trong vòng
+                  30 ngày
                 </li>
               </ul>
             </div>
@@ -433,9 +400,7 @@ const ProductDetailPage = () => {
                   <h3 className="font-bold text-gray-900 mb-6 tracking-wide uppercase text-sm">
                     Điểm đánh giá trung bình
                   </h3>
-                  <div className="text-7xl font-black text-orange-600 mb-4">
-                    {product.rating}
-                  </div>
+                  <div className="text-7xl font-black text-orange-600 mb-4">{product.rating}</div>
                   <div className="flex text-yellow-400 mb-4 scale-125">
                     <Star size={20} fill="currentColor" />
                     <Star size={20} fill="currentColor" />
@@ -450,9 +415,7 @@ const ProductDetailPage = () => {
 
                 <div className="md:w-2/3">
                   <div className="mb-10 bg-white border border-gray-100 p-6 rounded-3xl shadow-sm">
-                    <h4 className="font-bold text-gray-900 mb-3">
-                      Đánh giá từ người mua
-                    </h4>
+                    <h4 className="font-bold text-gray-900 mb-3">Đánh giá từ người mua</h4>
                     <p className="text-sm text-gray-500 leading-relaxed">
                       Trang này chỉ hiển thị đánh giá. Để gửi đánh giá, bạn vào
                       <Link
@@ -476,9 +439,7 @@ const ProductDetailPage = () => {
                               {r.user[0]}
                             </div>
                             <div>
-                              <div className="font-bold text-gray-900">
-                                {r.user}
-                              </div>
+                              <div className="font-bold text-gray-900">{r.user}</div>
                               <div className="flex text-yellow-400 mt-0.5">
                                 {Array(5)
                                   .fill(0)
@@ -486,12 +447,8 @@ const ProductDetailPage = () => {
                                     <Star
                                       key={idx}
                                       size={10}
-                                      fill={
-                                        idx < r.rating ? "currentColor" : "none"
-                                      }
-                                      className={
-                                        idx >= r.rating ? "text-gray-300" : ""
-                                      }
+                                      fill={idx < r.rating ? 'currentColor' : 'none'}
+                                      className={idx >= r.rating ? 'text-gray-300' : ''}
                                     />
                                   ))}
                               </div>
@@ -538,15 +495,13 @@ const ProductDetailPage = () => {
                                   className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-bold hover:bg-orange-600 transition cursor-pointer disabled:opacity-60"
                                   disabled={savingReview}
                                 >
-                                  {savingReview ? "Đang lưu..." : "Lưu"}
+                                  {savingReview ? 'Đang lưu...' : 'Lưu'}
                                 </button>
                               </div>
                             </div>
                           ) : (
                             <>
-                              <p className="text-gray-600 text-sm leading-relaxed">
-                                {r.text}
-                              </p>
+                              <p className="text-gray-600 text-sm leading-relaxed">{r.text}</p>
                               {currentUser?.name === r.user && (
                                 <div className="mt-3 flex gap-2">
                                   <button
@@ -560,9 +515,7 @@ const ProductDetailPage = () => {
                                     className="px-3 py-1.5 text-xs font-bold rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition cursor-pointer disabled:opacity-60"
                                     disabled={deletingReviewId === r._id}
                                   >
-                                    {deletingReviewId === r._id
-                                      ? "Đang xóa..."
-                                      : "Xóa đánh giá"}
+                                    {deletingReviewId === r._id ? 'Đang xóa...' : 'Xóa đánh giá'}
                                   </button>
                                 </div>
                               )}

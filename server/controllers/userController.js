@@ -6,10 +6,11 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    
+
     if (!user) return res.status(401).json({ error: 'Email hoặc mật khẩu không chính xác!' });
     if (user.status === 'locked') return res.status(403).json({ error: 'Tài khoản đã bị khóa!' });
-    if (user.status === 'pending_verification') return res.status(403).json({ error: 'Vui lòng xác nhận email trước khi đăng nhập!' });
+    if (user.status === 'pending_verification')
+      return res.status(403).json({ error: 'Vui lòng xác nhận email trước khi đăng nhập!' });
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ error: 'Email hoặc mật khẩu không chính xác!' });
@@ -37,7 +38,7 @@ exports.register = async (req, res) => {
       isEmailVerified: false,
       wishlist: [],
       registerOtp: otp,
-      registerOtpExpires: Date.now() + 10 * 60 * 1000 // 10 mins
+      registerOtpExpires: Date.now() + 10 * 60 * 1000, // 10 mins
     });
     await user.save();
 
@@ -48,13 +49,13 @@ exports.register = async (req, res) => {
       // Xóa user nếu gửi mail thất bại
       await User.findByIdAndDelete(user._id);
       return res.status(500).json({
-        error: 'Không thể gửi email. Vui lòng kiểm tra cấu hình email hoặc thử lại sau.'
+        error: 'Không thể gửi email. Vui lòng kiểm tra cấu hình email hoặc thử lại sau.',
       });
     }
 
     res.status(201).json({
       message: `Mã OTP đã được gửi đến ${email}. Kiểm tra inbox của bạn.`,
-      email
+      email,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -101,14 +102,18 @@ exports.update = async (req, res) => {
     }
 
     // Protected fields: user thường không được update role, status
-    const allowedFields = currentUserRole === 'user' 
-      ? ['name', 'email', 'phone', 'address', 'bio', 'avatar']
-      : ['name', 'email', 'phone', 'address', 'bio', 'avatar', 'status', 'role'];
+    const allowedFields =
+      currentUserRole === 'user'
+        ? ['name', 'email', 'phone', 'address', 'bio', 'avatar']
+        : ['name', 'email', 'phone', 'address', 'bio', 'avatar', 'status', 'role'];
 
     // ✅ NEW: Admin có thể thay đổi role/status nhưng không thể sửa super admin
-    if ((req.body.role !== undefined || req.body.status !== undefined) && currentUserRole === 'admin') {
+    if (
+      (req.body.role !== undefined || req.body.status !== undefined) &&
+      currentUserRole === 'admin'
+    ) {
       const firstAdmin = await User.findOne({ role: 'admin' }).sort({ createdAt: 1 });
-      
+
       // Không cho phép thay đổi role/status của super admin
       if (firstAdmin && user._id.toString() === firstAdmin._id.toString()) {
         return res.status(403).json({ error: 'Không thể chỉnh sửa Super Admin' });
@@ -183,7 +188,7 @@ exports.toggleWishlist = async (req, res) => {
     const productId = req.params.productId;
     const wishlist = user.wishlist || [];
     user.wishlist = wishlist.includes(productId)
-      ? wishlist.filter(id => id !== productId)
+      ? wishlist.filter((id) => id !== productId)
       : [...wishlist, productId];
     await user.save();
     res.json(user);
@@ -213,12 +218,12 @@ exports.forgotPassword = async (req, res) => {
       user.resetOtpExpires = null;
       await user.save();
       return res.status(500).json({
-        error: 'Không thể gửi email. Vui lòng kiểm tra cấu hình email hoặc thử lại sau.'
+        error: 'Không thể gửi email. Vui lòng kiểm tra cấu hình email hoặc thử lại sau.',
       });
     }
 
     res.json({
-      message: `Mã OTP đã được gửi đến ${email}. Kiểm tra inbox của bạn.`
+      message: `Mã OTP đã được gửi đến ${email}. Kiểm tra inbox của bạn.`,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -279,7 +284,7 @@ exports.verifyRegisterOtp = async (req, res) => {
 
     res.json({
       message: 'Xác nhận email thành công!',
-      user // Return user để auto login
+      user, // Return user để auto login
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -308,12 +313,12 @@ exports.resendRegisterOtp = async (req, res) => {
 
     if (!emailSent) {
       return res.status(500).json({
-        error: 'Không thể gửi email. Vui lòng thử lại sau.'
+        error: 'Không thể gửi email. Vui lòng thử lại sau.',
       });
     }
 
     res.json({
-      message: `Mã OTP mới đã được gửi đến ${email}.`
+      message: `Mã OTP mới đã được gửi đến ${email}.`,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

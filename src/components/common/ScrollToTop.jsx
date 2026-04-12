@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react'
-import { ChevronUp } from './Icons'
+import { useState, useEffect } from 'react';
+import { ChevronUp } from './Icons';
 
 export const ScrollToTop = () => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const h = () => setVisible(window.scrollY > 400)
-    window.addEventListener('scroll', h, { passive: true })
-    return () => window.removeEventListener('scroll', h)
-  }, [])
+    const h = () => setVisible(window.scrollY > 400);
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
+  }, []);
 
-  if (!visible) return null
+  if (!visible) return null;
 
   return (
     <button
@@ -19,5 +19,5 @@ export const ScrollToTop = () => {
     >
       <ChevronUp size={20} />
     </button>
-  )
-}
+  );
+};

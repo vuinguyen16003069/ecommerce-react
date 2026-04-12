@@ -1,20 +1,15 @@
-import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  ArrowRight,
-  Lock,
-  Mail,
-  ShieldAlert,
-} from "../components/common/Icons";
-import { api } from "../services/api";
-import { useAuthStore } from "../store/authStore";
-import { useToastStore } from "../store/toastStore";
-import AuthLayout from "../components/layout/AuthLayout";
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ArrowRight, Lock, Mail, ShieldAlert } from '../components/common/Icons';
+import { api } from '../services/api';
+import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
+import AuthLayout from '../components/layout/AuthLayout';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
@@ -24,14 +19,14 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
 
     try {
-      const user = await api.post("/users/login", { email, password });
+      const user = await api.post('/users/login', { email, password });
       setCurrentUser(user);
-      addToast(`Xin chào, ${user.name}!`, "success");
-      const fallback = user.role === "admin" ? "/admin" : "/";
+      addToast(`Xin chào, ${user.name}!`, 'success');
+      const fallback = user.role === 'admin' ? '/admin' : '/';
       const redirectTo = location.state?.from?.pathname ?? fallback;
       navigate(redirectTo, { replace: true });
     } catch (err) {
@@ -98,22 +93,16 @@ const LoginPage = () => {
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
           ) : (
             <>
-              ĐĂNG NHẬP{" "}
-              <ArrowRight
-                size={18}
-                className="group-hover:translate-x-1.5 transition-transform"
-              />
+              ĐĂNG NHẬP{' '}
+              <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform" />
             </>
           )}
         </button>
       </form>
       <div className="mt-8 text-center">
         <p className="text-gray-500 font-medium">
-          Chưa có tài khoản?{" "}
-          <Link
-            to="/register"
-            className="text-orange-600 font-bold hover:underline"
-          >
+          Chưa có tài khoản?{' '}
+          <Link to="/register" className="text-orange-600 font-bold hover:underline">
             Đăng ký ngay
           </Link>
         </p>

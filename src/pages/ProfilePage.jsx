@@ -1,33 +1,21 @@
-import { useState, useEffect } from "react";
-import { Navigate, Link, useNavigate } from "react-router-dom";
-import {
-  User,
-  Package,
-  Heart,
-  LogOut,
-  Trash2,
-} from "../components/common/Icons";
-import ProductCard from "../components/product/ProductCard";
-import { StarRating } from "../components/common/StarRating";
-import { Modal } from "../components/common/Modal";
-import { formatPrice, formatDate, resolveImageUrl } from "../utils/helpers";
-import { useAuthStore } from "../store/authStore";
-import { useToastStore } from "../store/toastStore";
-import { api } from "../services/api";
+import { useState, useEffect } from 'react';
+import { Navigate, Link, useNavigate } from 'react-router-dom';
+import { User, Package, Heart, LogOut, Trash2 } from '../components/common/Icons';
+import ProductCard from '../components/product/ProductCard';
+import { StarRating } from '../components/common/StarRating';
+import { Modal } from '../components/common/Modal';
+import { formatPrice, formatDate, resolveImageUrl } from '../utils/helpers';
+import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
+import { api } from '../services/api';
 
-const ORDER_STATUSES = [
-  "Tất cả",
-  "Chờ xác nhận",
-  "Đang giao",
-  "Hoàn thành",
-  "Đã hủy",
-];
+const ORDER_STATUSES = ['Tất cả', 'Chờ xác nhận', 'Đang giao', 'Hoàn thành', 'Đã hủy'];
 
 const STATUS_STYLE = {
-  "Chờ xác nhận": "bg-yellow-100 text-yellow-700",
-  "Đang giao": "bg-blue-100 text-blue-700",
-  "Hoàn thành": "bg-green-100 text-green-700",
-  "Đã hủy": "bg-red-100 text-red-700",
+  'Chờ xác nhận': 'bg-yellow-100 text-yellow-700',
+  'Đang giao': 'bg-blue-100 text-blue-700',
+  'Hoàn thành': 'bg-green-100 text-green-700',
+  'Đã hủy': 'bg-red-100 text-red-700',
 };
 
 const ProfilePage = () => {
@@ -35,10 +23,10 @@ const ProfilePage = () => {
   const addToast = useToastStore((state) => state.addToast);
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("account");
+  const [activeTab, setActiveTab] = useState('account');
   const [myOrders, setMyOrders] = useState([]);
   const [wishlistProducts, setWishlistProducts] = useState([]);
-  const [orderStatusFilter, setOrderStatusFilter] = useState("Tất cả");
+  const [orderStatusFilter, setOrderStatusFilter] = useState('Tất cả');
   const [cancelingOrderId, setCancelingOrderId] = useState(null);
   const [savingProfile, setSavingProfile] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -46,16 +34,16 @@ const ProfilePage = () => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [reviewingItem, setReviewingItem] = useState(null);
   const [reviewingOrderId, setReviewingOrderId] = useState(null);
-  const [reviewForm, setReviewForm] = useState({ rating: 5, text: "" });
+  const [reviewForm, setReviewForm] = useState({ rating: 5, text: '' });
   const [existingReviewId, setExistingReviewId] = useState(null);
   const [reviewPrefillLoading, setReviewPrefillLoading] = useState(false);
   const [submittingReview, setSubmittingReview] = useState(false);
   const [profileForm, setProfileForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    bio: "",
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    bio: '',
   });
 
   useEffect(() => {
@@ -67,12 +55,10 @@ const ProfilePage = () => {
         .catch(() => {});
       if (currentUser.wishlist?.length > 0) {
         api
-          .get("/products")
+          .get('/products')
           .then((products) => {
             setWishlistProducts(
-              products.filter((p) =>
-                currentUser.wishlist?.includes(p._id || p.id),
-              ),
+              products.filter((p) => currentUser.wishlist?.includes(p._id || p.id))
             );
           })
           .catch(() => {});
@@ -84,11 +70,11 @@ const ProfilePage = () => {
     if (!currentUser) return;
     setProfileForm((prev) => ({
       ...prev,
-      name: currentUser.name || "",
-      email: currentUser.email || "",
-      phone: currentUser.phone || "",
-      address: currentUser.address || "",
-      bio: currentUser.bio || "",
+      name: currentUser.name || '',
+      email: currentUser.email || '',
+      phone: currentUser.phone || '',
+      address: currentUser.address || '',
+      bio: currentUser.bio || '',
     }));
   }, [currentUser]);
 
@@ -96,36 +82,33 @@ const ProfilePage = () => {
 
   const handleLogout = () => {
     logout();
-    addToast("Đã đăng xuất tài khoản", "success");
-    navigate("/");
+    addToast('Đã đăng xuất tài khoản', 'success');
+    navigate('/');
   };
 
   const tabs = [
-    { id: "account", label: "Thông tin tài khoản", icon: <User size={18} /> },
-    { id: "orders", label: "Lịch sử mua hàng", icon: <Package size={18} /> },
+    { id: 'account', label: 'Thông tin tài khoản', icon: <User size={18} /> },
+    { id: 'orders', label: 'Lịch sử mua hàng', icon: <Package size={18} /> },
     {
-      id: "wishlist",
-      label: "Yêu thích (" + wishlistProducts.length + ")",
+      id: 'wishlist',
+      label: 'Yêu thích (' + wishlistProducts.length + ')',
       icon: <Heart size={18} />,
     },
   ];
 
   const counts = ORDER_STATUSES.reduce((acc, status) => {
     acc[status] =
-      status === "Tất cả"
-        ? myOrders.length
-        : myOrders.filter((o) => o.status === status).length;
+      status === 'Tất cả' ? myOrders.length : myOrders.filter((o) => o.status === status).length;
     return acc;
   }, {});
 
   const filteredOrders =
-    orderStatusFilter === "Tất cả"
+    orderStatusFilter === 'Tất cả'
       ? myOrders
       : myOrders.filter((o) => o.status === orderStatusFilter);
 
-  const canCancelOrder = (orderStatus) => orderStatus === "Chờ xác nhận";
-  const canReviewOrder = (orderStatus) =>
-    ["Hoàn thành", "Đã giao"].includes(orderStatus);
+  const canCancelOrder = (orderStatus) => orderStatus === 'Chờ xác nhận';
+  const canReviewOrder = (orderStatus) => ['Hoàn thành', 'Đã giao'].includes(orderStatus);
 
   const onFormChange = (key, value) => {
     setProfileForm((prev) => ({ ...prev, [key]: value }));
@@ -145,7 +128,7 @@ const ProfilePage = () => {
     };
 
     if (!payload.name || !payload.email) {
-      addToast("Tên và email là bắt buộc", "error");
+      addToast('Tên và email là bắt buộc', 'error');
       return;
     }
 
@@ -153,9 +136,9 @@ const ProfilePage = () => {
       setSavingProfile(true);
       const updatedUser = await api.put(`/users/${userId}`, payload);
       setCurrentUser(updatedUser);
-      addToast("Cập nhật thông tin thành công", "success");
+      addToast('Cập nhật thông tin thành công', 'success');
     } catch (err) {
-      addToast(err.message || "Không thể cập nhật tài khoản", "error");
+      addToast(err.message || 'Không thể cập nhật tài khoản', 'error');
     } finally {
       setSavingProfile(false);
     }
@@ -169,22 +152,22 @@ const ProfilePage = () => {
       setUploadingAvatar(true);
       const userId = currentUser._id || currentUser.id;
       const formData = new FormData();
-      formData.append("avatar", file);
+      formData.append('avatar', file);
       const updatedUser = await api.post(`/users/${userId}/avatar`, formData);
       setCurrentUser(updatedUser);
-      addToast("Cập nhật ảnh đại diện thành công", "success");
+      addToast('Cập nhật ảnh đại diện thành công', 'success');
     } catch (err) {
-      addToast(err.message || "Tải ảnh thất bại", "error");
+      addToast(err.message || 'Tải ảnh thất bại', 'error');
     } finally {
       setUploadingAvatar(false);
-      e.target.value = "";
+      e.target.value = '';
     }
   };
 
   const handleDeleteAccount = async () => {
     if (!currentUser) return;
     const ok = window.confirm(
-      "Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác.",
+      'Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác.'
     );
     if (!ok) return;
 
@@ -193,10 +176,10 @@ const ProfilePage = () => {
       const userId = currentUser._id || currentUser.id;
       await api.delete(`/users/${userId}`);
       logout();
-      addToast("Tài khoản đã được xóa", "info");
-      navigate("/");
+      addToast('Tài khoản đã được xóa', 'info');
+      navigate('/');
     } catch (err) {
-      addToast(err.message || "Không thể xóa tài khoản", "error");
+      addToast(err.message || 'Không thể xóa tài khoản', 'error');
     } finally {
       setDeletingAccount(false);
     }
@@ -204,7 +187,7 @@ const ProfilePage = () => {
 
   const handleCancelOrder = async (orderId) => {
     if (!currentUser) return;
-    if (!window.confirm("Bạn có chắc muốn hủy đơn hàng này không?")) return;
+    if (!window.confirm('Bạn có chắc muốn hủy đơn hàng này không?')) return;
 
     try {
       setCancelingOrderId(orderId);
@@ -212,12 +195,10 @@ const ProfilePage = () => {
       const updatedOrder = await api.put(`/orders/${orderId}/cancel`, {
         userId: uid,
       });
-      setMyOrders((prev) =>
-        prev.map((o) => ((o._id || o.id) === orderId ? updatedOrder : o)),
-      );
-      addToast("Đã hủy đơn hàng thành công", "success");
+      setMyOrders((prev) => prev.map((o) => ((o._id || o.id) === orderId ? updatedOrder : o)));
+      addToast('Đã hủy đơn hàng thành công', 'success');
     } catch (err) {
-      addToast(err.message || "Không thể hủy đơn hàng", "error");
+      addToast(err.message || 'Không thể hủy đơn hàng', 'error');
     } finally {
       setCancelingOrderId(null);
     }
@@ -227,7 +208,7 @@ const ProfilePage = () => {
     setReviewModalOpen(false);
     setReviewingItem(null);
     setReviewingOrderId(null);
-    setReviewForm({ rating: 5, text: "" });
+    setReviewForm({ rating: 5, text: '' });
     setExistingReviewId(null);
     setReviewPrefillLoading(false);
     setSubmittingReview(false);
@@ -237,25 +218,23 @@ const ProfilePage = () => {
     if (!currentUser) return;
     setReviewingOrderId(order.orderId || order._id || order.id);
     setReviewingItem(item);
-    setReviewForm({ rating: 5, text: "" });
+    setReviewForm({ rating: 5, text: '' });
     setExistingReviewId(null);
     setReviewModalOpen(true);
     setReviewPrefillLoading(true);
 
     try {
       const product = await api.get(`/products/${item.productId}`);
-      const myReview = (product.reviews || []).find(
-        (r) => r.user === currentUser.name,
-      );
+      const myReview = (product.reviews || []).find((r) => r.user === currentUser.name);
       if (myReview) {
         setExistingReviewId(myReview._id);
         setReviewForm({
           rating: myReview.rating || 5,
-          text: myReview.text || "",
+          text: myReview.text || '',
         });
       }
     } catch {
-      addToast("Không thể tải đánh giá hiện tại", "error");
+      addToast('Không thể tải đánh giá hiện tại', 'error');
     } finally {
       setReviewPrefillLoading(false);
     }
@@ -265,7 +244,7 @@ const ProfilePage = () => {
     e.preventDefault();
     if (!currentUser || !reviewingItem) return;
     if (!reviewForm.text.trim()) {
-      addToast("Vui lòng nhập nội dung đánh giá", "error");
+      addToast('Vui lòng nhập nội dung đánh giá', 'error');
       return;
     }
 
@@ -278,38 +257,33 @@ const ProfilePage = () => {
     try {
       setSubmittingReview(true);
       if (existingReviewId) {
-        await api.put(
-          `/products/${productId}/reviews/${existingReviewId}`,
-          payload,
-        );
-        addToast("Cập nhật đánh giá thành công", "success");
+        await api.put(`/products/${productId}/reviews/${existingReviewId}`, payload);
+        addToast('Cập nhật đánh giá thành công', 'success');
       } else {
         await api.post(`/products/${productId}/reviews`, {
           ...payload,
           user: currentUser.name,
         });
-        addToast("Gửi đánh giá thành công", "success");
+        addToast('Gửi đánh giá thành công', 'success');
       }
       closeReviewModal();
     } catch (err) {
-      addToast(err.message || "Không thể gửi đánh giá", "error");
+      addToast(err.message || 'Không thể gửi đánh giá', 'error');
       setSubmittingReview(false);
     }
   };
 
   const handleDeleteReview = async () => {
     if (!reviewingItem || !existingReviewId) return;
-    if (!window.confirm("Bạn có chắc muốn xóa đánh giá này không?")) return;
+    if (!window.confirm('Bạn có chắc muốn xóa đánh giá này không?')) return;
 
     try {
       setSubmittingReview(true);
-      await api.delete(
-        `/products/${reviewingItem.productId}/reviews/${existingReviewId}`,
-      );
-      addToast("Đã xóa đánh giá", "success");
+      await api.delete(`/products/${reviewingItem.productId}/reviews/${existingReviewId}`);
+      addToast('Đã xóa đánh giá', 'success');
       closeReviewModal();
     } catch (err) {
-      addToast(err.message || "Không thể xóa đánh giá", "error");
+      addToast(err.message || 'Không thể xóa đánh giá', 'error');
       setSubmittingReview(false);
     }
   };
@@ -349,7 +323,7 @@ const ProfilePage = () => {
                 <button
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
-                  className={`flex items-center gap-3 w-full p-4 rounded-xl text-sm font-bold transition-all cursor-pointer ${activeTab === t.id ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md shadow-orange-500/20" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`}
+                  className={`flex items-center gap-3 w-full p-4 rounded-xl text-sm font-bold transition-all cursor-pointer ${activeTab === t.id ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md shadow-orange-500/20' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
                 >
                   {t.icon} {t.label}
                 </button>
@@ -366,7 +340,7 @@ const ProfilePage = () => {
 
           {/* Main Content */}
           <div className="flex-1">
-            {activeTab === "account" && (
+            {activeTab === 'account' && (
               <div className="space-y-6">
                 <h3 className="text-2xl font-black text-gray-900 tracking-tight mb-2">
                   Thông tin tài khoản
@@ -382,14 +356,12 @@ const ProfilePage = () => {
                       />
                     ) : (
                       <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 text-white flex items-center justify-center text-3xl font-black">
-                        {currentUser.name?.[0]?.toUpperCase() || "U"}
+                        {currentUser.name?.[0]?.toUpperCase() || 'U'}
                       </div>
                     )}
                     <div>
                       <label className="inline-flex items-center px-4 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-orange-600 transition cursor-pointer">
-                        {uploadingAvatar
-                          ? "Đang tải ảnh..."
-                          : "Tải ảnh profile"}
+                        {uploadingAvatar ? 'Đang tải ảnh...' : 'Tải ảnh profile'}
                         <input
                           type="file"
                           accept="image/*"
@@ -414,7 +386,7 @@ const ProfilePage = () => {
                       </label>
                       <input
                         value={profileForm.name}
-                        onChange={(e) => onFormChange("name", e.target.value)}
+                        onChange={(e) => onFormChange('name', e.target.value)}
                         className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-orange-200 focus:border-orange-400 outline-none"
                       />
                     </div>
@@ -425,7 +397,7 @@ const ProfilePage = () => {
                       <input
                         type="email"
                         value={profileForm.email}
-                        onChange={(e) => onFormChange("email", e.target.value)}
+                        onChange={(e) => onFormChange('email', e.target.value)}
                         className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-orange-200 focus:border-orange-400 outline-none"
                       />
                     </div>
@@ -435,7 +407,7 @@ const ProfilePage = () => {
                       </label>
                       <input
                         value={profileForm.phone}
-                        onChange={(e) => onFormChange("phone", e.target.value)}
+                        onChange={(e) => onFormChange('phone', e.target.value)}
                         className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-orange-200 focus:border-orange-400 outline-none"
                       />
                     </div>
@@ -445,9 +417,7 @@ const ProfilePage = () => {
                       </label>
                       <input
                         value={profileForm.address}
-                        onChange={(e) =>
-                          onFormChange("address", e.target.value)
-                        }
+                        onChange={(e) => onFormChange('address', e.target.value)}
                         className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-orange-200 focus:border-orange-400 outline-none"
                       />
                     </div>
@@ -458,7 +428,7 @@ const ProfilePage = () => {
                       <textarea
                         rows="3"
                         value={profileForm.bio}
-                        onChange={(e) => onFormChange("bio", e.target.value)}
+                        onChange={(e) => onFormChange('bio', e.target.value)}
                         className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-orange-200 focus:border-orange-400 outline-none"
                       />
                     </div>
@@ -468,7 +438,7 @@ const ProfilePage = () => {
                         disabled={savingProfile}
                         className="px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-bold hover:bg-orange-600 transition disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                       >
-                        {savingProfile ? "Đang lưu..." : "Lưu thông tin"}
+                        {savingProfile ? 'Đang lưu...' : 'Lưu thông tin'}
                       </button>
                       <button
                         type="button"
@@ -476,8 +446,7 @@ const ProfilePage = () => {
                         disabled={deletingAccount}
                         className="px-5 py-2.5 rounded-xl border border-red-200 text-red-600 text-sm font-bold hover:bg-red-50 transition disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed flex items-center gap-2"
                       >
-                        <Trash2 size={16} />{" "}
-                        {deletingAccount ? "Đang xóa..." : "Xóa tài khoản"}
+                        <Trash2 size={16} /> {deletingAccount ? 'Đang xóa...' : 'Xóa tài khoản'}
                       </button>
                     </div>
                   </form>
@@ -485,7 +454,7 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {activeTab === "orders" && (
+            {activeTab === 'orders' && (
               <div className="space-y-6">
                 <h3 className="text-2xl font-black text-gray-900 tracking-tight mb-8">
                   Đơn hàng của tôi
@@ -495,11 +464,11 @@ const ProfilePage = () => {
                     <button
                       key={status}
                       onClick={() => setOrderStatusFilter(status)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${orderStatusFilter === status ? "bg-orange-600 text-white" : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"}`}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${orderStatusFilter === status ? 'bg-orange-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'}`}
                     >
                       {status}
                       <span
-                        className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${orderStatusFilter === status ? "bg-white/20 text-white" : "bg-gray-100 text-gray-600"}`}
+                        className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${orderStatusFilter === status ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'}`}
                       >
                         {counts[status]}
                       </span>
@@ -514,8 +483,8 @@ const ProfilePage = () => {
                     </div>
                     <p className="text-gray-500 font-medium mb-6">
                       {myOrders.length === 0
-                        ? "Bạn chưa có đơn hàng nào."
-                        : "Không có đơn hàng ở trạng thái đã chọn."}
+                        ? 'Bạn chưa có đơn hàng nào.'
+                        : 'Không có đơn hàng ở trạng thái đã chọn.'}
                     </p>
                     {myOrders.length === 0 && (
                       <Link
@@ -545,21 +514,17 @@ const ProfilePage = () => {
                           <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">
                             Ngày mua
                           </p>
-                          <p className="font-bold text-gray-900">
-                            {formatDate(o.date)}
-                          </p>
+                          <p className="font-bold text-gray-900">{formatDate(o.date)}</p>
                         </div>
                         <div>
                           <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">
                             Tổng tiền
                           </p>
-                          <p className="font-black text-gray-900 text-lg">
-                            {formatPrice(o.total)}
-                          </p>
+                          <p className="font-black text-gray-900 text-lg">{formatPrice(o.total)}</p>
                         </div>
                         <div className="text-right">
                           <span
-                            className={`inline-block px-3 py-1 pb-1.5 rounded-lg text-xs font-bold ${STATUS_STYLE[o.status] || "bg-gray-100 text-gray-700"}`}
+                            className={`inline-block px-3 py-1 pb-1.5 rounded-lg text-xs font-bold ${STATUS_STYLE[o.status] || 'bg-gray-100 text-gray-700'}`}
                           >
                             {o.status}
                           </span>
@@ -569,9 +534,7 @@ const ProfilePage = () => {
                               disabled={cancelingOrderId === (o._id || o.id)}
                               className="mt-2 block ml-auto px-3 py-1.5 text-xs font-bold rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                             >
-                              {cancelingOrderId === (o._id || o.id)
-                                ? "Đang hủy..."
-                                : "Hủy đơn"}
+                              {cancelingOrderId === (o._id || o.id) ? 'Đang hủy...' : 'Hủy đơn'}
                             </button>
                           )}
                         </div>
@@ -607,9 +570,7 @@ const ProfilePage = () => {
                                   </button>
                                 )}
                               </div>
-                              <div className="font-black text-gray-800">
-                                {formatPrice(i.price)}
-                              </div>
+                              <div className="font-black text-gray-800">{formatPrice(i.price)}</div>
                             </div>
                           ))}
                         </div>
@@ -620,7 +581,7 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {activeTab === "wishlist" && (
+            {activeTab === 'wishlist' && (
               <div>
                 <h3 className="text-2xl font-black text-gray-900 tracking-tight mb-8">
                   Danh sách Yêu thích
@@ -634,8 +595,7 @@ const ProfilePage = () => {
                       Chưa có sản phẩm yêu thích
                     </p>
                     <p className="text-gray-500 mb-8 max-w-xs mx-auto">
-                      Hãy thả tim cho những sản phẩm bạn yêu thích để xem lại
-                      sau này nhé!
+                      Hãy thả tim cho những sản phẩm bạn yêu thích để xem lại sau này nhé!
                     </p>
                     <Link
                       to="/shop"
@@ -657,40 +617,28 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      <Modal
-        isOpen={reviewModalOpen}
-        onClose={closeReviewModal}
-        title="Đánh giá sản phẩm"
-      >
+      <Modal isOpen={reviewModalOpen} onClose={closeReviewModal} title="Đánh giá sản phẩm">
         {reviewingItem && (
           <form onSubmit={handleSubmitReview} className="space-y-4">
             <div className="bg-gray-50 border border-gray-100 rounded-xl p-4">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
                 Đơn hàng
               </p>
-              <p className="text-sm font-bold text-gray-900">
-                #{reviewingOrderId}
-              </p>
+              <p className="text-sm font-bold text-gray-900">#{reviewingOrderId}</p>
               <p className="text-sm text-gray-700 mt-2 font-semibold line-clamp-2">
                 {reviewingItem.name}
               </p>
             </div>
 
             {reviewPrefillLoading ? (
-              <p className="text-sm text-gray-500">
-                Đang tải thông tin đánh giá...
-              </p>
+              <p className="text-sm text-gray-500">Đang tải thông tin đánh giá...</p>
             ) : (
               <>
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 mb-2">
-                    Số sao
-                  </p>
+                  <p className="text-sm font-semibold text-gray-700 mb-2">Số sao</p>
                   <StarRating
                     rating={reviewForm.rating}
-                    setRating={(rating) =>
-                      setReviewForm((prev) => ({ ...prev, rating }))
-                    }
+                    setRating={(rating) => setReviewForm((prev) => ({ ...prev, rating }))}
                     interactive
                     size={20}
                   />
@@ -740,10 +688,10 @@ const ProfilePage = () => {
                     disabled={submittingReview}
                   >
                     {submittingReview
-                      ? "Đang gửi..."
+                      ? 'Đang gửi...'
                       : existingReviewId
-                        ? "Cập nhật đánh giá"
-                        : "Gửi đánh giá"}
+                        ? 'Cập nhật đánh giá'
+                        : 'Gửi đánh giá'}
                   </button>
                 </div>
               </>

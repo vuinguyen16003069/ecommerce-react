@@ -8,7 +8,7 @@ const postSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   content: String,
   image: String,
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Post', postSchema);

@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { useCartStore } from "./cartStore";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { useCartStore } from './cartStore';
 
 export const useAuthStore = create(
   persist(
@@ -35,7 +35,7 @@ export const useAuthStore = create(
         }),
     }),
     {
-      name: "jshop_user_v3",
+      name: 'jshop_user_v3',
       onRehydrateStorage: () => (state) => {
         const userId = state?.currentUser?._id || state?.currentUser?.id;
         if (userId) {
@@ -44,6 +44,6 @@ export const useAuthStore = create(
           useCartStore.getState().resetCartSession();
         }
       },
-    },
-  ),
+    }
+  )
 );

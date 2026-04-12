@@ -8,6 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "preview": "vite preview",
     "dev:client": "vite",
     "dev:server": "cd server && npm run dev"
@@ -36,6 +38,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
     "nodemon": "^3.1.14",
+    "prettier": "^3.8.2",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.1"
   }

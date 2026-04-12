@@ -147,7 +147,19 @@ cd ..
 npm run dev
 ```
 
-**6. Hoặc dùng duy nhất 1 lệnh (Client + Server)**
+**6. Build cho Production (tùy chọn)**
+
+```bash
+# Build Frontend
+npm run build
+
+# Xem preview build
+npm run preview
+```
+
+Sau khi build, thư mục `dist/` sẽ chứa file production-ready để deploy.
+
+**7. Hoặc dùng duy nhất 1 lệnh (Client + Server)**
 
 ```bash
 npm start
@@ -155,7 +167,7 @@ npm start
 
 _Script `npm start` sử dụng `concurrently` để chạy cả Client (5173) và Server (5000) cùng lúc._
 
-**7. Mở trình duyệt tại:**
+**8. Mở trình duyệt tại:**
 
 ```
 http://localhost:5173/
@@ -194,6 +206,23 @@ ecommerce-react/
 ├── 📄 package.json
 └── 📄 vite.config.js
 ```
+
+<br/>
+
+## Các lệnh NPM (Scripts)
+
+| Lệnh                | Mô tả                                           |
+| ------------------- | ----------------------------------------------- |
+| `npm start`         | ⚡ Chạy Client + Server (concurrently)           |
+| `npm run dev`       | ⚡ Chạy Frontend dev server (Vite)              |
+| `npm run dev:client`| 🖥️ Chạy Frontend riêng (port 5173)            |
+| `npm run dev:server`| 🔧 Chạy Backend riêng (port 5000)             |
+| `npm run build`     | 🏗️ Build Frontend cho Production               |
+| `npm run preview`   | 👀 Preview build trước khi deploy               |
+| `npm run lint`      | ✅ Kiểm tra lỗi code (ESLint)                   |
+| `npm run lint:fix`  | 🔧 Tự động sửa lỗi code                        |
+| `npm run format`    | 💅 Format code (Prettier)                       |
+| `npm run format:check` | 📋 Kiểm tra format code              |
 
 <br/>
 

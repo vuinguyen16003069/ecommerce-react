@@ -11,7 +11,7 @@
  ╚════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝
 ```
 
-### 🛍️ Hệ thống Thương mại Điện tử Hiện đại (Fullstack)
+**Hệ thống Thương mại Điện tử Fullstack — Hiện đại · Bảo mật · Mở rộng dễ dàng**
 
 <br/>
 
@@ -20,13 +20,18 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![Nodemailer](https://img.shields.io/badge/Nodemailer-8.0-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](https://nodemailer.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Zustand](https://img.shields.io/badge/Zustand-State_Mgmt-F5A623?style=for-the-badge)](https://zustand-demo.pmnd.rs/)
+[![JWT](https://img.shields.io/badge/JWT-RFC_6750-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](./LICENSE)
 
 <br/>
 
-![JSHOP Preview](https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1600)
+![JSHOP Banner](https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1600)
 
 <br/>
+
+[🚀 Demo](#) · [📖 Docs](#️-cài-đặt--chạy-dự-án) · [🐛 Báo lỗi](#) · [💡 Đề xuất tính năng](#)
 
 </div>
 
@@ -34,182 +39,192 @@
 
 ## 📖 Giới thiệu
 
-**JSHOP** là một ứng dụng Fullstack thương mại điện tử chuyên nghiệp, tích hợp hoàn chỉnh giữa **React 19 (Frontend)** và **Node.js/Express (Backend)**.
+**JSHOP** là ứng dụng **Fullstack Thương mại Điện tử** chuyên nghiệp, kết hợp hoàn chỉnh giữa **React 19** (Frontend) và **Node.js / Express** (Backend).
 
-Dự án không chỉ tập trung vào giao diện hiện đại với **TailwindCSS v4** mà còn chú trọng vào bảo mật (OTP Auth) và quản lý trạng thái hiệu quả với **Zustand**.
+Dự án được xây dựng với trọng tâm vào:
 
-<br/>
+- 🎨 **Giao diện hiện đại** — TailwindCSS v4, responsive toàn diện
+- 🔒 **Bảo mật cao** — JWT Bearer Token chuẩn RFC 6750, OTP Email Auth
+- ⚡ **Hiệu suất tốt** — Debounced search, lazy loading, Zustand global state
+- 🧩 **Cấu trúc sạch** — Kiến trúc thư mục rõ ràng, dễ mở rộng
+
+---
 
 ## ✨ Tính năng nổi bật
 
-<table>
-<tr>
-<td width="50%" valign="top">
-
 ### 🛒 Khu vực Khách hàng
 
-| Tính năng          | Mô tả                                                                             |
-| ------------------ | --------------------------------------------------------------------------------- |
-| 🏠 **Trang chủ**   | Banner, Flash Sale + đồng hồ bấm giờ, thanh tiến trình lượt bán, sản phẩm nổi bật |
-| 🔍 **Cửa hàng**    | Lọc theo danh mục, sắp xếp giá, tìm kiếm debounced, phân trang                    |
-| 📦 **Chi tiết SP** | Gallery ảnh, đánh giá & xếp hạng sao, bộ đếm số lượng, gợi ý tương tự             |
-| 🛒 **Giỏ hàng**    | Điều chỉnh số lượng, mã giảm giá, xác nhận hóa đơn                                |
-| 👤 **Tài khoản**   | Đăng nhập / Đăng ký, lịch sử đơn hàng, danh sách yêu thích                        |
-
-</td>
-<td width="50%" valign="top">
+| Tính năng | Mô tả |
+|-----------|-------|
+| 🏠 **Trang chủ** | Banner slider, Flash Sale với đồng hồ bấm giờ, thanh tiến trình lượt bán, sản phẩm nổi bật |
+| 🔍 **Cửa hàng** | Lọc theo danh mục, sắp xếp giá, tìm kiếm debounced, phân trang thông minh |
+| 📦 **Chi tiết sản phẩm** | Gallery ảnh, đánh giá & xếp hạng sao, bộ đếm số lượng, gợi ý sản phẩm tương tự |
+| 🛒 **Giỏ hàng** | Điều chỉnh số lượng, áp mã giảm giá, xác nhận hóa đơn trước khi đặt |
+| 👤 **Tài khoản** | Đăng ký / Đăng nhập / Quên mật khẩu, lịch sử đơn hàng, danh sách yêu thích |
+| 📝 **Blog** | Danh sách bài viết, trang chi tiết bài viết |
 
 ### ⚙️ Khu vực Quản trị
 
-| Tính năng                  | Mô tả                                                              |
-| -------------------------- | ------------------------------------------------------------------ |
-| 📊 **Dashboard**           | Thống kê tổng quan, biểu đồ Doanh thu (Line) & Đơn hàng (Doughnut) |
-| 📦 **Sản phẩm / Bài viết** | Bảng CRUD đầy đủ, form thao tác trong Modal                        |
-| 📋 **Đơn hàng**            | Xem thông tin khách hàng, cập nhật trạng thái giao hàng            |
-| 👥 **Người dùng**          | Khóa / Mở khóa tài khoản, phân quyền Roles & Permissions           |
+| Tính năng | Mô tả |
+|-----------|-------|
+| 📊 **Dashboard** | Thống kê tổng quan, biểu đồ Doanh thu (Line Chart) & Đơn hàng (Doughnut Chart) |
+| 📦 **Sản phẩm / Bài viết** | Bảng CRUD đầy đủ, form thao tác trong Modal, upload ảnh |
+| 📋 **Đơn hàng** | Xem chi tiết thông tin khách, cập nhật trạng thái vận chuyển |
+| 🎟️ **Mã giảm giá** | Tạo, chỉnh sửa, xóa coupon theo % hoặc số tiền cố định |
+| 👥 **Người dùng** | Khóa / Mở khóa tài khoản, phân quyền với Roles & Permissions linh hoạt |
 
-</td>
-</tr>
-</table>
+---
 
-<br/>
+## 🚀 Tech Stack
 
-## 🚀 Công nghệ sử dụng
-
-```bash
-┌─────────────────────────────────────────────────────────────────┐
-│                         TECH STACK                              │
-├──────────────────────┬──────────────────────────────────────────┤
-│  ⚡ Frontend         │  React 19 + Vite + React Router 7        │
-│  🟢 Backend          │  Node.js + Express                       │
-│  🍃 Database         │  MongoDB + Mongoose                      │
-│  🎨 Styling          │  Tailwind CSS v4 + Vanilla CSS           │
-│  📊 Charts           │  Chart.js + react-chartjs-2              │
-│  ✉️ Email            │  Nodemailer (Gmail SMTP / Brevo)         │
-│  💾 State Management │  Zustand (Global Store)                  │
-│  🔒 Authentication   │  JWT Token (RFC 6750 Bearer Token)       │
-│  ⚙️ Security         │  bcryptjs + jsonwebtoken                 │
-└──────────────────────┴──────────────────────────────────────────┘
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                           TECH STACK                                │
+├───────────────────────┬─────────────────────────────────────────────┤
+│  ⚡  Frontend         │  React 19 + Vite + React Router v7          │
+│  🟢  Backend          │  Node.js + Express.js                       │
+│  🍃  Database         │  MongoDB + Mongoose ODM                     │
+│  🎨  Styling          │  Tailwind CSS v4 + Vanilla CSS              │
+│  📊  Charts           │  Chart.js + react-chartjs-2                 │
+│  ✉️   Email            │  Nodemailer (Gmail SMTP / Brevo)            │
+│  💾  State Management │  Zustand (Global Store)                     │
+│  🔒  Authentication   │  JWT Bearer Token (RFC 6750)                │
+│  ⚙️   Security         │  bcryptjs + jsonwebtoken                    │
+│  🔄  Dev Tools        │  ESLint + Prettier + Nodemon + Concurrently │
+└───────────────────────┴─────────────────────────────────────────────┘
 ```
 
-<br/>
+---
 
 ## ⚙️ Cài đặt & Chạy dự án
 
 ### Yêu cầu hệ thống
 
-- **Node.js** ≥ v18
-- **MongoDB** (Local hoặc Atlas)
+| Công cụ | Phiên bản tối thiểu |
+|---------|---------------------|
+| **Node.js** | `>= 18.x` |
+| **npm** | `>= 9.x` |
+| **MongoDB** | Local hoặc [MongoDB Atlas](https://www.mongodb.com/atlas) |
 
-### Các bước thực hiện
+---
 
-**1. Clone dự án và cài đặt Node modules**
+### Bước 1 — Clone & Cài đặt
 
 ```bash
-# Cài đặt cho Client (thư mục gốc)
+# Clone repository
+git clone https://github.com/your-username/jshop.git
+cd jshop
+
+# Cài đặt dependencies cho Client (thư mục gốc)
 npm install
 
-# Cài đặt cho Server
-cd server
-npm install
+# Cài đặt dependencies cho Server
+cd server && npm install && cd ..
 ```
 
-**2. Cấu hình Biến môi trường**
+---
 
-Tạo file `.env` **tại thư mục gốc** của dự án (⚠️ KHÔNG phải trong folder `server/`):
+### Bước 2 — Cấu hình môi trường
+
+> ⚠️ Tạo file `.env` tại **thư mục gốc** của dự án (KHÔNG phải trong `server/`)
 
 ```env
-# Database Configuration
+# ──────────────────────────────────────────
+# 🍃 Database
+# ──────────────────────────────────────────
 MONGO_URI=mongodb://localhost:27017/jshop
 PORT=5000
 NODE_ENV=development
 
-# Email Configuration (Gmail SMTP)
+# ──────────────────────────────────────────
+# ✉️ Email (Gmail SMTP)
+# ──────────────────────────────────────────
 GMAIL_USER=your-email@gmail.com
 GMAIL_PASS=your-app-password
 
-# JWT Authentication (Security - v1.0.2+)
-JWT_SECRET=your_jwt_secret_key_change_this_in_production_12345
+# ──────────────────────────────────────────
+# 🔒 JWT Authentication
+# ──────────────────────────────────────────
+JWT_SECRET=your_super_secret_key_change_in_production
 JWT_EXPIRES_IN=7d
 ```
 
-> **⚠️ IMPORTANT - Production Security:**
-> - Thay đổi `JWT_SECRET` thành một giá trị phức tạp trong production
-> - Đừng commit file `.env` lên Git (thêm vào `.gitignore`)
-> - Sử dụng các biến môi trường từ hệ thống thay vì hardcode
+> 💡 **Tip:** Gmail yêu cầu [App Password](https://myaccount.google.com/apppasswords) (không dùng mật khẩu thường). Thêm `.env` vào `.gitignore` để bảo mật.
 
-**3. Nạp dữ liệu mẫu (tùy chọn)**
+---
 
-```bash
-# Trong thư mục server/
-npm run seed
-```
-
-**4. Khởi động Backend Server**
+### Bước 3 — Seed dữ liệu mẫu *(tuỳ chọn)*
 
 ```bash
-# Trong thư mục server/
-npm run dev
+cd server && npm run seed
 ```
 
-**5. Khởi động Frontend (terminal mới)**
+Lệnh này sẽ khởi tạo sản phẩm, danh mục, tài khoản admin mẫu. Có thể chạy lại bất cứ lúc nào.
 
-```bash
-# Quay lại thư mục gốc
-cd ..
-npm run dev
-```
+---
 
-**6. Build cho Production (tùy chọn)**
+### Bước 4 — Chạy dự án
 
-```bash
-# Build Frontend
-npm run build
-
-# Xem preview build
-npm run preview
-```
-
-Sau khi build, thư mục `dist/` sẽ chứa file production-ready để deploy.
-
-**7. Hoặc dùng duy nhất 1 lệnh (Client + Server)**
+**Cách 1 — Chạy tất cả cùng lúc (khuyến nghị)**
 
 ```bash
 npm start
 ```
 
-_Script `npm start` sử dụng `concurrently` để chạy cả Client (5173) và Server (5000) cùng lúc._
+Lệnh này dùng `concurrently` để khởi động đồng thời:
+- 🖥️ **Frontend** tại `http://localhost:5173`
+- 🔧 **Backend** tại `http://localhost:5000`
 
-**8. Mở trình duyệt tại:**
-
-```
-http://localhost:5173/
-```
-
-<br/>
-
-> ### 🔑 Thông tin quan trọng
->
-> - **Dữ liệu mẫu:** Chạy `cd server && npm run seed` để khởi tạo bộ sản phẩm mặc định (có thể chạy lại bất cứ lúc nào).
-> - **Admin demo:** Sử dụng thông tin dưới đây để đăng nhập khu vực quản trị.
->
-> | Trường   | Giá trị           |
-> | -------- | ----------------- |
-> | Email    | `admin@jshop.com` |
-> | Mật khẩu | `123`             |
-
-<br/>
-
-## 🗂️ Cấu trúc thư mục dự án
+**Cách 2 — Chạy riêng lẻ**
 
 ```bash
-ecommerce-react/
-├── 📁 public/
-├── 📁 server/
+# Terminal 1 — Backend
+cd server && npm run dev
+
+# Terminal 2 — Frontend
+npm run dev
+```
+
+---
+
+### Bước 5 — Build Production *(tuỳ chọn)*
+
+```bash
+# Build frontend
+npm run build
+
+# Preview bản build
+npm run preview
+```
+
+Thư mục `dist/` chứa static files production-ready, sẵn sàng deploy lên bất kỳ hosting nào.
+
+---
+
+### 🔑 Tài khoản Demo
+
+| Vai trò | Email | Mật khẩu |
+|---------|-------|----------|
+| **Admin** | `admin@jshop.com` | `123` |
+
+> Đăng nhập để truy cập khu vực quản trị tại `/admin`
+
+---
+
+## 🗂️ Cấu trúc thư mục
+
+<details>
+<summary>📁 Xem toàn bộ cấu trúc</summary>
+
+```
+jshop/
+├── 📁 public/                     # Static assets
+│
+├── 📁 server/                     # ── BACKEND ──────────────────────
 │   ├── 📁 config/
-│   │   ├── db.js
-│   │   └── permissions.js
-│   ├── 📁 controllers/
+│   │   ├── db.js                  # Kết nối MongoDB
+│   │   └── permissions.js         # Định nghĩa quyền hệ thống
+│   ├── 📁 controllers/            # Xử lý logic nghiệp vụ
 │   │   ├── couponController.js
 │   │   ├── orderController.js
 │   │   ├── permissionController.js
@@ -218,10 +233,10 @@ ecommerce-react/
 │   │   ├── roleController.js
 │   │   └── userController.js
 │   ├── 📁 middleware/
-│   │   ├── authMiddleware.js
-│   │   ├── errorHandler.js
-│   │   └── upload.js
-│   ├── 📁 models/
+│   │   ├── authMiddleware.js      # Xác thực JWT
+│   │   ├── errorHandler.js        # Xử lý lỗi tập trung
+│   │   └── upload.js              # Upload file (Multer)
+│   ├── 📁 models/                 # Mongoose Schemas
 │   │   ├── Coupon.js
 │   │   ├── Order.js
 │   │   ├── Permission.js
@@ -229,7 +244,7 @@ ecommerce-react/
 │   │   ├── Product.js
 │   │   ├── Role.js
 │   │   └── User.js
-│   ├── 📁 routes/
+│   ├── 📁 routes/                 # API Endpoints
 │   │   ├── coupons.js
 │   │   ├── orders.js
 │   │   ├── permissions.js
@@ -238,20 +253,17 @@ ecommerce-react/
 │   │   ├── roles.js
 │   │   └── users.js
 │   ├── 📁 seeds/
-│   │   └── seed.js
+│   │   └── seed.js                # Script khởi tạo dữ liệu mẫu
 │   ├── 📁 services/
-│   │   └── emailService.js
+│   │   └── emailService.js        # Gửi email OTP
 │   ├── 📁 uploads/
-│   │   └── avatars/
-│   ├── nodemon.json
-│   ├── package.json
-│   └── server.js
-├── 📁 src/
-│   ├── 📁 assets/
-│   │   ├── icons/
-│   │   └── images/
+│   │   └── avatars/               # Lưu avatar người dùng
+│   └── server.js                  # Entry point backend
+│
+├── 📁 src/                        # ── FRONTEND ─────────────────────
+│   ├── 📁 assets/                 # Ảnh, icon tĩnh
 │   ├── 📁 components/
-│   │   ├── 📁 common/
+│   │   ├── 📁 common/             # Tái sử dụng toàn cục
 │   │   │   ├── Icons.jsx
 │   │   │   ├── Loader.jsx
 │   │   │   ├── Modal.jsx
@@ -260,167 +272,148 @@ ecommerce-react/
 │   │   │   ├── SkeletonCard.jsx
 │   │   │   ├── StarRating.jsx
 │   │   │   └── Toast.jsx
-│   │   ├── 📁 layout/
-│   │   │   ├── AdminSidebar.jsx
-│   │   │   ├── AuthLayout.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   └── Header.jsx
-│   │   ├── 📁 product/
-│   │   │   ├── FlashSale.jsx
-│   │   │   └── ProductCard.jsx
-│   │   └── Icons.jsx
-│   ├── 📁 constants/
-│   │   └── index.js
-│   ├── 📁 hooks/
-│   │   ├── index.js
+│   │   ├── 📁 layout/             # Header, Footer, Sidebar
+│   │   └── 📁 product/            # FlashSale, ProductCard
+│   ├── 📁 constants/              # Hằng số dùng chung
+│   ├── 📁 hooks/                  # Custom Hooks
 │   │   ├── useDebounce.js
 │   │   └── useStickyState.js
 │   ├── 📁 layouts/
 │   │   ├── AdminLayout.jsx
 │   │   └── MainLayout.jsx
 │   ├── 📁 pages/
-│   │   ├── 📁 admin/
-│   │   │   ├── CouponsPage.jsx
-│   │   │   ├── DashboardPage.jsx
-│   │   │   ├── OrdersPage.jsx
-│   │   │   ├── PermissionsPage.jsx
-│   │   │   ├── PostsPage.jsx
-│   │   │   ├── ProductsPage.jsx
-│   │   │   ├── RolesPage.jsx
-│   │   │   └── UsersPage.jsx
-│   │   ├── BlogDetailPage.jsx
-│   │   ├── BlogPage.jsx
+│   │   ├── 📁 admin/              # Dashboard, CRUD pages
+│   │   ├── HomePage.jsx
+│   │   ├── ShopPage.jsx
+│   │   ├── ProductDetailPage.jsx
 │   │   ├── CartPage.jsx
 │   │   ├── CheckoutPage.jsx
-│   │   ├── ForgotPasswordPage.jsx
-│   │   ├── HomePage.jsx
-│   │   ├── LoginPage.jsx
-│   │   ├── ProductDetailPage.jsx
 │   │   ├── ProfilePage.jsx
-│   │   ├── RegisterPage.jsx
-│   │   └── ShopPage.jsx
+│   │   ├── BlogPage.jsx
+│   │   └── ...
 │   ├── 📁 services/
-│   │   └── api.js
-│   ├── 📁 store/
+│   │   └── api.js                 # Axios / Fetch wrapper
+│   ├── 📁 store/                  # Zustand stores
 │   │   ├── authStore.js
 │   │   ├── cartStore.js
-│   │   ├── index.js
 │   │   └── toastStore.js
 │   ├── 📁 utils/
-│   │   └── helpers.js
+│   │   └── helpers.js             # Hàm tiện ích
 │   ├── App.jsx
-│   ├── index.css
-│   ├── main.jsx
-│   └── router.jsx
-├── .gitattributes
-├── .prettierignore
-├── .prettierrc
-├── eslint.config.js
-├── CHANGELOG.md
+│   ├── router.jsx                 # React Router config
+│   └── main.jsx
+│
+├── .env                           # ⚠️ KHÔNG commit lên Git
 ├── index.html
-├── LICENSE
 ├── package.json
-├── README.md
-└── vite.config.js
+├── vite.config.js
+└── README.md
 ```
 
-### 📋 Giải thích cấu trúc
+</details>
 
-| Thư mục | Mô tả |
-|---------|-------|
-| **server/** | Backend Express.js - API routes, controllers, models, middleware, config |
-| **src/components/** | React components tái sử dụng (common, layout, product) |
-| **src/pages/** | Page components - User pages + admin pages |
-| **src/store/** | Zustand stores - Global state (auth, cart, toast) |
-| **src/hooks/** | Custom React hooks (useDebounce, useStickyState) |
-| **src/services/** | API client services |
-| **src/utils/** | Helper functions |
-| **src/layouts/** | Layout wrappers (MainLayout, AdminLayout) |
+---
 
-<br/>
+## 📜 NPM Scripts
 
-## Các lệnh NPM (Scripts)
+| Lệnh | Mô tả |
+|------|-------|
+| `npm start` | ⚡ Chạy Client + Server song song (concurrently) |
+| `npm run dev` | 🖥️ Chạy Frontend dev server (Vite, port 5173) |
+| `npm run dev:client` | 🖥️ Chạy Frontend riêng |
+| `npm run dev:server` | 🔧 Chạy Backend riêng (port 5000) |
+| `npm run build` | 🏗️ Build Frontend cho Production |
+| `npm run preview` | 👀 Preview bản build |
+| `npm run lint` | ✅ Kiểm tra lỗi ESLint |
+| `npm run lint:fix` | 🔧 Tự động sửa lỗi ESLint |
+| `npm run format` | 💅 Format code với Prettier |
+| `npm run format:check` | 📋 Kiểm tra code đã được format chưa |
 
-| Lệnh                | Mô tả                                           |
-| ------------------- | ----------------------------------------------- |
-| `npm start`         | ⚡ Chạy Client + Server (concurrently)           |
-| `npm run dev`       | ⚡ Chạy Frontend dev server (Vite)              |
-| `npm run dev:client`| 🖥️ Chạy Frontend riêng (port 5173)            |
-| `npm run dev:server`| 🔧 Chạy Backend riêng (port 5000)             |
-| `npm run build`     | 🏗️ Build Frontend cho Production               |
-| `npm run preview`   | 👀 Preview build trước khi deploy               |
-| `npm run lint`      | ✅ Kiểm tra lỗi code (ESLint)                   |
-| `npm run lint:fix`  | 🔧 Tự động sửa lỗi code                        |
-| `npm run format`    | 💅 Format code (Prettier)                       |
-| `npm run format:check` | 📋 Kiểm tra format code              |
+---
 
-<br/>
+## 🔒 Bảo mật & Xác thực
 
-## � Bảo Mật & Xác Thực (v1.0.2+)
-
-### JWT Token Authentication
-
-Ứng dụng sử dụng **JWT (JSON Web Token)** để xác thực người dùng một cách an toàn:
-
-- ✅ **Bearer Token Schema** — Tuân theo RFC 6750 standard
-- ✅ **Server-side Verification** — Token được xác thực trên server với secret key
-- ✅ **Token Expiration** — Token hết hạn sau 7 ngày (tùy chỉnh qua `JWT_EXPIRES_IN`)
-- ✅ **Secure Headers** — Không sử dụng custom headers dễ bị giả mạo
-- ✅ **Database Verification** — Kiểm tra user từ database trước khi chấp nhận
-
-### Flow Xác Thực
+JSHOP triển khai **JWT Bearer Token Authentication** theo chuẩn RFC 6750:
 
 ```
-1. User đăng nhập (email + password)
-   ↓
-2. Server xác thực → Tạo JWT token
-   ↓
-3. Frontend lưu token vào localStorage
-   ↓
-4. Mỗi request sau đó gửi: Authorization: Bearer <token>
-   ↓
-5. Server xác thực token + kiểm tra user từ DB
-   ↓
-6. Nếu hợp lệ → Cho phép request, ngược lại → 401 Unauthorized
+┌──────────┐         ┌──────────────┐         ┌──────────┐
+│  Client  │         │   Express    │         │  MongoDB │
+└────┬─────┘         └──────┬───────┘         └────┬─────┘
+     │                      │                      │
+     │  POST /login         │                      │
+     │─────────────────────►│                      │
+     │                      │  Find user by email  │
+     │                      │─────────────────────►│
+     │                      │◄─────────────────────│
+     │                      │  bcrypt.compare()    │
+     │  JWT Token           │                      │
+     │◄─────────────────────│                      │
+     │                      │                      │
+     │  Authorization:      │                      │
+     │  Bearer <token>      │                      │
+     │─────────────────────►│                      │
+     │                      │  Verify + DB check   │
+     │                      │─────────────────────►│
+     │                      │◄─────────────────────│
+     │  200 OK / 401        │                      │
+     │◄─────────────────────│                      │
 ```
 
-### Cấu Hình
+**Các tính năng bảo mật đã triển khai:**
 
-```env
-JWT_SECRET=your_secure_random_string_here
-JWT_EXPIRES_IN=7d
-```
+- ✅ Bearer Token Schema — Chuẩn RFC 6750
+- ✅ Server-side Verification — Token xác thực bằng secret key
+- ✅ Token Expiration — Hết hạn sau 7 ngày (cấu hình qua `JWT_EXPIRES_IN`)
+- ✅ Password Hashing — `bcryptjs` salt rounds
+- ✅ Database Verification — Kiểm tra user tồn tại trước mỗi request
+- ✅ Role-based Access Control — Roles & Permissions linh hoạt
 
-⚠️ **Production**: Thay đổi `JWT_SECRET` thành một giá trị phức tạp ngẫu nhiên!
+> 📄 Xem chi tiết tại [SECURITY_FIXES.md](./SECURITY_FIXES.md)
 
-Xem thêm: [SECURITY_FIXES.md](./SECURITY_FIXES.md) để hiểu chi tiết về sửa lỗi bảo mật.
+---
 
-<br/>
+## 🔭 Lộ trình phát triển
 
-## �🔭 Lộ trình mở rộng
+- [ ] 💳 **Cổng thanh toán** — Tích hợp VNPay / Stripe / PayPal
+- [ ] 🔔 **Thông báo realtime** — Socket.io cho đơn hàng mới
+- [ ] 🌐 **Đa ngôn ngữ** — `react-i18next` (VI / EN)
+- [ ] 🚀 **CI/CD Pipeline** — GitHub Actions + Docker
+- [ ] ☁️ **Cloud Deploy** — Vercel (Frontend) + Railway (Backend)
+- [ ] 📱 **PWA** — Hỗ trợ cài đặt như ứng dụng mobile
+- [ ] 🔍 **SEO** — Server-side Rendering với Next.js (v2)
 
-Dự án được thiết kế để dễ dàng nâng cấp thành nền tảng thương mại thực thụ. Một số hướng phát triển gợi ý:
-
-- 🔌 **Tích hợp Backend API** — Node.js / Python / Java / Go
-- 🔐 **Xác thực thực sự** — JWT, OAuth2, session-based auth
-- 💳 **Cổng thanh toán** — VNPay, Stripe, PayPal
-- 🚀 **Deploy lên Cloud** — Vercel, AWS, Railway
-- 🌐 **Đa ngôn ngữ (i18n)** — `react-i18next`
-
-<br/>
+---
 
 ## 🤝 Đóng góp
 
-Dự án được tạo ra để **demo và tham khảo** cách phân tách kiến trúc thư mục React một cách sạch sẽ, bài bản. Bạn hoàn toàn tự do chỉnh sửa, fork và mở rộng theo nhu cầu.
+Mọi đóng góp đều được hoan nghênh! Để đóng góp:
 
-Nếu bạn thấy dự án hữu ích, hãy ⭐ **Star** để ủng hộ nhé!
+1. **Fork** repository này
+2. Tạo branch mới: `git checkout -b feature/ten-tinh-nang`
+3. Commit thay đổi: `git commit -m "feat: thêm tính năng X"`
+4. Push lên branch: `git push origin feature/ten-tinh-nang`
+5. Mở **Pull Request** và mô tả thay đổi của bạn
 
-<br/>
+> Xem [CONTRIBUTING.md](./CONTRIBUTING.md) để biết thêm quy tắc đóng góp.
+
+---
+
+## 📄 License
+
+Phát hành theo giấy phép [MIT License](./LICENSE) — Tự do sử dụng, chỉnh sửa và phân phối.
 
 ---
 
 <div align="center">
 
-Được xây dựng với ❤️ bằng **React** · **Vite** · **Tailwind CSS**
+Được xây dựng với ❤️ bằng **React** · **Vite** · **Tailwind CSS** · **Node.js**
+
+<br/>
+
+Nếu dự án hữu ích với bạn, hãy nhấn ⭐ **Star** để ủng hộ nhé!
+
+<br/>
+
+[![Star History](https://img.shields.io/github/stars/your-username/jshop?style=social)](https://github.com/your-username/jshop)
 
 </div>

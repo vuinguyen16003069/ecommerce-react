@@ -410,6 +410,6 @@ Nếu dự án hữu ích với bạn, hãy nhấn ⭐ **Star** để ủng hộ
 
 <br/>
 
-[![Star History](https://img.shields.io/github/stars/your-username/jshop?style=social)](https://github.com/your-username/jshop)
+[![Star History](https://img.shields.io/github/stars/your-username/jshop?style=social)](https://github.com/vuinguyen16003069/ecommerce-react)
 
 </div>

@@ -368,8 +368,6 @@ JSHOP triển khai **JWT Bearer Token Authentication** theo chuẩn RFC 6750:
 - ✅ Database Verification — Kiểm tra user tồn tại trước mỗi request
 - ✅ Role-based Access Control — Roles & Permissions linh hoạt
 
-> 📄 Xem chi tiết tại [SECURITY_FIXES.md](./SECURITY_FIXES.md)
-
 ---
 
 ## 🔭 Lộ trình phát triển
@@ -393,8 +391,6 @@ Mọi đóng góp đều được hoan nghênh! Để đóng góp:
 3. Commit thay đổi: `git commit -m "feat: thêm tính năng X"`
 4. Push lên branch: `git push origin feature/ten-tinh-nang`
 5. Mở **Pull Request** và mô tả thay đổi của bạn
-
-> Xem [CONTRIBUTING.md](./CONTRIBUTING.md) để biết thêm quy tắc đóng góp.
 
 ---
 
